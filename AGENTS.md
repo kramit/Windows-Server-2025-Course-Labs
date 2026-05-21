@@ -31,3 +31,35 @@ When developing or expanding labs, prefer the style used in Lab 5:
 - Review security impact in plain language. For example, prefer scoping firewall rules over disabling the firewall, and call out when a broad lab setting would need tighter production controls.
 - Add a brief administrative change summary near the end of labs when learners install roles, change security settings, configure services, or alter network access.
 - Avoid making every lab a command transcript. The learner should understand the administrative workflow, the tool locations, the result, and the operational reason for the change.
+
+## Markdown rendering style
+
+When writing numbered checkbox steps, add a blank line between each step so the rendered lab has clear vertical spacing.
+
+Use this pattern:
+
+```md
+1. [ ] Select **HOME**.
+
+2. [ ] From the **Select VM** dropdown, select **LON-SRV1**.
+
+3. [ ] Turn on **Enhanced mode**.
+```
+
+When adding a note that belongs inline with a task's steps, indent the fenced callout by three spaces so it renders inside the task flow.
+
+Use this pattern for task-level notes:
+
+```md
+1. [ ] Verify that the setting is enabled.
+
+   ::: warning
+   **Note**: This note is part of the task flow and should render inline with the lab steps.
+   :::
+
+::: success
+**Results**: After completing this task, you have verified the setting.
+:::
+```
+
+Do not indent global notes, prerequisites, summaries, scenarios, or exercise-level callouts that are not part of a numbered task flow.
