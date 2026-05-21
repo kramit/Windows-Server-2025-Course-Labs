@@ -3,377 +3,820 @@
 ## Summary
 
 ::: secondary
-In this lab, you will explore PowerShell as a command-line administration tool. You will learn to use cmdlets, pipe commands together, retrieve system information, and understand why PowerShell is the modern standard for Windows Server administration. This lab builds on Lab 0201 and provides hands-on experience with essential PowerShell skills.
+In this lab, you will use PowerShell to perform common Windows Server administration tasks. You will run cmdlets, use help, pipe and filter command output, gather system information, review services and processes, customize the terminal prompt with Oh My Posh, practice scripting logic, export objects, and create a basic graphical interface.
 :::
 
 ### Prerequisites
 
 ::: secondary
 To complete this lab, you must have:
+
 - Completed Lab 0201 (Using Remote Administration Tools and PowerShell)
+- Completed Lab 0301 (Working with Git and GitHub)
 - Administrator access to LON-SRV1
-- Basic understanding of PowerShell from the previous labs
+- Basic familiarity with Server Manager and elevated PowerShell sessions
+- Internet access for installing Visual Studio Code and Oh My Posh
 :::
 
-## Exercise 1: Understanding PowerShell Basics
+::: warning
+**Note**: The PowerShell examples used in this lab are also provided in the course GitHub repository folder `supporting content/Lab4`. If time is limited, open the prepared scripts instead of typing each script manually.
+:::
+
+## Exercise 1: Opening PowerShell and Running Basic Cmdlets
 
 ::: secondary
 **Scenario**
 
-PowerShell uses cmdlets (pronounced "command-lets") which are small, single-purpose tools that can be combined together. You will learn how to execute basic PowerShell commands and understand the syntax.
+You need to use PowerShell as your primary command-line administration tool. You will connect to LON-SRV1, open an elevated PowerShell session, verify the PowerShell version, and run your first cmdlets.
 :::
 
-### Task 1: Open PowerShell and Check Version
+### Task 1: Connect to LON-SRV1
 
-1. [ ] Connect to LON-SRV1 using Remote Desktop.
-2. [ ] Right-click on the **Windows Start button** or press **Windows key + X**.
-3. [ ] Click on **Terminal (Admin)** or **Windows PowerShell (Admin)** - choose the one that appears.
+1. [ ] In the lab environment, select **HOME**.
+2. [ ] From the **Select VM** dropdown, select **LON-SRV1**.
+3. [ ] In the **Username** field, enter the username shown for the selected VM on the **HOME** tab.
+4. [ ] In the **Password** field, enter the password shown for the selected VM on the **HOME** tab.
+5. [ ] In the **Tools** section, turn on **Enhanced mode**.
+6. [ ] Verify that the virtual machine display adjusts to use the best screen resolution for your monitor.
+7. [ ] Wait for the Windows Server desktop to load.
+
+### Task 2: Open PowerShell as Administrator
+
+1. [ ] Open **Start**.
+2. [ ] Search for **Terminal**.
+3. [ ] Select **Run as administrator** for **Terminal**.
+4. [ ] If prompted by **User Account Control**, select **Yes**.
+5. [ ] Verify that an elevated PowerShell session opens.
 
 ::: warning
-**Note**: It is critical to open PowerShell as Administrator. If you do not see "(Admin)" in the title, close it and right-click to select "Run as administrator".
+**Note**: If **Terminal** is not available, search for **Windows PowerShell** and select **Run as administrator**.
 :::
 
-4. [ ] A PowerShell window with a blue background will open.
-5. [ ] Type the following command to check the PowerShell version:
+### Task 3: Check the PowerShell Version
+
+1. [ ] Run the following command to display the PowerShell version.
 
 ```powershell
 $PSVersionTable.PSVersion
 ```
 
-6. [ ] Press **Enter**.
-7. [ ] PowerShell will display the version number. You should see version 5.1 or higher (PowerShell 7+ if newer versions are installed).
+2. [ ] Verify that the version output is displayed.
+3. [ ] Record the **Major** and **Minor** version values if instructed by your instructor.
 
-::: success
-**Results**: After completing this task, you have confirmed that PowerShell is running and verified the version.
-:::
+### Task 4: Run Basic Cmdlets
 
-### Task 2: Execute Your First Cmdlet
-
-A cmdlet has the format **Verb-Noun** (for example, Get-Process, Set-Service):
-
-1. [ ] In PowerShell, type the following command exactly:
+1. [ ] Run the following command to list the contents of the current folder.
 
 ```powershell
 Get-ChildItem
 ```
 
-2. [ ] Press **Enter**.
-3. [ ] PowerShell will list the contents of the current directory (C:\Windows\System32\). You will see folders and files displayed as a table with columns:
-   - **Mode**: File type (d for directory, a for archive file)
-   - **LastWriteTime**: When the file was last modified
-   - **Length**: File size in bytes
-   - **Name**: The filename or folder name
-4. [ ] This is the PowerShell equivalent of the `dir` command in CMD.
+2. [ ] Review the **Mode**, **LastWriteTime**, **Length**, and **Name** columns.
+3. [ ] Run the following command to display the current location.
+
+```powershell
+Get-Location
+```
+
+4. [ ] Verify that PowerShell displays the current path.
 
 ::: success
-**Results**: After completing this task, you have executed your first PowerShell cmdlet and seen its output.
+**Results**: After completing this exercise, you will have opened an elevated PowerShell session and run basic PowerShell cmdlets on LON-SRV1.
 :::
 
-### Task 3: Use Help to Learn About Cmdlets
+## Exercise 2: Using PowerShell Help and Command Discovery
 
-PowerShell includes built-in help for all cmdlets:
+::: secondary
+**Scenario**
 
-1. [ ] Type the following command:
+You need to find and understand PowerShell commands without memorizing every cmdlet. You will use PowerShell help, command discovery, and aliases to identify useful administration commands.
+:::
+
+### Task 1: Use Help for a Cmdlet
+
+1. [ ] Run the following command to display help for `Get-ChildItem`.
 
 ```powershell
 Get-Help Get-ChildItem
 ```
 
-2. [ ] Press **Enter**.
-3. [ ] PowerShell will display the help information for Get-ChildItem, including:
-   - **SYNOPSIS**: One-line description of what the cmdlet does
-   - **SYNTAX**: How to use the cmdlet and what parameters it accepts
-   - **DESCRIPTION**: Detailed explanation
-   - **PARAMETERS**: Details about each parameter
-   - **EXAMPLES**: Example usage
-4. [ ] You can scroll through the help using the spacebar or arrow keys. Press **Q** to exit help.
+2. [ ] Review the **SYNOPSIS** section.
+3. [ ] Review the **SYNTAX** section.
+4. [ ] Run the following command to display examples for `Get-ChildItem`.
 
-::: success
-**Results**: After completing this task, you know how to access PowerShell help to learn about any cmdlet.
+```powershell
+Get-Help Get-ChildItem -Examples
+```
+
+5. [ ] Review at least one example.
+
+::: warning
+**Note**: If full help content is not available, PowerShell may display partial help. Do not run `Update-Help` unless instructed.
 :::
 
-## Exercise 2: Working with System Information
+### Task 2: Discover Commands
+
+1. [ ] Run the following command to find commands that use the verb `Get`.
+
+```powershell
+Get-Command -Verb Get | Select-Object -First 20 Name, Source
+```
+
+2. [ ] Review the command names returned.
+3. [ ] Run the following command to find commands related to services.
+
+```powershell
+Get-Command -Noun Service
+```
+
+4. [ ] Verify that service-related cmdlets are displayed.
+
+### Task 3: Review Aliases
+
+1. [ ] Run the following command to display common aliases.
+
+```powershell
+Get-Alias | Select-Object Name, Definition | Sort-Object Name | Format-Table -AutoSize
+```
+
+2. [ ] Locate the alias **dir**.
+3. [ ] Verify that **dir** maps to `Get-ChildItem`.
+4. [ ] Locate the alias **cls**.
+5. [ ] Verify that **cls** maps to `Clear-Host`.
+
+::: success
+**Results**: After completing this exercise, you will have used PowerShell help, command discovery, and aliases to identify command-line administration options.
+:::
+
+## Exercise 3: Gathering System Information
 
 ::: secondary
 **Scenario**
 
-You need to gather information about your server such as computer name, operating system version, installed updates, and processes running. PowerShell cmdlets make this quick and easy.
+You need to gather server inventory information quickly from the command line. You will use PowerShell to retrieve computer, operating system, update, and network configuration details.
 :::
 
 ### Task 1: Get Computer Information
 
-1. [ ] In PowerShell, type the following command:
+1. [ ] Run the following command to display basic computer information.
 
 ```powershell
-Get-ComputerInfo -Property CsComputerName, CsDomain, OsVersion, OsProductType
+Get-ComputerInfo -Property CsComputerName,CsDomain,OsVersion,OsProductType
 ```
 
-2. [ ] Press **Enter**.
-3. [ ] PowerShell will display:
-   - **CsComputerName**: The computer name (LON-SRV1)
-   - **CsDomain**: The domain name (CONTOSO)
-   - **OsVersion**: The Windows version (10.0.26200 or similar for Windows Server 2025)
-   - **OsProductType**: The OS type (ServerNT indicates a server operating system)
-
-::: success
-**Results**: After completing this task, you can quickly retrieve detailed system information with a single command.
-:::
+2. [ ] Verify that **CsComputerName** shows `LON-SRV1`.
+3. [ ] Verify that **CsDomain** shows `CONTOSO`.
+4. [ ] Review the **OsVersion** and **OsProductType** values.
 
 ### Task 2: Get Operating System Information
 
-1. [ ] Type the following command:
+1. [ ] Run the following command to display operating system information.
 
 ```powershell
-Get-CimInstance Win32_OperatingSystem | Select-Object Caption, Version, BuildNumber, InstallDate
+Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,BuildNumber,InstallDate
 ```
 
-2. [ ] Press **Enter**.
-3. [ ] PowerShell will display Windows Server operating system information:
-   - **Caption**: OS name (Windows Server 2025)
-   - **Version**: Version number
-   - **BuildNumber**: Build number (for example, 26200)
-   - **InstallDate**: When Windows was installed
-4. [ ] This command demonstrates piping (the **|** symbol) which sends output from one cmdlet to another.
+2. [ ] Verify that **Caption** displays Windows Server.
+3. [ ] Review the **Version**, **BuildNumber**, and **InstallDate** values.
 
-::: success
-**Results**: After completing this task, you understand how to retrieve detailed OS information and use piping in PowerShell.
-:::
+### Task 3: View Installed Updates
 
-### Task 3: View Installed Hotfixes and Updates
-
-1. [ ] Type the following command:
+1. [ ] Run the following command to display recent installed updates.
 
 ```powershell
-Get-HotFix | Select-Object HotFixID, Description, InstalledOn | Format-Table
+Get-HotFix | Sort-Object InstalledOn -Descending | Select-Object -First 10 HotFixID,Description,InstalledOn | Format-Table -AutoSize
 ```
 
-2. [ ] Press **Enter**.
-3. [ ] PowerShell will display a list of all installed Windows updates (hotfixes) with columns showing:
-   - **HotFixID**: The KB article number (for example, KB5001234)
-   - **Description**: Description of the update
-   - **InstalledOn**: Date the update was installed
-4. [ ] If no hotfixes are shown, this is normal on a freshly installed server.
-
-::: success
-**Results**: After completing this task, you can view all installed updates and patches on your server.
-:::
-
-## Exercise 3: Managing Services with PowerShell
-
-::: secondary
-**Scenario**
-
-You need to manage Windows services using PowerShell. You will view running services, check service status, and understand how to start and stop services (though you will not actually stop any critical services in this lab).
-:::
-
-### Task 1: Get Running Services
-
-1. [ ] Type the following command to see all running services:
-
-```powershell
-Get-Service | Where-Object {$_.Status -eq 'Running'} | Select-Object Name, DisplayName, Status | Format-Table -AutoSize
-```
-
-2. [ ] Press **Enter**.
-3. [ ] PowerShell will display a list of all running services, showing:
-   - **Name**: Internal service name (for example, "Dnsclient")
-   - **DisplayName**: Friendly service name (for example, "DNS Client")
-   - **Status**: Should show "Running" for all listed services
-4. [ ] The list will scroll. Use spacebar to see more or press **Q** to stop the output.
-
-::: success
-**Results**: After completing this task, you can view all running services with a single PowerShell command.
-:::
-
-### Task 2: Check Specific Service Status
-
-1. [ ] Check the status of DNS Client service:
-
-```powershell
-Get-Service -Name DnsClient | Select-Object Name, DisplayName, Status, StartType
-```
-
-2. [ ] Press **Enter**.
-3. [ ] PowerShell will display:
-   - **Name**: DnsClient
-   - **DisplayName**: DNS Client
-   - **Status**: Running
-   - **StartType**: Automatic (means it starts when the server boots)
-
-::: success
-**Results**: After completing this task, you can check the status and startup type of specific services.
-:::
-
-### Task 3: View Stopped Services
-
-1. [ ] Type the following command to see all stopped services:
-
-```powershell
-Get-Service | Where-Object {$_.Status -eq 'Stopped'} | Select-Object Name, DisplayName, StartType | Format-Table
-```
-
-2. [ ] Press **Enter**.
-3. [ ] PowerShell will display stopped services. You may see services like:
-   - **Bluetooth Support Service** (stopped)
-   - **Remote Access Connection Manager** (stopped)
-   - **Routing and Remote Access** (stopped)
-   - Other optional services that are not running
+2. [ ] Review the **HotFixID**, **Description**, and **InstalledOn** columns.
+3. [ ] Verify whether any updates are listed.
 
 ::: warning
-**Note**: Do NOT attempt to start or stop services in this lab without instructor approval. Many services are interdependent and stopping the wrong service can cause server problems.
+**Note**: A freshly created lab server may show few or no installed hotfixes.
 :::
+
+### Task 4: View IP Configuration
+
+1. [ ] Run the following command to display IPv4 address information.
+
+```powershell
+Get-NetIPAddress -AddressFamily IPv4 | Select-Object InterfaceAlias,IPAddress,PrefixLength | Format-Table -AutoSize
+```
+
+2. [ ] Review the **InterfaceAlias**, **IPAddress**, and **PrefixLength** values.
+3. [ ] Identify the IPv4 address used by LON-SRV1.
 
 ::: success
-**Results**: After completing this task, you can identify which services are installed but not currently running.
+**Results**: After completing this exercise, you will have gathered key system, update, and network information from LON-SRV1 by using PowerShell.
 :::
 
-## Exercise 4: Managing Processes with PowerShell
+## Exercise 4: Filtering, Sorting, and Formatting Output
 
 ::: secondary
 **Scenario**
 
-A process is a running instance of a program. You will view processes, identify resource usage, and understand how to find specific processes.
+PowerShell commands often return more information than you need. You will use the pipeline to filter, sort, select, and format command output for administrative review.
 :::
 
-### Task 1: View All Running Processes
+### Task 1: Filter Running Services
 
-1. [ ] Type the following command:
+1. [ ] Run the following command to display running services.
 
 ```powershell
-Get-Process | Select-Object Name, ID, Handles, WorkingSet | Format-Table -AutoSize
+Get-Service | Where-Object { $_.Status -eq 'Running' } | Select-Object Name,DisplayName,Status | Format-Table -AutoSize
 ```
 
-2. [ ] Press **Enter**.
-3. [ ] PowerShell will display a list of all running processes with columns showing:
-   - **Name**: Process name (for example, "System", "csrss", "services")
-   - **ID**: Process ID (PID) - a unique identifier for each process
-   - **Handles**: Number of handles (connections to resources)
-   - **WorkingSet**: Memory used by the process in bytes
-4. [ ] The output will be long. Press **Q** to stop scrolling.
+2. [ ] Verify that each listed service has a **Status** value of `Running`.
+3. [ ] Review the **Name** and **DisplayName** columns.
 
-::: success
-**Results**: After completing this task, you can see all running processes and their resource usage.
-:::
+### Task 2: Check a Specific Service
 
-### Task 2: Find Memory-Hungry Processes
-
-1. [ ] Type the following command to find the top processes by memory usage:
+1. [ ] Run the following command to display the DNS Client service.
 
 ```powershell
-Get-Process | Sort-Object WorkingSet -Descending | Select-Object -First 5 Name, WorkingSet, @{Name="MemoryMB";Expression={$_.WorkingSet/1MB}} | Format-Table
+Get-Service -Name Dnscache | Select-Object Name,DisplayName,Status,StartType
 ```
 
-2. [ ] Press **Enter**.
-3. [ ] PowerShell will display the top 5 processes using the most memory, showing:
-   - **Name**: Process name
-   - **WorkingSet**: Memory in bytes
-   - **MemoryMB**: Memory converted to megabytes for easier reading
-4. [ ] This helps identify if any process is using excessive memory.
+2. [ ] Verify that **DisplayName** shows `DNS Client`.
+3. [ ] Review the **Status** and **StartType** values.
+
+### Task 3: Sort Processes by Memory Use
+
+1. [ ] Run the following command to display the five processes using the most memory.
+
+```powershell
+Get-Process | Sort-Object WorkingSet -Descending | Select-Object -First 5 Name,Id,@{Name='MemoryMB';Expression={[math]::Round($_.WorkingSet / 1MB, 2)}} | Format-Table -AutoSize
+```
+
+2. [ ] Review the **Name**, **Id**, and **MemoryMB** values.
+3. [ ] Identify the process currently using the most memory.
+
+### Task 4: Export Output to a File
+
+1. [ ] Run the following command to create a folder for lab output.
+
+```powershell
+New-Item -Path C:\LabOutput -ItemType Directory -Force
+```
+
+2. [ ] Run the following command to export running services to a CSV file.
+
+```powershell
+Get-Service | Where-Object { $_.Status -eq 'Running' } | Select-Object Name,DisplayName,Status | Export-Csv -Path C:\LabOutput\RunningServices.csv -NoTypeInformation
+```
+
+3. [ ] Run the following command to verify that the file was created.
+
+```powershell
+Test-Path C:\LabOutput\RunningServices.csv
+```
+
+4. [ ] Verify that the command returns `True`.
 
 ::: success
-**Results**: After completing this task, you can identify which processes are using the most memory on your server.
+**Results**: After completing this exercise, you will have filtered, sorted, formatted, and exported PowerShell command output.
 :::
 
-## Exercise 5: Using PowerShell Help and Aliases
+## Exercise 5: Reviewing Services and Processes Safely
 
 ::: secondary
 **Scenario**
 
-PowerShell includes aliases (shortcuts) for common commands and comprehensive help system. Learning these will make your work more efficient.
+You need to inspect services and processes without making disruptive changes. You will review stopped services, inspect process details, and avoid changing service state in this foundational lab.
 :::
 
-### Task 1: Understand Common Aliases
+### Task 1: View Stopped Services
 
-1. [ ] PowerShell recognizes many common CMD.EXE commands as aliases. Type:
-
-```powershell
-dir
-```
-
-2. [ ] Press **Enter**.
-3. [ ] PowerShell will display the current directory contents. This works because **dir** is an alias for **Get-ChildItem**.
-4. [ ] Try another alias:
+1. [ ] Run the following command to display stopped services.
 
 ```powershell
-cls
+Get-Service | Where-Object { $_.Status -eq 'Stopped' } | Select-Object Name,DisplayName,StartType | Format-Table -AutoSize
 ```
 
-5. [ ] Press **Enter**.
-6. [ ] The screen clears. This is because **cls** is an alias for **Clear-Host**.
-7. [ ] Get a list of all PowerShell aliases:
-
-```powershell
-Get-Alias | Format-Table Name, Definition | Format-Table -AutoSize
-```
-
-8. [ ] Press **Enter**.
-9. [ ] PowerShell will show common aliases such as:
-   - **gci** → Get-ChildItem
-   - **gps** → Get-Process
-   - **gsv** → Get-Service
-   - **dir** → Get-ChildItem
-   - **ls** → Get-ChildItem
-
-::: success
-**Results**: After completing this task, you understand that PowerShell supports aliases for faster command entry.
-:::
-
-### Task 2: Create Your Own Alias (Optional)
-
-1. [ ] Type the following command to create a temporary alias:
-
-```powershell
-Set-Alias -Name gsi -Value Get-Service
-```
-
-2. [ ] Press **Enter**.
-3. [ ] Now you can type **gsi** to quickly get services:
-
-```powershell
-gsi | Where-Object {$_.Status -eq 'Running'} | Select-Object Name, DisplayName | Format-Table
-```
-
-4. [ ] Press **Enter**.
-5. [ ] This will list all running services using your new alias.
+2. [ ] Review the stopped services returned.
+3. [ ] Identify at least one service with a **StartType** value of `Manual`.
 
 ::: warning
-**Note**: This alias only exists in the current PowerShell session. When you close PowerShell, the alias disappears. To make aliases permanent, you need to add them to your PowerShell profile.
+**Note**: Do not start, stop, or restart services in this lab unless your instructor specifically tells you to do so.
 :::
+
+### Task 2: View Process Details
+
+1. [ ] Run the following command to display process details.
+
+```powershell
+Get-Process | Select-Object -First 15 Name,Id,Handles,CPU,WorkingSet | Format-Table -AutoSize
+```
+
+2. [ ] Review the **Name**, **Id**, **Handles**, **CPU**, and **WorkingSet** columns.
+3. [ ] Identify the process ID for one listed process.
+
+### Task 3: Search for a Process by Name
+
+1. [ ] Run the following command to search for PowerShell-related processes.
+
+```powershell
+Get-Process | Where-Object { $_.Name -like '*powershell*' -or $_.Name -like '*pwsh*' -or $_.Name -like '*terminal*' } | Select-Object Name,Id,StartTime
+```
+
+2. [ ] Verify whether a PowerShell or Terminal process is displayed.
+3. [ ] Review the **Name**, **Id**, and **StartTime** values.
 
 ::: success
-**Results**: After completing this task, you can create PowerShell aliases for commands you use frequently.
+**Results**: After completing this exercise, you will have reviewed services and processes safely without changing their running state.
 :::
 
-## Exercise 6: Verification and Summary
+## Exercise 6: Installing Visual Studio Code and Running PowerShell Scripts
 
 ::: secondary
 **Scenario**
 
-You have now mastered basic PowerShell commands for Windows Server administration.
+You need a script editor for writing and testing PowerShell scripts. You will install Visual Studio Code with winget, add the PowerShell extension, write a basic FizzBuzz script, and run a prepared system information script that exports an HTML report.
 :::
 
-### Task 1: Review What You've Learned
+### Task 1: Install Visual Studio Code with winget
 
-You have successfully:
+1. [ ] Return to the elevated PowerShell session on LON-SRV1.
+2. [ ] Run the following command to verify that winget is available.
 
-1. **Opened PowerShell as Administrator** - The first step for all administrative tasks
-2. **Executed basic cmdlets** - Get-ChildItem, Get-ComputerInfo, Get-Service
-3. **Used piping** - Sending output from one cmdlet to another using **|**
-4. **Filtered results** - Using Where-Object to show only what you need
-5. **Formatted output** - Using Format-Table and Select-Object to show only relevant columns
-6. **Gathered system information** - Computer name, OS version, installed updates
-7. **Managed services** - Viewed running and stopped services, checked status
-8. **Identified resource usage** - Found processes using the most memory
-9. **Used aliases** - Discovered shortcuts for common commands
-10. **Found help** - Used Get-Help to learn about cmdlets
+```powershell
+winget --version
+```
+
+3. [ ] Verify that a winget version is displayed.
+4. [ ] Run the following command to install Visual Studio Code.
+
+```powershell
+winget install --id Microsoft.VisualStudioCode --exact --source winget --accept-package-agreements --accept-source-agreements
+```
+
+5. [ ] Wait for the installation to finish.
+6. [ ] Open **Start**.
+7. [ ] Search for **Visual Studio Code**.
+8. [ ] Open **Visual Studio Code**.
+9. [ ] If prompted by the first-run experience, select the options required by your instructor.
+
+::: warning
+**Note**: If winget is not available or the download is blocked, ask your instructor for the approved Visual Studio Code installer location.
+:::
+
+### Task 2: Install the PowerShell Extension
+
+1. [ ] Return to the elevated PowerShell session.
+2. [ ] Run the following command to install the PowerShell extension for Visual Studio Code.
+
+```powershell
+code --install-extension ms-vscode.PowerShell
+```
+
+3. [ ] Wait for the extension installation to finish.
+4. [ ] In **Visual Studio Code**, select **Extensions**.
+5. [ ] Search for **PowerShell**.
+6. [ ] Verify that the **PowerShell** extension from **Microsoft** is installed.
+
+::: warning
+**Note**: If the `code` command is not recognized, close and reopen PowerShell, then run the command again.
+:::
+
+### Task 3: Review a Basic FizzBuzz Script
+
+1. [ ] Download the `06-FizzBuzz.ps1` file from the course GitHub repository folder `supporting content/Lab4`.
+2. [ ] Save the script to `C:\LabOutput\06-FizzBuzz.ps1`.
+3. [ ] Open `C:\LabOutput\06-FizzBuzz.ps1` in **Visual Studio Code**.
+4. [ ] Review the following PowerShell script.
+
+```powershell
+foreach ($number in 1..30) {
+    if ($number % 15 -eq 0) {
+        "FizzBuzz"
+    }
+    elseif ($number % 3 -eq 0) {
+        "Fizz"
+    }
+    elseif ($number % 5 -eq 0) {
+        "Buzz"
+    }
+    else {
+        $number
+    }
+}
+```
+
+5. [ ] Verify that the script uses `if`, `elseif`, and `else` statements.
+6. [ ] Verify that the script uses a `foreach` loop.
+
+### Task 4: Run the FizzBuzz Script in Visual Studio Code
+
+1. [ ] In **Visual Studio Code**, select **Terminal**.
+2. [ ] Select **New Terminal**.
+3. [ ] Verify that the integrated terminal opens.
+4. [ ] In the integrated terminal, run the following command to move to the lab output folder.
+
+```powershell
+Set-Location C:\LabOutput
+```
+
+5. [ ] Run the following command to allow scripts in the current PowerShell process.
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+```
+
+6. [ ] Run the following command to execute the script.
+
+```powershell
+.\06-FizzBuzz.ps1
+```
+
+7. [ ] Verify that the output includes numbers, `Fizz`, `Buzz`, and `FizzBuzz`.
+
+### Task 5: Run the System Information HTML Report Script
+
+1. [ ] Download the `Get-SystemInformationReport.ps1` file from the course GitHub repository folder `supporting content/Lab4`.
+2. [ ] Save the script to `C:\LabOutput\Get-SystemInformationReport.ps1`.
+3. [ ] In the Visual Studio Code integrated terminal, run the following command.
+
+```powershell
+C:\LabOutput\Get-SystemInformationReport.ps1
+```
+
+4. [ ] Verify that the script creates `C:\LabOutput\SystemInformationReport.html`.
+5. [ ] Run the following command to open the HTML report.
+
+```powershell
+Start-Process C:\LabOutput\SystemInformationReport.html
+```
+
+6. [ ] Review the **Computer Summary**, **Operating System**, **Network Configuration**, **Disk Volumes**, and **Recent Hotfixes** sections.
 
 ::: success
-**Results**: You have successfully completed Lab 0401. You now have practical PowerShell skills for Windows Server administration. In future labs, you will use PowerShell to:
-- Install and remove server roles and features
-- Configure network settings
-- Manage Active Directory users and groups
-- Monitor and troubleshoot server problems
-- Automate repetitive administrative tasks
+**Results**: After completing this exercise, you will have installed Visual Studio Code, added the PowerShell extension, written a PowerShell script, and generated a system information HTML report.
+:::
 
-PowerShell is your most powerful tool for Windows Server administration, and these skills will serve you throughout your career.
+## Exercise 7: Customizing the PowerShell Prompt with Oh My Posh
+
+::: secondary
+**Scenario**
+
+You want the terminal to provide useful context while you work. You will install Oh My Posh, configure a lab prompt theme, and verify that the prompt shows the current Git branch when you are inside a repository.
+:::
+
+### Task 1: Prepare the Oh My Posh Lab Files
+
+1. [ ] Return to the elevated PowerShell session on LON-SRV1.
+2. [ ] Run the following command to create the lab output folder.
+
+```powershell
+New-Item -Path C:\LabOutput -ItemType Directory -Force
+```
+
+3. [ ] Download `07-SetupOhMyPoshPrompt.ps1` from the course GitHub repository folder `supporting content/Lab4`.
+4. [ ] Save the script to `C:\LabOutput\07-SetupOhMyPoshPrompt.ps1`.
+5. [ ] Download `Lab4-GitBranch.omp.json` from the course GitHub repository folder `supporting content/Lab4`.
+6. [ ] Save the file to `C:\LabOutput\Lab4-GitBranch.omp.json`.
+7. [ ] Open `C:\LabOutput\07-SetupOhMyPoshPrompt.ps1` in **Visual Studio Code**.
+8. [ ] Review the script before running it.
+
+### Task 2: Install Oh My Posh
+
+1. [ ] In the elevated PowerShell session, run the following command to install Oh My Posh.
+
+```powershell
+winget install JanDeDobbeleer.OhMyPosh --source winget --accept-package-agreements --accept-source-agreements
+```
+
+2. [ ] Wait for the installation to finish.
+3. [ ] Run the following command to verify that Oh My Posh is available.
+
+```powershell
+oh-my-posh --version
+```
+
+4. [ ] Verify that a version number is displayed.
+5. [ ] Run the following command to install the recommended Nerd Font.
+
+```powershell
+oh-my-posh font install meslo
+```
+
+6. [ ] If prompted to confirm the font installation, follow the prompts provided by Oh My Posh.
+
+::: warning
+**Note**: If icons appear as boxes or question marks, configure Windows Terminal to use the installed `MesloLGM Nerd Font` font.
+:::
+
+### Task 3: Configure the PowerShell Profile
+
+1. [ ] Run the following command to allow scripts in the current PowerShell process.
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+```
+
+2. [ ] Run the following command to configure the current PowerShell profile to load the lab prompt theme.
+
+```powershell
+C:\LabOutput\07-SetupOhMyPoshPrompt.ps1
+```
+
+3. [ ] Run the following command to reload the PowerShell profile.
+
+```powershell
+. $PROFILE
+```
+
+4. [ ] Verify that the prompt appearance changes.
+
+### Task 4: Verify the Git Branch Prompt
+
+1. [ ] Run the following command to create a test Git repository.
+
+```powershell
+New-Item -Path C:\LabOutput\PromptTestRepo -ItemType Directory -Force
+```
+
+2. [ ] Run the following command to move to the test repository folder.
+
+```powershell
+Set-Location C:\LabOutput\PromptTestRepo
+```
+
+3. [ ] Run the following command to initialize a Git repository.
+
+```powershell
+git init
+```
+
+4. [ ] Run the following command to create and switch to a branch.
+
+```powershell
+git checkout -b feature/lab4-prompt
+```
+
+5. [ ] Run the following command to create a test file.
+
+```powershell
+"Lab 4 prompt test" | Out-File -FilePath .\README.md -Encoding utf8
+```
+
+6. [ ] Run the following command to stage the test file.
+
+```powershell
+git add .\README.md
+```
+
+7. [ ] Verify that the prompt shows the `feature/lab4-prompt` branch.
+8. [ ] Run the following command to confirm the active branch.
+
+```powershell
+git branch --show-current
+```
+
+9. [ ] Verify that the command returns `feature/lab4-prompt`.
+
+::: success
+**Results**: After completing this exercise, you will have installed Oh My Posh and configured PowerShell to show Git branch context in the prompt.
+:::
+
+## Exercise 8: Using If/Else Logic, Loops, and Variables
+
+::: secondary
+**Scenario**
+
+You need to understand the scripting building blocks used in administrative automation. You will review variable types, conditional logic, and common loop patterns in PowerShell.
+:::
+
+### Task 1: Review Variable Types
+
+1. [ ] Download the `08-IfElseLoopsAndVariables.ps1` file from the course GitHub repository folder `supporting content/Lab4`.
+2. [ ] Save the script to `C:\LabOutput\08-IfElseLoopsAndVariables.ps1`.
+3. [ ] Open `C:\LabOutput\08-IfElseLoopsAndVariables.ps1` in **Visual Studio Code**.
+4. [ ] Locate the following variable examples in the script.
+
+```powershell
+$serverName = $env:COMPUTERNAME
+$maxServicesToShow = 5
+$minimumFreePercent = [double]$DiskWarningPercent
+$includeStoppedServices = $true
+$today = Get-Date
+$serviceNames = @("Dnscache", "EventLog", "Winmgmt")
+$serviceFriendlyNames = @{
+    Dnscache = "DNS Client"
+    EventLog = "Windows Event Log"
+    Winmgmt = "Windows Management Instrumentation"
+}
+```
+
+5. [ ] Identify one string variable.
+6. [ ] Identify one integer variable.
+7. [ ] Identify one Boolean variable.
+8. [ ] Identify one array variable.
+9. [ ] Identify one hash table variable.
+
+### Task 2: Run If, Elseif, and Else Logic
+
+1. [ ] In the Visual Studio Code integrated terminal, run the following command.
+
+```powershell
+C:\LabOutput\08-IfElseLoopsAndVariables.ps1
+```
+
+2. [ ] Review the output from the `if`, `elseif`, and `else` section.
+3. [ ] Verify that the script reports the free space condition for the C drive.
+4. [ ] Run the following command with a different warning percentage.
+
+```powershell
+C:\LabOutput\08-IfElseLoopsAndVariables.ps1 -DiskWarningPercent 50
+```
+
+5. [ ] Verify that the script still runs successfully with the parameter value.
+
+### Task 3: Review Loop Types
+
+1. [ ] In `C:\LabOutput\08-IfElseLoopsAndVariables.ps1`, locate the `foreach` loop.
+2. [ ] Verify that the `foreach` loop checks each service name in the `$serviceNames` array.
+3. [ ] Locate the `for` loop.
+4. [ ] Verify that the `for` loop uses a counter.
+5. [ ] Locate the `while` loop.
+6. [ ] Verify that the `while` loop continues while a condition is true.
+7. [ ] Locate the `do while` loop.
+8. [ ] Verify that the `do while` loop runs at least once.
+
+::: success
+**Results**: After completing this exercise, you will have used variables, conditional logic, and common PowerShell loop patterns.
+:::
+
+## Exercise 9: Exporting PowerShell Object Output
+
+::: secondary
+**Scenario**
+
+You need to save PowerShell object output for reporting and later review. You will collect service status objects and export the same data to CSV, XML, JSON, and HTML formats.
+:::
+
+### Task 1: Create Service Status Objects
+
+1. [ ] Run the following command to collect service status objects.
+
+```powershell
+$serviceStatus = Get-Service | Select-Object Name,DisplayName,Status,StartType
+```
+
+2. [ ] Run the following command to display the first five objects.
+
+```powershell
+$serviceStatus | Select-Object -First 5
+```
+
+3. [ ] Verify that each object includes **Name**, **DisplayName**, **Status**, and **StartType**.
+
+### Task 2: Export Objects to Multiple Formats
+
+1. [ ] Download the `09-ExportServiceStatusObjects.ps1` file from the course GitHub repository folder `supporting content/Lab4`.
+2. [ ] Save the script to `C:\LabOutput\09-ExportServiceStatusObjects.ps1`.
+3. [ ] Run the following command to export the service status objects.
+
+```powershell
+C:\LabOutput\09-ExportServiceStatusObjects.ps1
+```
+
+4. [ ] Verify that the script displays paths for CSV, XML, JSON, and HTML files.
+5. [ ] Run the following command to list the exported files.
+
+```powershell
+Get-ChildItem C:\LabOutput\ServiceStatus.*
+```
+
+6. [ ] Verify that `ServiceStatus.csv`, `ServiceStatus.xml`, `ServiceStatus.json`, and `ServiceStatus.html` are listed.
+
+### Task 3: Review the Exported Files
+
+1. [ ] Run the following command to preview the CSV file.
+
+```powershell
+Import-Csv C:\LabOutput\ServiceStatus.csv | Select-Object -First 5
+```
+
+2. [ ] Run the following command to preview the XML file.
+
+```powershell
+Import-Clixml C:\LabOutput\ServiceStatus.xml | Select-Object -First 5
+```
+
+3. [ ] Run the following command to preview the JSON file.
+
+```powershell
+Get-Content C:\LabOutput\ServiceStatus.json -TotalCount 10
+```
+
+4. [ ] Run the following command to open the HTML file.
+
+```powershell
+Start-Process C:\LabOutput\ServiceStatus.html
+```
+
+5. [ ] Verify that the HTML report opens and displays service status information.
+
+::: success
+**Results**: After completing this exercise, you will have exported PowerShell object output to CSV, XML, JSON, and HTML formats.
+:::
+
+## Exercise 10: Creating a Basic GUI with PowerShell
+
+::: secondary
+**Scenario**
+
+You want to see how PowerShell can create a simple graphical tool. You will run a Windows Forms script that displays service status information in a basic GUI.
+:::
+
+### Task 1: Review the GUI Script
+
+1. [ ] Download the `10-BasicPowerShellGui.ps1` file from the course GitHub repository folder `supporting content/Lab4`.
+2. [ ] Save the script to `C:\LabOutput\10-BasicPowerShellGui.ps1`.
+3. [ ] Open `C:\LabOutput\10-BasicPowerShellGui.ps1` in **Visual Studio Code**.
+4. [ ] Locate the following lines that load Windows Forms and drawing support.
+
+```powershell
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+```
+
+5. [ ] Locate the code that creates the form.
+6. [ ] Locate the code that creates the **Get Services** button.
+7. [ ] Locate the button click event that runs `Get-Service`.
+
+### Task 2: Run the GUI Script
+
+1. [ ] In the Visual Studio Code integrated terminal, run the following command.
+
+```powershell
+C:\LabOutput\10-BasicPowerShellGui.ps1
+```
+
+2. [ ] Verify that the **Lab 4 Service Status Viewer** window opens.
+3. [ ] Select **Get Services**.
+4. [ ] Verify that service status output appears in the text box.
+5. [ ] Select **Close**.
+6. [ ] Verify that the GUI window closes.
+
+::: success
+**Results**: After completing this exercise, you will have created and run a basic PowerShell GUI that displays service status information.
+:::
+
+## Exercise 11: Verifying PowerShell Administration Skills
+
+::: secondary
+**Scenario**
+
+You have used PowerShell to collect and shape administrative information, customize the prompt, write scripts, export objects, and run a basic GUI. You will verify the key skills from this lab by running a short set of commands and confirming their output.
+:::
+
+### Task 1: Verify Core Commands
+
+1. [ ] Run the following command to verify the computer name.
+
+```powershell
+hostname
+```
+
+2. [ ] Verify that the command returns `LON-SRV1`.
+3. [ ] Run the following command to verify that the lab output file exists.
+
+```powershell
+Get-Item C:\LabOutput\RunningServices.csv | Select-Object Name,Length,LastWriteTime
+```
+
+4. [ ] Verify that **Name** shows `RunningServices.csv`.
+5. [ ] Run the following command to display the first five lines of the exported CSV file.
+
+```powershell
+Get-Content C:\LabOutput\RunningServices.csv -TotalCount 5
+```
+
+6. [ ] Verify that the file contains service information.
+7. [ ] Run the following command to verify that the HTML system information report exists.
+
+```powershell
+Test-Path C:\LabOutput\SystemInformationReport.html
+```
+
+8. [ ] Verify that the command returns `True`.
+9. [ ] Run the following command to verify that the service status exports exist.
+
+```powershell
+Get-ChildItem C:\LabOutput\ServiceStatus.* | Select-Object Name,Length,LastWriteTime
+```
+
+10. [ ] Verify that CSV, XML, JSON, and HTML files are listed.
+11. [ ] Run the following command to verify the current Git branch in the prompt test repository.
+
+```powershell
+Set-Location C:\LabOutput\PromptTestRepo
+git branch --show-current
+```
+
+12. [ ] Verify that the command returns `feature/lab4-prompt`.
+13. [ ] Close PowerShell and Visual Studio Code if instructed by your instructor.
+
+::: success
+**Results**: After completing this exercise, you will have verified PowerShell administration skills for command discovery, system inventory, output filtering, prompt customization, script editing, object export, and GUI execution.
 :::

@@ -3,7 +3,7 @@
 ## Summary
 
 ::: secondary
-In this lab, you will create user accounts and groups in Active Directory. You will use both the Active Directory Users and Computers graphical tool and PowerShell to manage domain users. This is one of the most common administrative tasks in a Windows Server environment.
+In this lab, you will create user accounts and groups in Active Directory. You will use Active Directory Users and Computers, Active Directory Administrative Center, and PowerShell to manage domain users. You will also use the Delegation of Control Wizard to assign limited administrative permissions and enable Active Directory Recycle Bin to support object recovery. These are common administrative tasks in a Windows Server environment.
 :::
 
 ### Prerequisites
@@ -11,7 +11,7 @@ In this lab, you will create user accounts and groups in Active Directory. You w
 ::: secondary
 To complete this lab, you must have:
 - Completed Lab 0601 (Post-Installation Server Configuration and Security Hardening)
-- Administrator access to a server with Active Directory (LON-DC1)
+- Administrator access to LON-DC1
 - Understanding of organizational units (OUs) and user management
 :::
 
@@ -25,16 +25,22 @@ You need to manage users and groups in the contoso.com domain. You will connect 
 
 ### Task 1: Open Active Directory Users and Computers
 
-1. [ ] Connect to LON-DC1 using Remote Desktop (RDP to LON-DC1.contoso.com).
-2. [ ] Open Server Manager.
-3. [ ] Click on **Tools** menu at the top.
-4. [ ] Look for and click on **Active Directory Users and Computers**.
-5. [ ] The Active Directory Users and Computers window will open showing:
+1. [ ] In the lab platform, select **HOME**.
+2. [ ] From the **Select VM** dropdown, select **LON-DC1**.
+3. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
+4. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
+5. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+6. [ ] Wait for the Windows Server desktop to appear.
+7. [ ] If **Server Manager** is already open, bring it to the front.
+8. [ ] If **Server Manager** is not open, select **Start**, type **Server Manager**, and select **Server Manager** from the search results.
+9. [ ] Click on **Tools** menu at the top.
+10. [ ] Look for and click on **Active Directory Users and Computers**.
+11. [ ] The Active Directory Users and Computers window will open showing:
    - Left panel: A tree structure with **Active Directory Users and Computers**
    - Right panel: Contents of the selected container
-6. [ ] The tree should show:
+12. [ ] The tree should show:
    - **contoso.com** (your domain)
-   - **Built-in**
+   - **Builtin**
    - **Computers**
    - **Users**
    - And possibly other organizational units (OUs)
@@ -234,7 +240,8 @@ Organizational Units (OUs) help organize users and computers by department or fu
 :::
 
 5. [ ] The user will be moved to the Finance OU.
-6. [ ] You can now see the organizational structure is **Finance** > **Users** > **jsmith**.
+6. [ ] Click the **Finance** OU in the left panel.
+7. [ ] Verify that **John Smith** appears in the right panel.
 
 ::: success
 **Results**: After completing this task, you have organized the user into a department-specific OU.
@@ -250,10 +257,11 @@ User accounts have many properties you can configure including contact informati
 
 ### Task 1: Open User Properties
 
-1. [ ] Find the user **John Smith (jsmith)** in Active Directory Users and Computers.
-2. [ ] Right-click on **jsmith**.
-3. [ ] Click **Properties**.
-4. [ ] The user properties dialog will open with multiple tabs:
+1. [ ] In Active Directory Users and Computers, select the **Finance** OU in the left panel.
+2. [ ] Find the user **John Smith (jsmith)** in the right panel.
+3. [ ] Right-click on **jsmith**.
+4. [ ] Click **Properties**.
+5. [ ] The user properties dialog will open with multiple tabs:
    - **General**: Basic information
    - **Address**: Office location and contact information
    - **Telephones**: Phone numbers
@@ -281,12 +289,159 @@ User accounts have many properties you can configure including contact informati
 6. [ ] In the **Telephone number** field, type a phone number (for example, `555-1234`).
 7. [ ] Click on the **Address** tab.
 8. [ ] Fill in office location information if available.
+9. [ ] Click **Apply**.
+10. [ ] Click **OK** to save the user properties.
 
 ::: success
 **Results**: After completing this task, you have configured detailed user properties.
 :::
 
-## Exercise 6: Disable a User Account
+## Exercise 6: Delegate Control of Active Directory Objects
+
+::: secondary
+**Scenario**
+
+Your organization wants a junior administrator to help manage users and groups without making the account a Domain Admin. You will use the Delegation of Control Wizard to delegate common user and group management tasks to the **John Smith (jsmith)** account.
+:::
+
+::: warning
+**Security note**: In this lab, you will delegate permissions at the **contoso.com** domain level so you can see how delegated administration applies across the domain. In production, delegate to a specific OU or to an administrative group whenever possible. Domain-level delegation affects many objects and should be reviewed carefully.
+:::
+
+### Task 1: Start the Delegation of Control Wizard
+
+1. [ ] In **Active Directory Users and Computers**, select **contoso.com** in the left panel.
+2. [ ] Right-click **contoso.com**.
+3. [ ] Select **Delegate Control**.
+4. [ ] The **Delegation of Control Wizard** opens.
+5. [ ] On the **Welcome to the Delegation of Control Wizard** page, select **Next >**.
+
+::: success
+**Results**: After completing this task, you have started the wizard from the domain object where the delegated permissions will apply.
+:::
+
+### Task 2: Select the User to Receive Delegated Control
+
+1. [ ] On the **Users or Groups** page, select **Add...**.
+2. [ ] In the **Select Users, Computers, or Groups** dialog, type `jsmith`.
+3. [ ] Select **Check Names**.
+4. [ ] Verify that the name resolves to **John Smith**.
+5. [ ] Select **OK**.
+6. [ ] Verify that **John Smith** appears in the **Selected users and groups** list.
+7. [ ] Select **Next >**.
+
+::: success
+**Results**: After completing this task, the **jsmith** account is selected as the delegated administrator.
+:::
+
+### Task 3: Select Common Tasks to Delegate
+
+1. [ ] On the **Tasks to Delegate** page, make sure **Delegate the following common tasks** is selected.
+2. [ ] Select the following checkboxes:
+   - **Create, delete, and manage user accounts**
+   - **Reset user passwords and force password change at next logon**
+   - **Read all user information**
+   - **Modify the membership of a group**
+3. [ ] Leave **Join a computer to the domain**, **Manage Group Policy links**, and **Generate Resultant Set of Policy (Planning)** unchecked.
+4. [ ] Select **Next >**.
+
+::: warning
+**Note**: These delegated tasks allow routine account administration, but they do not make **jsmith** a member of **Domain Admins**. Delegation grants specific permissions on Active Directory objects.
+:::
+
+### Task 4: Complete and Verify the Delegation
+
+1. [ ] On the **Completing the Delegation of Control Wizard** page, review the selections.
+2. [ ] Confirm that the selected user is **John Smith** and the delegated tasks match the previous task.
+3. [ ] Select **Finish**.
+4. [ ] In **Active Directory Users and Computers**, select the **View** menu.
+5. [ ] If **Advanced Features** does not have a check mark next to it, select **Advanced Features**.
+6. [ ] Right-click **contoso.com** and select **Properties**.
+7. [ ] Select the **Security** tab.
+8. [ ] Select **Advanced**.
+9. [ ] On the **Permissions** tab, look for entries where the **Principal** is **John Smith** or **CONTOSO\jsmith**.
+10. [ ] Review the **Access** and **Applies to** columns for the delegated permissions.
+11. [ ] Select **Cancel** to close **Advanced Security Settings for contoso.com** without making changes.
+12. [ ] Select **Cancel** to close the domain properties window.
+
+::: success
+**Results**: After completing this task, you have delegated selected user and group management permissions to **jsmith** at the domain level and reviewed the permission entries created by the wizard.
+:::
+
+### Task 5: Review the Security Impact
+
+1. [ ] In your notes, record that **jsmith** can now perform selected account-management tasks in the **contoso.com** domain.
+2. [ ] Record that **jsmith** was not added to **Domain Admins**.
+3. [ ] Record that domain-level delegation is broad and that OU-level delegation is usually safer for production administration.
+
+::: success
+**Results**: After completing this task, you can explain the difference between delegated administration and full domain administrative membership.
+:::
+
+## Exercise 7: Enable Active Directory Recycle Bin
+
+::: secondary
+**Scenario**
+
+Administrators sometimes delete an Active Directory object by mistake. You will use Active Directory Administrative Center to enable Active Directory Recycle Bin so deleted objects can be restored with more of their original attributes preserved.
+:::
+
+::: warning
+**Important**: Enabling Active Directory Recycle Bin is a forest-wide change and cannot be turned off after it is enabled. In this lab environment, enabling it is appropriate. In production, administrators should confirm the change plan, backup posture, and change approval before enabling it.
+:::
+
+### Task 1: Open Active Directory Administrative Center
+
+1. [ ] If **Server Manager** is open, bring it to the front.
+2. [ ] In **Server Manager**, select the **Tools** menu.
+3. [ ] Select **Active Directory Administrative Center**.
+4. [ ] Wait for **Active Directory Administrative Center** to open.
+5. [ ] In the left navigation pane, select **contoso (local)** or **contoso.com**.
+
+::: success
+**Results**: After completing this task, you have opened Active Directory Administrative Center and selected the local domain.
+:::
+
+### Task 2: Enable Active Directory Recycle Bin
+
+1. [ ] In the right **Tasks** pane, look for the domain task named **Enable Recycle Bin...**.
+2. [ ] Select **Enable Recycle Bin...**.
+3. [ ] In the **Enable Recycle Bin Confirmation** message, read the warning that the action cannot be reversed.
+4. [ ] Select **OK** to enable Active Directory Recycle Bin.
+5. [ ] If a message appears that the Recycle Bin is already enabled, read the message and continue to the next task.
+6. [ ] If prompted to refresh Active Directory Administrative Center, select **OK**.
+
+::: warning
+**Note**: Active Directory Recycle Bin is different from the Windows desktop Recycle Bin. It helps recover deleted Active Directory objects, such as users, groups, computers, and OUs.
+:::
+
+::: success
+**Results**: After completing this task, Active Directory Recycle Bin is enabled for the **contoso.com** forest or you have confirmed that it was already enabled.
+:::
+
+### Task 3: Review the Deleted Objects Container
+
+1. [ ] In **Active Directory Administrative Center**, refresh the domain view if prompted.
+2. [ ] In the left navigation pane, expand **contoso (local)** or **contoso.com**.
+3. [ ] Select **Deleted Objects**.
+4. [ ] Review the center pane. It might be empty if no objects have been deleted since Active Directory Recycle Bin was enabled.
+5. [ ] In the right **Tasks** pane, notice the restore-related actions that become available when a deleted object is selected.
+
+::: success
+**Results**: After completing this task, you know where deleted Active Directory objects can be reviewed and restored after Active Directory Recycle Bin is enabled.
+:::
+
+### Task 4: Review the Security and Recovery Impact
+
+1. [ ] In your notes, record that Active Directory Recycle Bin is enabled at the forest level.
+2. [ ] Record that the feature cannot be disabled after it is enabled.
+3. [ ] Record that Recycle Bin improves recovery options, but it does not replace regular system state backups and change-control practices.
+
+::: success
+**Results**: After completing this task, you can explain why Active Directory Recycle Bin is useful and why enabling it should be treated as an administrative change.
+:::
+
+## Exercise 8: Disable a User Account
 
 ::: secondary
 **Scenario**
@@ -296,25 +451,26 @@ When an employee leaves the company, you need to disable their user account rath
 
 ### Task 1: Disable a User Account
 
-1. [ ] In Active Directory Users and Computers, find the user **John Smith (jsmith)**.
-2. [ ] Right-click on **jsmith**.
-3. [ ] Click **Properties**.
-4. [ ] Click on the **Account** tab.
-5. [ ] Look for the **Account is disabled** checkbox near the bottom of the tab.
+1. [ ] In Active Directory Users and Computers, select the **Finance** OU in the left panel.
+2. [ ] Find the user **John Smith (jsmith)** in the right panel.
+3. [ ] Right-click on **jsmith**.
+4. [ ] Click **Properties**.
+5. [ ] Click on the **Account** tab.
+6. [ ] Look for the **Account is disabled** checkbox near the bottom of the tab.
 
 ::: warning
 **Note**: Do NOT disable the account in this lab. We are just examining how it would be done. Leave this unchecked.
 :::
 
-6. [ ] If you needed to disable the account, you would check this box and click OK.
-7. [ ] Once disabled, the user would be unable to log in, but their account and data would remain in Active Directory.
-8. [ ] Close the properties window without making changes.
+7. [ ] If you needed to disable the account, you would check this box and click **OK**.
+8. [ ] Once disabled, the user would be unable to log in, but their account and data would remain in Active Directory.
+9. [ ] Close the properties window without making changes.
 
 ::: success
 **Results**: After completing this task, you know how to disable user accounts.
 :::
 
-## Exercise 7: Verification and Summary
+## Exercise 9: Verification and Summary
 
 ::: secondary
 **Scenario**
@@ -333,7 +489,22 @@ You have successfully:
 5. **Created an organizational unit** - Finance department OU
 6. **Organized users** - Moved user to Finance OU
 7. **Configured user properties** - Added detailed user information
-8. **Understood account management** - Know how to disable/enable accounts
+8. **Delegated administrative control** - Assigned selected domain-level user and group management tasks to jsmith
+9. **Enabled Active Directory Recycle Bin** - Improved recovery options for deleted Active Directory objects
+10. **Understood account management** - Know how to disable/enable accounts
+
+### Administrative Change Summary
+
+During this lab, you made the following administrative changes:
+
+- Created the **John Smith (jsmith)** domain user account.
+- Created the **IT Administrators** security group.
+- Added **jsmith** to the **IT Administrators** group.
+- Created the **Finance** OU.
+- Moved **jsmith** into the **Finance** OU.
+- Configured user properties for **jsmith**.
+- Delegated selected account-management permissions to **jsmith** at the **contoso.com** domain level.
+- Enabled Active Directory Recycle Bin for the **contoso.com** forest or confirmed that it was already enabled.
 
 ::: success
 **Results**: You have successfully completed Lab 0701. You now understand:
@@ -342,6 +513,8 @@ You have successfully:
 - How to create security groups
 - How to manage group membership
 - How to organize users in organizational units
+- How to delegate selected Active Directory administration tasks
+- How to enable Active Directory Recycle Bin by using Active Directory Administrative Center
 - How to disable accounts
 
 These are core skills for managing a Windows Server Active Directory environment. In future labs, you will use these skills to manage permissions, apply group policies, and maintain domain security.
