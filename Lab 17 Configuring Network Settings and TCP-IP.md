@@ -11,7 +11,7 @@ In this lab, you will configure network settings on Windows Server. You will und
 ::: secondary
 To complete this lab, you must have:
 - Completed Lab 0601 (Post-Installation Server Configuration and Security Hardening)
-- Administrator access to LON-SRV1
+- Administrator access to LON-SVR1
 - Understanding of basic networking concepts (IP addresses, DNS, gateways)
 :::
 
@@ -25,7 +25,7 @@ You need to understand the current network configuration of your server. You wil
 
 ### Task 1: View Network Configuration in Settings
 
-1. [ ] Connect to LON-SRV1 using Remote Desktop.
+1. [ ] Connect to LON-SVR1 using Remote Desktop.
 2. [ ] Open **Settings** by pressing **Windows key + I**.
 3. [ ] Search for **Network settings** and click on it.
 4. [ ] Click on **Ethernet** or your network adapter name.

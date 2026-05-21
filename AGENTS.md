@@ -12,8 +12,8 @@ When instructing learners to connect to a server, use the lab platform instead o
 Use the exact VM names shown in the lab platform and existing lab files. The course lab environment includes:
 
 - **LON-DC1**: Windows Server 2025 domain controller for the **contoso.com** domain.
-- **LON-SRV1**: Windows Server 2025 member server joined to the **contoso.com** domain.
-- **LON-SRV2**: Windows Server 2025 member server joined to the **contoso.com** domain.
+- **LON-SVR1**: Windows Server 2025 member server joined to the **contoso.com** domain.
+- **LON-SVR2**: Windows Server 2025 member server joined to the **contoso.com** domain.
 
 The servers are on the same lab network and can communicate with each other. When a lab benefits from demonstrating server-to-server behavior, it is appropriate to switch between these VMs in the lab platform and send traffic between them. Examples include testing firewall rules, validating name resolution, accessing a web site hosted on another server, testing file share access, checking domain-based administration, or confirming remote management behavior.
 
@@ -41,7 +41,7 @@ Use this pattern:
 ```md
 1. [ ] Select **HOME**.
 
-2. [ ] From the **Select VM** dropdown, select **LON-SRV1**.
+2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
 
 3. [ ] Turn on **Enhanced mode**.
 ```

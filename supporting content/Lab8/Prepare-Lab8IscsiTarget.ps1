@@ -4,15 +4,15 @@
 param(
     [string]$VirtualDiskFolder = "C:\Lab8-iSCSI",
     [string]$TargetName = "Lab8-StoragePool-Target",
-    [string]$InitiatorDnsName = "LON-SRV1.contoso.com",
+    [string]$InitiatorDnsName = "LON-SVR1.contoso.com",
     [int]$DiskCount = 3,
     [uint64]$DiskSizeBytes = 20GB
 )
 
 $ErrorActionPreference = "Stop"
 
-if ($env:COMPUTERNAME -ne "LON-SRV2") {
-    Write-Warning "This script is intended to run on LON-SRV2. Current computer: $env:COMPUTERNAME"
+if ($env:COMPUTERNAME -ne "LON-SVR2") {
+    Write-Warning "This script is intended to run on LON-SVR2. Current computer: $env:COMPUTERNAME"
 }
 
 Write-Host "Installing the iSCSI Target Server role service if required..."
@@ -26,7 +26,7 @@ New-Item -Path $VirtualDiskFolder -ItemType Directory -Force | Out-Null
 
 $initiatorIds = New-Object System.Collections.Generic.List[string]
 $initiatorIds.Add("DNSName:$InitiatorDnsName")
-$initiatorIds.Add("DNSName:LON-SRV1")
+$initiatorIds.Add("DNSName:LON-SVR1")
 
 try {
     Resolve-DnsName -Name $InitiatorDnsName -Type A |
@@ -39,7 +39,7 @@ catch {
 
 $initiatorIds = @($initiatorIds | Select-Object -Unique)
 
-Write-Host "Creating or updating the iSCSI target $TargetName for LON-SRV1..."
+Write-Host "Creating or updating the iSCSI target $TargetName for LON-SVR1..."
 $target = Get-IscsiServerTarget -TargetName $TargetName -ErrorAction SilentlyContinue
 if ($null -eq $target) {
     New-IscsiServerTarget -TargetName $TargetName -InitiatorId $initiatorIds | Out-Null

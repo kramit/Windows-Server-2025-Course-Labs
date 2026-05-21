@@ -2,14 +2,14 @@
 
 [CmdletBinding()]
 param(
-    [string]$TargetPortalAddress = "LON-SRV2.contoso.com",
+    [string]$TargetPortalAddress = "LON-SVR2.contoso.com",
     [string]$TargetNameHint = "Lab8-StoragePool-Target"
 )
 
 $ErrorActionPreference = "Stop"
 
-if ($env:COMPUTERNAME -ne "LON-SRV1") {
-    Write-Warning "This script is intended to run on LON-SRV1. Current computer: $env:COMPUTERNAME"
+if ($env:COMPUTERNAME -ne "LON-SVR1") {
+    Write-Warning "This script is intended to run on LON-SVR1. Current computer: $env:COMPUTERNAME"
 }
 
 Write-Host "Starting and configuring the Microsoft iSCSI Initiator Service..."
@@ -42,7 +42,7 @@ if ($targets.Count -eq 0) {
 }
 
 if ($targets.Count -eq 0) {
-    throw "No available iSCSI targets were discovered from $TargetPortalAddress. Confirm that the target script completed on LON-SRV2."
+    throw "No available iSCSI targets were discovered from $TargetPortalAddress. Confirm that the target script completed on LON-SVR2."
 }
 
 foreach ($target in $targets) {

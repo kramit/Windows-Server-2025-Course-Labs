@@ -14,12 +14,12 @@ You will also use a small number of PowerShell commands to validate the final co
 To complete this lab, you must have:
 
 - Completed Lab 0401 (PowerShell Command-Line Administration)
-- Administrator access to LON-SRV1
+- Administrator access to LON-SVR1
 - Basic familiarity with Server Manager
 - Basic familiarity with Windows PowerShell
 :::
 
-## Exercise 1: Connect to LON-SRV1 and Review Server Manager
+## Exercise 1: Connect to LON-SVR1 and Review Server Manager
 
 ::: secondary
 **Scenario**
@@ -27,17 +27,17 @@ To complete this lab, you must have:
 Your organization needs to host internal web content on Windows Server. Before making changes, you need to connect to the server and review the current Server Manager dashboard.
 :::
 
-### Task 1: Connect to LON-SRV1
+### Task 1: Connect to LON-SVR1
 
 1. [ ] In the lab platform, select **HOME**.
-2. [ ] From the **Select VM** dropdown, select **LON-SRV1**.
+2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
 3. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
 4. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
 5. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 6. [ ] Wait for the Windows Server desktop to appear.
 
 ::: success
-**Results**: After completing this task, you are connected to LON-SRV1 through the lab platform.
+**Results**: After completing this task, you are connected to LON-SVR1 through the lab platform.
 :::
 
 ### Task 2: Review Server Manager
@@ -58,7 +58,7 @@ Your organization needs to host internal web content on Windows Server. Before m
 ::: secondary
 **Scenario**
 
-You need to install the Web Server (IIS) role on LON-SRV1. You will use the graphical Add Roles and Features Wizard so you can see the installation decisions that administrators make when adding a server capability.
+You need to install the Web Server (IIS) role on LON-SVR1. You will use the graphical Add Roles and Features Wizard so you can see the installation decisions that administrators make when adding a server capability.
 :::
 
 ### Task 1: Start the Add Roles and Features Wizard
@@ -87,11 +87,11 @@ You need to install the Web Server (IIS) role on LON-SRV1. You will use the grap
 ### Task 3: Select the Destination Server
 
 1. [ ] On the **Server Selection** page, verify that **Select a server from the server pool** is selected.
-2. [ ] In the **Server Pool** list, select **LON-SRV1.contoso.com** if it is not already selected.
+2. [ ] In the **Server Pool** list, select **LON-SVR1.contoso.com** if it is not already selected.
 3. [ ] Select **Next >**.
 
 ::: success
-**Results**: After completing this task, you have selected LON-SRV1 as the destination server.
+**Results**: After completing this task, you have selected LON-SVR1 as the destination server.
 :::
 
 ### Task 4: Select the Web Server Role
@@ -140,7 +140,7 @@ You need to install the Web Server (IIS) role on LON-SRV1. You will use the grap
 :::
 
 ::: success
-**Results**: After completing this exercise, the Web Server (IIS) role is installed on LON-SRV1.
+**Results**: After completing this exercise, the Web Server (IIS) role is installed on LON-SVR1.
 :::
 
 ## Exercise 3: Review IIS by Using Graphical Tools
@@ -157,7 +157,7 @@ Now that IIS is installed, you need to confirm that the web server role appears 
 2. [ ] In **Roles and Server Groups**, look for **IIS** or **Web Server (IIS)**.
 3. [ ] Select **IIS** in the left navigation pane if it appears.
 4. [ ] Review the IIS overview page.
-5. [ ] In the **Servers** tile, verify that **LON-SRV1** is listed.
+5. [ ] In the **Servers** tile, verify that **LON-SVR1** is listed.
 6. [ ] Review the **Services** tile and notice the service information shown for the server.
 
 ::: success
@@ -168,7 +168,7 @@ Now that IIS is installed, you need to confirm that the web server role appears 
 
 1. [ ] In **Server Manager**, select **Tools**.
 2. [ ] Select **Internet Information Services (IIS) Manager**.
-3. [ ] In the **Connections** pane, expand **LON-SRV1**.
+3. [ ] In the **Connections** pane, expand **LON-SVR1**.
 4. [ ] Expand **Sites**.
 5. [ ] Select **Default Web Site**.
 6. [ ] In the center pane, review the feature icons for the selected website.
@@ -243,7 +243,7 @@ The default IIS page confirms that the web server is installed, but administrato
     <title>Lab 5 IIS Test</title>
 </head>
 <body>
-    <h1>LON-SRV1 Web Server Lab</h1>
+    <h1>LON-SVR1 Web Server Lab</h1>
     <p>IIS is installed and serving custom content.</p>
 </body>
 </html>
@@ -267,7 +267,7 @@ The default IIS page confirms that the web server is installed, but administrato
 3. [ ] In the **Actions** pane, select **Browse *:80 (http)**.
 4. [ ] In Microsoft Edge, select the address bar.
 5. [ ] Change the address to `http://localhost/lab5.html` and load the page.
-6. [ ] Verify that the page displays **LON-SRV1 Web Server Lab**.
+6. [ ] Verify that the page displays **LON-SVR1 Web Server Lab**.
 7. [ ] Close Microsoft Edge.
 
 ::: success
@@ -559,7 +559,7 @@ Write-EventLog `
     -Source $source `
     -EntryType Information `
     -EventId 5051 `
-    -Message "Lab 5 custom event: IIS and firewall review completed on LON-SRV1."
+    -Message "Lab 5 custom event: IIS and firewall review completed on LON-SVR1."
 ```
 
 7. [ ] Run the script.
@@ -662,7 +662,7 @@ Administrators should be able to describe what changed, how it was validated, an
 
 Record the following information in your lab notes:
 
-1. [ ] Server changed: **LON-SRV1**
+1. [ ] Server changed: **LON-SVR1**
 2. [ ] Role installed: **Web Server (IIS)**
 3. [ ] Website reviewed: **Default Web Site**
 4. [ ] Test page created: `C:\inetpub\wwwroot\lab5.html`

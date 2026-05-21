@@ -12,7 +12,7 @@ In this lab, you will configure Windows LAPS (Local Administrator Password Solut
 To complete this lab, you must have:
 - Completed Lab 0701 (Creating and Managing Active Directory Users and Groups)
 - Administrator access to LON-DC1 (domain controller)
-- Access to LON-SRV1 (member server)
+- Access to LON-SVR1 (member server)
 - Understanding of Group Policy basics
 :::
 
@@ -135,12 +135,12 @@ You will create a Group Policy that enables LAPS on domain member servers. This 
 ::: secondary
 **Scenario**
 
-You need to install LAPS client on LON-SRV1 so it can receive LAPS policy and manage its local administrator password.
+You need to install LAPS client on LON-SVR1 so it can receive LAPS policy and manage its local administrator password.
 :::
 
-### Task 1: Install LAPS on LON-SRV1
+### Task 1: Install LAPS on LON-SVR1
 
-1. [ ] Connect to LON-SRV1 via Remote Desktop.
+1. [ ] Connect to LON-SVR1 via Remote Desktop.
 2. [ ] Download and install LAPS the same way as on LON-DC1:
    - Download from Microsoft website
    - Run the MSI installer
@@ -153,7 +153,7 @@ You need to install LAPS client on LON-SRV1 so it can receive LAPS policy and ma
 
 ### Task 2: Force Group Policy Update
 
-1. [ ] On LON-SRV1, open PowerShell as Administrator.
+1. [ ] On LON-SVR1, open PowerShell as Administrator.
 2. [ ] Force the server to apply the LAPS Group Policy immediately:
 
 ```powershell
@@ -179,7 +179,7 @@ Once LAPS is configured, administrator passwords are automatically managed. You 
 ### Task 1: Wait for Password to Be Set
 
 1. [ ] LAPS generates the first password within 30 minutes of policy application.
-2. [ ] To force immediate password change, run on LON-SRV1:
+2. [ ] To force immediate password change, run on LON-SVR1:
 
 ```powershell
 Invoke-LapsPolicyRefresh
@@ -196,8 +196,8 @@ Invoke-LapsPolicyRefresh
 
 1. [ ] Go back to LON-DC1.
 2. [ ] Open **Active Directory Users and Computers**.
-3. [ ] Navigate to the computer object **LON-SRV1**.
-4. [ ] Right-click on **LON-SRV1** and select **Properties**.
+3. [ ] Navigate to the computer object **LON-SVR1**.
+4. [ ] Right-click on **LON-SVR1** and select **Properties**.
 5. [ ] Click on the **LAPS** tab (or look for LAPS properties if tab is not visible).
 6. [ ] You should see:
    - **Stored password**: The encrypted password
@@ -206,7 +206,7 @@ Invoke-LapsPolicyRefresh
 7. [ ] To view the actual password, use PowerShell:
 
 ```powershell
-Get-AdmPwdPassword -ComputerName LON-SRV1
+Get-AdmPwdPassword -ComputerName LON-SVR1
 ```
 
 8. [ ] This will display the current local admin password for the server.

@@ -3,7 +3,7 @@
 ## Summary
 
 ::: secondary
-In this lab, you will perform post-installation checks and basic hardening tasks on **LON-SRV1**, a Windows Server 2025 member server in the **contoso.com** domain. You will use graphical administration tools first, then use focused PowerShell commands to validate the configuration.
+In this lab, you will perform post-installation checks and basic hardening tasks on **LON-SVR1**, a Windows Server 2025 member server in the **contoso.com** domain. You will use graphical administration tools first, then use focused PowerShell commands to validate the configuration.
 
 The lab connects setup decisions to operational readiness. You will verify the server identity, installation option, network configuration, time synchronization, update posture, firewall state, remote management settings, installed roles, service exposure, local security policy, Secured-core readiness, and event logs.
 :::
@@ -14,8 +14,8 @@ The lab connects setup decisions to operational readiness. You will verify the s
 To complete this lab, you must have:
 
 - Completed Lab 0501 (Installing Server Roles and Managing Firewall)
-- Administrator access to **LON-SRV1**
-- Access to **LON-SRV2** for one server-to-server validation task
+- Administrator access to **LON-SVR1**
+- Access to **LON-SVR2** for one server-to-server validation task
 - Basic familiarity with Server Manager, Windows Settings, Event Viewer, Services, and Windows PowerShell
 :::
 
@@ -23,7 +23,7 @@ To complete this lab, you must have:
 **Important**: This lab is designed for the course lab environment. Do not rename servers, change domain membership, remove roles, or change IP addressing unless the step explicitly tells you to do so or your instructor directs you.
 :::
 
-## Exercise 1: Connect to LON-SRV1 and Capture the Starting State
+## Exercise 1: Connect to LON-SVR1 and Capture the Starting State
    
 ::: secondary
 **Scenario**
@@ -31,17 +31,17 @@ To complete this lab, you must have:
 Before you harden a server, you need to know what system you are administering and what state it is currently in. You will connect through the lab platform and review the Server Manager dashboard.
 :::
 
-### Task 1: Connect to LON-SRV1
+### Task 1: Connect to LON-SVR1
 
 1. [ ] In the lab platform, select **HOME**.
-2. [ ] From the **Select VM** dropdown, select **LON-SRV1**.
+2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
 3. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
 4. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
 5. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 6. [ ] Wait for the Windows Server desktop to appear.
 
 ::: success
-**Results**: After completing this task, you are connected to LON-SRV1 through the lab platform.
+**Results**: After completing this task, you are connected to LON-SVR1 through the lab platform.
 :::
 
 ### Task 2: Open Server Manager and Review the Dashboard
@@ -74,12 +74,12 @@ Initial setup decisions affect every later administration task. You will confirm
 
 1. [ ] In **Server Manager**, select **Local Server**.
 2. [ ] In the **Properties** pane, find **Computer name**.
-3. [ ] Verify that **Computer name** shows **LON-SRV1**.
+3. [ ] Verify that **Computer name** shows **LON-SVR1**.
 4. [ ] In the same **Properties** pane, find **Domain**.
 5. [ ] Verify that **Domain** shows **contoso.com**.
 6. [ ] Select the **Computer name** value.
 7. [ ] In **System Properties**, review the **Computer Name** tab.
-8. [ ] Verify that **Full computer name** shows **LON-SRV1.contoso.com**.
+8. [ ] Verify that **Full computer name** shows **LON-SVR1.contoso.com**.
 9. [ ] Select **Cancel** to close **System Properties** without making changes.
 
 ::: warning
@@ -98,7 +98,7 @@ Initial setup decisions affect every later administration task. You will confirm
 4. [ ] In **Settings** > **System** > **About**, review **Windows specifications**.
 5. [ ] Verify that the server is running a Windows Server 2025 edition.
 6. [ ] Review the desktop shell, taskbar, Settings app, File Explorer, and Server Manager.
-7. [ ] Record in your lab notes that **LON-SRV1** is using **Server with Desktop Experience**.
+7. [ ] Record in your lab notes that **LON-SVR1** is using **Server with Desktop Experience**.
 
 ::: warning
 **Note**: **Server with Desktop Experience** and **Server Core** are installation options selected during setup. Switching between them requires a clean installation, so administrators should choose the option deliberately.
@@ -121,7 +121,7 @@ Initial setup decisions affect every later administration task. You will confirm
 Get-ComputerInfo | Select-Object CsName, CsDomain, WindowsProductName, OsName, OsVersion
 ```
 
-7. [ ] Verify that **CsName** shows **LON-SRV1**.
+7. [ ] Verify that **CsName** shows **LON-SVR1**.
 8. [ ] Verify that **CsDomain** shows **contoso.com**.
 9. [ ] Run the following command:
 
@@ -170,7 +170,7 @@ Post-installation checks must confirm that the server can communicate with the d
 **Results**: After completing this task, you have reviewed the network adapter and confirmed that it has IPv4 and DNS settings.
 :::
 
-### Task 2: Validate DNS and Connectivity from LON-SRV1
+### Task 2: Validate DNS and Connectivity from LON-SVR1
 
 1. [ ] Return to the elevated **Windows PowerShell** window.
 2. [ ] Run the following command:
@@ -199,11 +199,11 @@ Test-Connection LON-DC1 -Count 2
 **Results**: After completing this task, you have validated DNS resolution and basic connectivity to the domain controller.
 :::
 
-### Task 3: Validate Server-to-Server Connectivity from LON-SRV2
+### Task 3: Validate Server-to-Server Connectivity from LON-SVR2
 
 1. [ ] In the lab platform, select **HOME**.
-2. [ ] From the **Select VM** dropdown, select **LON-SRV2**.
-3. [ ] Use the **Username** and **Password** values shown for **LON-SRV2** on the **HOME** tab.
+2. [ ] From the **Select VM** dropdown, select **LON-SVR2**.
+3. [ ] Use the **Username** and **Password** values shown for **LON-SVR2** on the **HOME** tab.
 4. [ ] In the **Tools** section, turn on **Enhanced mode**.
 5. [ ] Wait for the Windows Server desktop to appear.
 6. [ ] Select **Start**.
@@ -212,27 +212,27 @@ Test-Connection LON-DC1 -Count 2
 9. [ ] Run the following command:
 
 ```powershell
-Resolve-DnsName LON-SRV1.contoso.com
+Resolve-DnsName LON-SVR1.contoso.com
 ```
 
-10. [ ] Verify that DNS returns an IP address for **LON-SRV1.contoso.com**.
+10. [ ] Verify that DNS returns an IP address for **LON-SVR1.contoso.com**.
 11. [ ] Run the following command:
 
 ```powershell
-Test-NetConnection LON-SRV1 -Port 5985
+Test-NetConnection LON-SVR1 -Port 5985
 ```
 
 12. [ ] Review the **TcpTestSucceeded** result.
 
 ::: warning
-**Note**: TCP port `5985` is used by Windows Remote Management over HTTP. If **TcpTestSucceeded** is **True**, LON-SRV2 can reach the WinRM listener on LON-SRV1. If it is **False**, record the result and continue; later exercises review remote management and firewall posture.
+**Note**: TCP port `5985` is used by Windows Remote Management over HTTP. If **TcpTestSucceeded** is **True**, LON-SVR2 can reach the WinRM listener on LON-SVR1. If it is **False**, record the result and continue; later exercises review remote management and firewall posture.
 :::
 
 ::: success
 **Results**: After completing this task, you have tested name resolution and remote management connectivity from a second server.
 :::
 
-13. [ ] In the lab platform, return to **LON-SRV1** before continuing.
+13. [ ] In the lab platform, return to **LON-SVR1** before continuing.
 
 ## Exercise 4: Verify Time, Time Zone, and Update Readiness
 
@@ -244,7 +244,7 @@ Accurate time and current updates are security fundamentals. Domain authenticati
 
 ### Task 1: Review the Time Zone in Server Manager
 
-1. [ ] On **LON-SRV1**, open **Server Manager**.
+1. [ ] On **LON-SVR1**, open **Server Manager**.
 2. [ ] Select **Local Server**.
 3. [ ] In the **Properties** pane, find **Time zone**.
 4. [ ] Verify that the time zone is appropriate for the lab environment.
@@ -529,7 +529,7 @@ Security hardening starts with workload-aware reduction. A server should not run
 1. [ ] In **Server Manager**, select **Manage**.
 2. [ ] Select **Remove Roles and Features**.
 3. [ ] On the **Before You Begin** page, select **Next >**.
-4. [ ] On the **Server Selection** page, verify that **LON-SRV1.contoso.com** is selected.
+4. [ ] On the **Server Selection** page, verify that **LON-SVR1.contoso.com** is selected.
 5. [ ] Select **Next >**.
 6. [ ] On the **Server Roles** page, review which roles are selected.
 7. [ ] Confirm whether **Web Server (IIS)** is selected from Lab 0501.
@@ -858,13 +858,13 @@ Administrators should finish configuration work by recording what they verified,
 
 Verify and record the following in your lab notes:
 
-1. [ ] **Connection method**: Connected to **LON-SRV1** through the lab platform.
-2. [ ] **Server identity**: Computer name is **LON-SRV1**.
+1. [ ] **Connection method**: Connected to **LON-SVR1** through the lab platform.
+2. [ ] **Server identity**: Computer name is **LON-SVR1**.
 3. [ ] **Domain membership**: Server is joined to **contoso.com**.
 4. [ ] **Installation option**: Server is using **Server with Desktop Experience**.
 5. [ ] **Network configuration**: IPv4 address and DNS server are present.
-6. [ ] **Name resolution**: **LON-DC1.contoso.com** resolves from **LON-SRV1**.
-7. [ ] **Server-to-server validation**: **LON-SRV2** can resolve **LON-SRV1.contoso.com**.
+6. [ ] **Name resolution**: **LON-DC1.contoso.com** resolves from **LON-SVR1**.
+7. [ ] **Server-to-server validation**: **LON-SVR2** can resolve **LON-SVR1.contoso.com**.
 8. [ ] **Time configuration**: Time zone and time synchronization were reviewed.
 9. [ ] **Update posture**: Windows Update and recent hotfixes were reviewed.
 10. [ ] **Remote management**: Server Manager, WinRM service, and WinRM firewall rules were reviewed.
@@ -883,7 +883,7 @@ Verify and record the following in your lab notes:
 
 Record the following change summary in your lab notes:
 
-1. [ ] **Server reviewed**: **LON-SRV1**
+1. [ ] **Server reviewed**: **LON-SVR1**
 2. [ ] **Domain**: **contoso.com**
 3. [ ] **Primary tools used**:
    - Server Manager
@@ -923,7 +923,7 @@ You have completed the manual post-installation and hardening review. You will n
 
 ### Task 1: Locate the Lab 6 Report Script
 
-1. [ ] Confirm that you are connected to **LON-SRV1** in the lab platform.
+1. [ ] Confirm that you are connected to **LON-SVR1** in the lab platform.
 2. [ ] Select **Start**.
 3. [ ] Type **File Explorer**.
 4. [ ] Select **File Explorer** from the search results.
@@ -963,7 +963,7 @@ Set-Location "C:\LabFiles\supporting content\Lab6"
 :::
 
 ::: success
-**Results**: After completing this task, you have generated an HTML validation report from LON-SRV1.
+**Results**: After completing this task, you have generated an HTML validation report from LON-SVR1.
 :::
 
 ### Task 3: Review the HTML Report
@@ -1019,7 +1019,7 @@ Set-Location "C:\LabFiles\supporting content\Lab6"
 6. [ ] Close the script without making changes.
 
 ::: warning
-**Note**: The script runs on **LON-SRV1**. It can test connectivity to other servers, but it cannot fully replace the earlier manual step where you used **LON-SRV2** as a second client perspective.
+**Note**: The script runs on **LON-SVR1**. It can test connectivity to other servers, but it cannot fully replace the earlier manual step where you used **LON-SVR2** as a second client perspective.
 :::
 
 ::: success

@@ -11,7 +11,7 @@ In this lab, you will install and configure OpenSSH Server on Windows Server, en
 ::: secondary
 To complete this lab, you must have:
 - Completed Lab 0601 (Post-Installation Server Configuration and Security Hardening)
-- Administrator access to LON-SRV1
+- Administrator access to LON-SVR1
 - Understanding of encryption concepts (basic)
 :::
 
@@ -25,7 +25,7 @@ You need to enable secure SSH access to your Windows Server. OpenSSH provides a 
 
 ### Task 1: Install OpenSSH Server via Server Manager
 
-1. [ ] Connect to LON-SRV1 using Remote Desktop.
+1. [ ] Connect to LON-SVR1 using Remote Desktop.
 2. [ ] Open Server Manager.
 3. [ ] Click **Manage** menu and select **Add Roles and Features**.
 4. [ ] Follow the wizard to the **Features** page.
@@ -49,7 +49,7 @@ Get-WindowsFeature -Name OpenSSH-Server* | Select-Object DisplayName, InstallSta
    - **Install State**: Installed
 
 ::: success
-**Results**: After completing this task, OpenSSH Server is installed on LON-SRV1.
+**Results**: After completing this task, OpenSSH Server is installed on LON-SVR1.
 :::
 
 ### Task 3: Start SSH Service

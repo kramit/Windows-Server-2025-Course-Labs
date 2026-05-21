@@ -12,34 +12,34 @@ In this lab, you will prepare shared iSCSI storage, connect that storage to a Wi
 To complete this lab, you must have:
 
 - Completed Lab 0601 (Post-Installation Server Configuration and Security Hardening)
-- Administrator access to **LON-SRV2**, **LON-SRV1**, and **LON-DC1**
+- Administrator access to **LON-SVR2**, **LON-SVR1**, and **LON-DC1**
 - Access to the course supporting content folder for Lab 8
 - Basic familiarity with Server Manager and File Explorer
 :::
 
 ::: warning
-**Note**: This lab uses **LON-SRV2** to host three dynamic 20 GB iSCSI virtual disks. **LON-SRV1** connects to those disks and uses them to create the storage pool and file share. Do not initialize or format the three iSCSI disks in Disk Management before you create the storage pool.
+**Note**: This lab uses **LON-SVR2** to host three dynamic 20 GB iSCSI virtual disks. **LON-SVR1** connects to those disks and uses them to create the storage pool and file share. Do not initialize or format the three iSCSI disks in Disk Management before you create the storage pool.
 :::
 
-## Exercise 1: Prepare iSCSI Storage on LON-SRV2
+## Exercise 1: Prepare iSCSI Storage on LON-SVR2
 
 ::: secondary
 **Scenario**
 
-Your organization wants to present storage from one server to another server over the network. You will run a prepared script on **LON-SRV2** that creates three dynamic expanding VHDX files and presents them to **LON-SRV1** by using the iSCSI Target Server role.
+Your organization wants to present storage from one server to another server over the network. You will run a prepared script on **LON-SVR2** that creates three dynamic expanding VHDX files and presents them to **LON-SVR1** by using the iSCSI Target Server role.
 :::
 
-### Task 1: Connect to LON-SRV2
+### Task 1: Connect to LON-SVR2
 
 1. [ ] In the lab platform, select **HOME**.
-2. [ ] From the **Select VM** dropdown, select **LON-SRV2**.
+2. [ ] From the **Select VM** dropdown, select **LON-SVR2**.
 3. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
 4. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
 5. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 6. [ ] Wait for the Windows Server desktop to appear.
 
 ::: success
-**Results**: After completing this task, you are connected to LON-SRV2 through the lab platform.
+**Results**: After completing this task, you are connected to LON-SVR2 through the lab platform.
 :::
 
 ### Task 2: Locate the Lab 8 Supporting Script
@@ -55,7 +55,7 @@ Your organization wants to present storage from one server to another server ove
 :::
 
 ::: success
-**Results**: After completing this task, you have located the script that prepares the iSCSI target on LON-SRV2.
+**Results**: After completing this task, you have located the script that prepares the iSCSI target on LON-SVR2.
 :::
 
 ### Task 3: Run the iSCSI Target Preparation Script
@@ -85,7 +85,7 @@ Set-Location "C:\LabFiles\supporting content\Lab8"
 :::
 
 ::: success
-**Results**: After completing this task, LON-SRV2 is presenting three 20 GB iSCSI virtual disks for LON-SRV1.
+**Results**: After completing this task, LON-SVR2 is presenting three 20 GB iSCSI virtual disks for LON-SVR1.
 :::
 
 ### Task 4: Review the iSCSI Target in Server Manager
@@ -103,28 +103,28 @@ Set-Location "C:\LabFiles\supporting content\Lab8"
 :::
 
 ::: success
-**Results**: After completing this exercise, you will have verified the iSCSI target and virtual disks on LON-SRV2.
+**Results**: After completing this exercise, you will have verified the iSCSI target and virtual disks on LON-SVR2.
 :::
 
-## Exercise 2: Connect LON-SRV1 to the iSCSI Disks
+## Exercise 2: Connect LON-SVR1 to the iSCSI Disks
 
 ::: secondary
 **Scenario**
 
-LON-SRV1 will use the iSCSI disks as raw storage for a new storage pool. You will run a prepared script to configure the iSCSI Initiator service, connect to LON-SRV2, and make the disks visible to Windows.
+LON-SVR1 will use the iSCSI disks as raw storage for a new storage pool. You will run a prepared script to configure the iSCSI Initiator service, connect to LON-SVR2, and make the disks visible to Windows.
 :::
 
-### Task 1: Connect to LON-SRV1
+### Task 1: Connect to LON-SVR1
 
 1. [ ] In the lab platform, select **HOME**.
-2. [ ] From the **Select VM** dropdown, select **LON-SRV1**.
+2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
 3. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
 4. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
 5. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 6. [ ] Wait for the Windows Server desktop to appear.
 
 ::: success
-**Results**: After completing this task, you are connected to LON-SRV1 through the lab platform.
+**Results**: After completing this task, you are connected to LON-SVR1 through the lab platform.
 :::
 
 ### Task 2: Run the iSCSI Connection Script
@@ -150,7 +150,7 @@ Set-Location "C:\LabFiles\supporting content\Lab8"
 9. [ ] Verify that the output lists three disks with **BusType** shown as iSCSI or with the iSCSI disks shown in the disk list.
 
 ::: success
-**Results**: After completing this task, LON-SRV1 is connected to the three iSCSI disks hosted by LON-SRV2.
+**Results**: After completing this task, LON-SVR1 is connected to the three iSCSI disks hosted by LON-SVR2.
 :::
 
 ### Task 3: Confirm the Disks in Disk Management
@@ -170,20 +170,20 @@ Set-Location "C:\LabFiles\supporting content\Lab8"
 :::
 
 ::: success
-**Results**: After completing this exercise, you will have confirmed that LON-SRV1 can see the three iSCSI disks that will be used for the storage pool.
+**Results**: After completing this exercise, you will have confirmed that LON-SVR1 can see the three iSCSI disks that will be used for the storage pool.
 :::
 
-## Exercise 3: Create a Storage Pool and Volume on LON-SRV1
+## Exercise 3: Create a Storage Pool and Volume on LON-SVR1
 
 ::: secondary
 **Scenario**
 
-The raw iSCSI disks are now visible to LON-SRV1. You will use Server Manager to combine them into a storage pool, create a virtual disk, and create a formatted volume for shared data.
+The raw iSCSI disks are now visible to LON-SVR1. You will use Server Manager to combine them into a storage pool, create a virtual disk, and create a formatted volume for shared data.
 :::
 
 ### Task 1: Open Storage Pools in Server Manager
 
-1. [ ] On **LON-SRV1**, bring **Server Manager** to the front.
+1. [ ] On **LON-SVR1**, bring **Server Manager** to the front.
 2. [ ] In the left navigation pane, select **File and Storage Services**.
 3. [ ] Select **Storage Pools**.
 4. [ ] Review the **Storage Pools** tile.
@@ -201,7 +201,7 @@ The raw iSCSI disks are now visible to LON-SRV1. You will use Server Manager to 
 2. [ ] Select **New Storage Pool**.
 3. [ ] On the **Before you begin** page, select **Next >**.
 4. [ ] On the **Specify a storage pool name and subsystem** page, enter `Lab8Pool` in **Name**.
-5. [ ] Verify that **LON-SRV1** is selected as the server.
+5. [ ] Verify that **LON-SVR1** is selected as the server.
 6. [ ] Verify that **Windows Storage** is selected as the storage subsystem.
 7. [ ] Select **Next >**.
 8. [ ] On the **Select physical disks for the storage pool** page, select the checkboxes for the three 20 GB iSCSI disks.
@@ -214,7 +214,7 @@ The raw iSCSI disks are now visible to LON-SRV1. You will use Server Manager to 
 15. [ ] Select **Close**.
 
 ::: success
-**Results**: After completing this task, you have created a storage pool named Lab8Pool on LON-SRV1.
+**Results**: After completing this task, you have created a storage pool named Lab8Pool on LON-SVR1.
 :::
 
 ### Task 3: Create a Virtual Disk from the Pool
@@ -223,7 +223,7 @@ The raw iSCSI disks are now visible to LON-SRV1. You will use Server Manager to 
 2. [ ] In the **Virtual Disks** tile, select **Tasks**.
 3. [ ] Select **New Virtual Disk**.
 4. [ ] On the **Before you begin** page, select **Next >**.
-5. [ ] On the **Select the server and storage pool** page, verify that **LON-SRV1** and **Lab8Pool** are selected.
+5. [ ] On the **Select the server and storage pool** page, verify that **LON-SVR1** and **Lab8Pool** are selected.
 6. [ ] Select **Next >**.
 7. [ ] On the **Specify the virtual disk name** page, enter `Lab8VirtualDisk` in **Name**.
 8. [ ] Select **Next >**.
@@ -252,7 +252,7 @@ The raw iSCSI disks are now visible to LON-SRV1. You will use Server Manager to 
 ### Task 4: Create and Format the Volume
 
 1. [ ] In the **New Volume Wizard**, on the **Before you begin** page, select **Next >**.
-2. [ ] On the **Select the server and disk** page, verify that **LON-SRV1** is selected.
+2. [ ] On the **Select the server and disk** page, verify that **LON-SVR1** is selected.
 3. [ ] Verify that the disk associated with `Lab8VirtualDisk` is selected.
 4. [ ] Select **Next >**.
 5. [ ] On the **Specify the size of the volume** page, leave the default size selected.
@@ -273,7 +273,7 @@ The raw iSCSI disks are now visible to LON-SRV1. You will use Server Manager to 
 20. [ ] Verify that drive **S:** appears with the label **Lab8Data**.
 
 ::: success
-**Results**: After completing this exercise, you will have created and formatted an NTFS volume from the storage pool on LON-SRV1.
+**Results**: After completing this exercise, you will have created and formatted an NTFS volume from the storage pool on LON-SVR1.
 :::
 
 ## Exercise 4: Create an SMB Share on the Storage Pool Volume
@@ -281,12 +281,12 @@ The raw iSCSI disks are now visible to LON-SRV1. You will use Server Manager to 
 ::: secondary
 **Scenario**
 
-Now that LON-SRV1 has a volume backed by the storage pool, you will create a shared folder on that volume. This gives other domain computers a standard SMB path to reach data stored on the pooled storage.
+Now that LON-SVR1 has a volume backed by the storage pool, you will create a shared folder on that volume. This gives other domain computers a standard SMB path to reach data stored on the pooled storage.
 :::
 
 ### Task 1: Create the Shared Folder Location
 
-1. [ ] On **LON-SRV1**, open **File Explorer**.
+1. [ ] On **LON-SVR1**, open **File Explorer**.
 2. [ ] Select **This PC**.
 3. [ ] Open **Lab8Data (S:)**.
 4. [ ] Right-click in the empty area of the drive.
@@ -324,16 +324,16 @@ Now that LON-SRV1 has a volume backed by the storage pool, you will create a sha
 
 ### Task 3: Configure the Share Path and Name
 
-1. [ ] On the **Select the server and path for this share** page, verify that **LON-SRV1** is selected.
+1. [ ] On the **Select the server and path for this share** page, verify that **LON-SVR1** is selected.
 2. [ ] Select **Type a custom path**.
 3. [ ] Enter `S:\Lab8Share` in the path box.
 4. [ ] Select **Next >**.
 5. [ ] On the **Specify share name** page, enter `Lab8Share` in **Share name**.
-6. [ ] Verify that **Remote path to share** shows `\\LON-SRV1\Lab8Share`.
+6. [ ] Verify that **Remote path to share** shows `\\LON-SVR1\Lab8Share`.
 7. [ ] Select **Next >**.
 
 ::: success
-**Results**: After completing this task, the share wizard is configured to publish S:\Lab8Share as \\LON-SRV1\Lab8Share.
+**Results**: After completing this task, the share wizard is configured to publish S:\Lab8Share as \\LON-SVR1\Lab8Share.
 :::
 
 ### Task 4: Review Share Settings and Permissions
@@ -357,11 +357,11 @@ Now that LON-SRV1 has a volume backed by the storage pool, you will create a sha
 **Results**: After completing this task, you have created an SMB share named Lab8Share on the storage pool volume.
 :::
 
-### Task 5: Validate the Share from LON-SRV1
+### Task 5: Validate the Share from LON-SVR1
 
 1. [ ] Open **File Explorer**.
 2. [ ] Select the address bar.
-3. [ ] Enter `\\LON-SRV1\Lab8Share`.
+3. [ ] Enter `\\LON-SVR1\Lab8Share`.
 4. [ ] Verify that the shared folder opens.
 5. [ ] Verify that `StoragePoolTest.txt` is visible.
 6. [ ] Close **File Explorer**.
@@ -398,7 +398,7 @@ You will now switch to the domain controller and access the share across the lab
 3. [ ] In the command bar, select **See more**.
 4. [ ] Select **Map network drive**.
 5. [ ] In the **Map Network Drive** window, select **Z:** for **Drive**.
-6. [ ] In **Folder**, enter `\\LON-SRV1\Lab8Share`.
+6. [ ] In **Folder**, enter `\\LON-SVR1\Lab8Share`.
 7. [ ] Leave **Reconnect at sign-in** selected.
 8. [ ] Select **Finish**.
 9. [ ] If you are prompted for credentials, enter the username and password shown in the lab platform for the selected VM.
@@ -429,7 +429,7 @@ You will now switch to the domain controller and access the share across the lab
 ::: secondary
 **Scenario**
 
-You have created a complete storage path: iSCSI virtual disks on LON-SRV2, a storage pool and volume on LON-SRV1, and an SMB share accessed from LON-DC1. You will review what changed and the security impact of the configuration.
+You have created a complete storage path: iSCSI virtual disks on LON-SVR2, a storage pool and volume on LON-SVR1, and an SMB share accessed from LON-DC1. You will review what changed and the security impact of the configuration.
 :::
 
 ### Task 1: Review the Administrative Change Summary
@@ -438,15 +438,15 @@ You have created a complete storage path: iSCSI virtual disks on LON-SRV2, a sto
 
 | Server | Administrative change |
 | --- | --- |
-| **LON-SRV2** | Installed or confirmed the iSCSI Target Server role service. |
-| **LON-SRV2** | Created three dynamic 20 GB VHDX-backed iSCSI virtual disks in `C:\Lab8-iSCSI`. |
-| **LON-SRV2** | Created the iSCSI target `Lab8-StoragePool-Target` and allowed LON-SRV1 to connect. |
-| **LON-SRV1** | Started and configured the Microsoft iSCSI Initiator service. |
-| **LON-SRV1** | Connected to the three iSCSI disks from LON-SRV2. |
-| **LON-SRV1** | Created the storage pool `Lab8Pool`. |
-| **LON-SRV1** | Created the virtual disk `Lab8VirtualDisk` and the NTFS volume `Lab8Data (S:)`. |
-| **LON-SRV1** | Created the SMB share `\\LON-SRV1\Lab8Share`. |
-| **LON-DC1** | Mapped `\\LON-SRV1\Lab8Share` to drive **Z:**. |
+| **LON-SVR2** | Installed or confirmed the iSCSI Target Server role service. |
+| **LON-SVR2** | Created three dynamic 20 GB VHDX-backed iSCSI virtual disks in `C:\Lab8-iSCSI`. |
+| **LON-SVR2** | Created the iSCSI target `Lab8-StoragePool-Target` and allowed LON-SVR1 to connect. |
+| **LON-SVR1** | Started and configured the Microsoft iSCSI Initiator service. |
+| **LON-SVR1** | Connected to the three iSCSI disks from LON-SVR2. |
+| **LON-SVR1** | Created the storage pool `Lab8Pool`. |
+| **LON-SVR1** | Created the virtual disk `Lab8VirtualDisk` and the NTFS volume `Lab8Data (S:)`. |
+| **LON-SVR1** | Created the SMB share `\\LON-SVR1\Lab8Share`. |
+| **LON-DC1** | Mapped `\\LON-SVR1\Lab8Share` to drive **Z:**. |
 
 ::: success
 **Results**: After completing this task, you have reviewed the administrative changes made during the lab.
@@ -455,7 +455,7 @@ You have created a complete storage path: iSCSI virtual disks on LON-SRV2, a sto
 ### Task 2: Review Security and Operational Impact
 
 1. [ ] Review the iSCSI design used in this lab.
-2. [ ] Note that only **LON-SRV1** should be allowed to connect to the iSCSI target.
+2. [ ] Note that only **LON-SVR1** should be allowed to connect to the iSCSI target.
 3. [ ] Review the SMB share permissions used in this lab.
 4. [ ] Note that production shares should usually grant access to specific domain groups instead of broad user groups.
 5. [ ] Review the storage layout used in this lab.

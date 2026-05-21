@@ -11,7 +11,7 @@ In this lab, you will connect your on-premises Windows Server to Azure Arc for c
 ::: secondary
 To complete this lab, you must have:
 - Completed Lab 0601 (Post-Installation Server Configuration and Security Hardening)
-- Administrator access to LON-SRV1
+- Administrator access to LON-SVR1
 - A student Azure account with an active subscription
 - Access to the Azure Portal (https://portal.azure.com)
 :::
@@ -26,7 +26,7 @@ You need to prepare your Azure environment before connecting your server. You wi
 
 ### Task 1: Log Into Azure Portal
 
-1. [ ] On LON-SRV1, open **Microsoft Edge** browser.
+1. [ ] On LON-SVR1, open **Microsoft Edge** browser.
 2. [ ] Navigate to **https://portal.azure.com**.
 3. [ ] You will be prompted to sign in with your Azure account.
 4. [ ] Enter your **email address** provided by your instructor (format: student@company.onmicrosoft.com or similar).
@@ -108,7 +108,7 @@ Before connecting your server, you need to create an Azure resource group and se
 ::: secondary
 **Scenario**
 
-You will now download and run the Azure Arc agent to connect LON-SRV1 to Azure.
+You will now download and run the Azure Arc agent to connect LON-SVR1 to Azure.
 :::
 
 ### Task 1: Generate Connection Script
@@ -122,7 +122,7 @@ You will now download and run the Azure Arc agent to connect LON-SRV1 to Azure.
    - **Resource group**: `WindowsServer-RG` (or your chosen group)
    - **Region**: Your chosen region
    - **Operating system**: **Windows**
-   - **Resource name**: `LON-SRV1` (or a descriptive name)
+   - **Resource name**: `LON-SVR1` (or a descriptive name)
 6. [ ] Click **Generate script** button.
 7. [ ] A PowerShell script will be displayed. This is the connection script.
 
@@ -134,7 +134,7 @@ You will now download and run the Azure Arc agent to connect LON-SRV1 to Azure.
 
 1. [ ] Click **Download** to download the PowerShell script.
 2. [ ] The script will be saved to your **Downloads** folder.
-3. [ ] On LON-SRV1, open **PowerShell as Administrator**.
+3. [ ] On LON-SVR1, open **PowerShell as Administrator**.
 4. [ ] Navigate to the Downloads folder:
 
 ```powershell
@@ -161,7 +161,7 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser -Force
 8. [ ] Once complete, you should see a success message.
 
 ::: warning
-**Note**: The script may require internet connectivity to Azure. If connection fails, verify that LON-SRV1 has internet access.
+**Note**: The script may require internet connectivity to Azure. If connection fails, verify that LON-SVR1 has internet access.
 :::
 
 ::: success
@@ -180,8 +180,8 @@ You will verify that the server has successfully connected to Azure Arc.
 
 1. [ ] Return to the Azure Portal in your browser.
 2. [ ] Go to **Azure Arc** > **Servers**.
-3. [ ] You should see your server **LON-SRV1** listed with status **Connected**.
-4. [ ] Click on **LON-SRV1** to see detailed information:
+3. [ ] You should see your server **LON-SVR1** listed with status **Connected**.
+4. [ ] Click on **LON-SVR1** to see detailed information:
    - **Status**: Connected (green indicator)
    - **OS**: Windows Server 2025
    - **Agent status**: Connected
@@ -195,7 +195,7 @@ You will verify that the server has successfully connected to Azure Arc.
 
 ### Task 2: Verify Agent on Server
 
-1. [ ] On LON-SRV1, open PowerShell as Administrator.
+1. [ ] On LON-SVR1, open PowerShell as Administrator.
 2. [ ] Verify the Azure Arc agent is running:
 
 ```powershell
@@ -222,7 +222,7 @@ Now that your server is connected to Azure Arc, you can manage it from Azure Por
 
 ### Task 1: Access Server Properties in Azure Arc
 
-1. [ ] In Azure Portal, go to **Azure Arc** > **Servers** > **LON-SRV1**.
+1. [ ] In Azure Portal, go to **Azure Arc** > **Servers** > **LON-SVR1**.
 2. [ ] Review the available information:
    - **Overview**: Server status and properties
    - **Logs**: Connection and diagnostic logs
@@ -237,7 +237,7 @@ Now that your server is connected to Azure Arc, you can manage it from Azure Por
 
 ### Task 2: Enable Azure Arc Extensions
 
-1. [ ] On the LON-SRV1 Azure Arc page, click **Extensions**.
+1. [ ] On the LON-SVR1 Azure Arc page, click **Extensions**.
 2. [ ] You will see available extensions such as:
    - **Microsoft Monitoring Agent**: For monitoring and logging
    - **Custom Script Extension**: For running PowerShell scripts

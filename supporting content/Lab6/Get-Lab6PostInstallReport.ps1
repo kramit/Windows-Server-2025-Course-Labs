@@ -5,7 +5,7 @@ param(
 
 $ErrorActionPreference = "Continue"
 
-$expectedComputerName = "LON-SRV1"
+$expectedComputerName = "LON-SVR1"
 $expectedDomain = "contoso.com"
 $reportTime = Get-Date
 
@@ -129,8 +129,8 @@ $dnsDc1 = Invoke-LabCheck -FallbackMessage "Unable to resolve LON-DC1." -ScriptB
         Select-Object Name, Type, IPAddress
 }
 
-$dnsSrv2 = Invoke-LabCheck -FallbackMessage "Unable to resolve LON-SRV2." -ScriptBlock {
-    Resolve-DnsName LON-SRV2.contoso.com -ErrorAction Stop |
+$dnsSrv2 = Invoke-LabCheck -FallbackMessage "Unable to resolve LON-SVR2." -ScriptBlock {
+    Resolve-DnsName LON-SVR2.contoso.com -ErrorAction Stop |
         Where-Object { $_.IPAddress } |
         Select-Object Name, Type, IPAddress
 }
@@ -144,20 +144,20 @@ $connectionChecks = @(
             Details = "Tests basic network connectivity to the domain controller."
         }
     }
-    Invoke-LabCheck -FallbackMessage "Unable to test WinRM connectivity to LON-SRV1." -ScriptBlock {
-        $result = Test-NetConnection LON-SRV1 -Port 5985 -WarningAction SilentlyContinue
+    Invoke-LabCheck -FallbackMessage "Unable to test WinRM connectivity to LON-SVR1." -ScriptBlock {
+        $result = Test-NetConnection LON-SVR1 -Port 5985 -WarningAction SilentlyContinue
         [pscustomobject]@{
-            Check = "WinRM port on LON-SRV1"
-            Target = "LON-SRV1:5985"
+            Check = "WinRM port on LON-SVR1"
+            Target = "LON-SVR1:5985"
             Status = Get-Status -Passed ([bool]$result.TcpTestSucceeded)
             Details = "Tests whether the WinRM listener is reachable on this server."
         }
     }
-    Invoke-LabCheck -FallbackMessage "Unable to test WinRM connectivity to LON-SRV2." -ScriptBlock {
-        $result = Test-NetConnection LON-SRV2 -Port 5985 -WarningAction SilentlyContinue
+    Invoke-LabCheck -FallbackMessage "Unable to test WinRM connectivity to LON-SVR2." -ScriptBlock {
+        $result = Test-NetConnection LON-SVR2 -Port 5985 -WarningAction SilentlyContinue
         [pscustomobject]@{
-            Check = "WinRM port on LON-SRV2"
-            Target = "LON-SRV2:5985"
+            Check = "WinRM port on LON-SVR2"
+            Target = "LON-SVR2:5985"
             Status = Get-Status -Passed ([bool]$result.TcpTestSucceeded)
             Details = "Tests whether the second lab server is reachable for remote management."
         }
@@ -374,7 +374,7 @@ $body.Add((ConvertTo-ReportFragment -Title "Server Identity and Installation Opt
 $body.Add((ConvertTo-ReportFragment -Title "Computer Information" -InputObject $computerInfo))
 $body.Add((ConvertTo-ReportFragment -Title "Network Configuration" -InputObject $networkConfig))
 $body.Add((ConvertTo-ReportFragment -Title "DNS: LON-DC1" -InputObject $dnsDc1))
-$body.Add((ConvertTo-ReportFragment -Title "DNS: LON-SRV2" -InputObject $dnsSrv2))
+$body.Add((ConvertTo-ReportFragment -Title "DNS: LON-SVR2" -InputObject $dnsSrv2))
 $body.Add((ConvertTo-ReportFragment -Title "Connectivity Checks" -InputObject $connectionChecks))
 $body.Add((ConvertTo-ReportFragment -Title "Time Zone" -InputObject $timeZone))
 $body.Add((ConvertTo-ReportFragment -Title "Time Synchronization Status" -PreformattedText $w32tmStatusText))
