@@ -11,7 +11,7 @@ In this lab, you will understand Windows Server patching and update management s
 ::: secondary
 To complete this lab, you must have:
 - Completed Lab 0601 (Post-Installation Server Configuration and Security Hardening)
-- Administrator access to LON-SRV1
+- Administrator access to LON-SVR1
 - Understanding of Windows Server security basics
 :::
 
@@ -25,7 +25,7 @@ You need to understand what updates are available for your server and how to man
 
 ### Task 1: Check for Windows Updates
 
-1. [ ] Connect to LON-SRV1 using Remote Desktop.
+1. [ ] Connect to LON-SVR1 using Remote Desktop.
 2. [ ] Open **Settings** by pressing **Windows key + I**.
 3. [ ] Search for **Windows Update** in the search box.
 4. [ ] Click on **Windows Update**.
@@ -124,7 +124,7 @@ Windows Hotpatch is a feature that allows security updates without rebooting. Yo
    - **Running on Azure**
    - **Managed through Azure Arc**
    - **Azure Hybrid Benefit active**
-2. [ ] Since your server is on-premises (LON-SRV1), it may not be Hotpatch-eligible unless configured in Azure.
+2. [ ] Since your server is on-premises (LON-SVR1), it may not be Hotpatch-eligible unless configured in Azure.
 3. [ ] If the server were connected to Azure Arc and running there, you could enable Hotpatch.
 
 ::: success

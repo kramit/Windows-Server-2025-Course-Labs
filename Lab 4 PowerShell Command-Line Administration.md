@@ -13,7 +13,7 @@ To complete this lab, you must have:
 
 - Completed Lab 0201 (Using Remote Administration Tools and PowerShell)
 - Completed Lab 0301 (Working with Git and GitHub)
-- Administrator access to LON-SRV1
+- Administrator access to LON-SVR1
 - Basic familiarity with Server Manager and elevated PowerShell sessions
 - Internet access for installing Visual Studio Code and Oh My Posh
 :::
@@ -27,13 +27,13 @@ To complete this lab, you must have:
 ::: secondary
 **Scenario**
 
-You need to use PowerShell as your primary command-line administration tool. You will connect to LON-SRV1, open an elevated PowerShell session, verify the PowerShell version, and run your first cmdlets.
+You need to use PowerShell as your primary command-line administration tool. You will connect to LON-SVR1, open an elevated PowerShell session, verify the PowerShell version, and run your first cmdlets.
 :::
 
-### Task 1: Connect to LON-SRV1
+### Task 1: Connect to LON-SVR1
 
 1. [ ] In the lab environment, select **HOME**.
-2. [ ] From the **Select VM** dropdown, select **LON-SRV1**.
+2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
 3. [ ] In the **Username** field, enter the username shown for the selected VM on the **HOME** tab.
 4. [ ] In the **Password** field, enter the password shown for the selected VM on the **HOME** tab.
 5. [ ] In the **Tools** section, turn on **Enhanced mode**.
@@ -81,7 +81,7 @@ Get-Location
 4. [ ] Verify that PowerShell displays the current path.
 
 ::: success
-**Results**: After completing this exercise, you will have opened an elevated PowerShell session and run basic PowerShell cmdlets on LON-SRV1.
+**Results**: After completing this exercise, you will have opened an elevated PowerShell session and run basic PowerShell cmdlets on LON-SVR1.
 :::
 
 ## Exercise 2: Using PowerShell Help and Command Discovery
@@ -164,7 +164,7 @@ You need to gather server inventory information quickly from the command line. Y
 Get-ComputerInfo -Property CsComputerName,CsDomain,OsVersion,OsProductType
 ```
 
-2. [ ] Verify that **CsComputerName** shows `LON-SRV1`.
+2. [ ] Verify that **CsComputerName** shows `LON-SVR1`.
 3. [ ] Verify that **CsDomain** shows `CONTOSO`.
 4. [ ] Review the **OsVersion** and **OsProductType** values.
 
@@ -203,10 +203,10 @@ Get-NetIPAddress -AddressFamily IPv4 | Select-Object InterfaceAlias,IPAddress,Pr
 ```
 
 2. [ ] Review the **InterfaceAlias**, **IPAddress**, and **PrefixLength** values.
-3. [ ] Identify the IPv4 address used by LON-SRV1.
+3. [ ] Identify the IPv4 address used by LON-SVR1.
 
 ::: success
-**Results**: After completing this exercise, you will have gathered key system, update, and network information from LON-SRV1 by using PowerShell.
+**Results**: After completing this exercise, you will have gathered key system, update, and network information from LON-SVR1 by using PowerShell.
 :::
 
 ## Exercise 4: Filtering, Sorting, and Formatting Output
@@ -335,7 +335,7 @@ You need a script editor for writing and testing PowerShell scripts. You will in
 
 ### Task 1: Install Visual Studio Code with winget
 
-1. [ ] Return to the elevated PowerShell session on LON-SRV1.
+1. [ ] Return to the elevated PowerShell session on LON-SVR1.
 2. [ ] Run the following command to verify that winget is available.
 
 ```powershell
@@ -462,7 +462,7 @@ You want the terminal to provide useful context while you work. You will install
 
 ### Task 1: Prepare the Oh My Posh Lab Files
 
-1. [ ] Return to the elevated PowerShell session on LON-SRV1.
+1. [ ] Return to the elevated PowerShell session on LON-SVR1.
 2. [ ] Run the following command to create the lab output folder.
 
 ```powershell
@@ -778,7 +778,7 @@ You have used PowerShell to collect and shape administrative information, custom
 hostname
 ```
 
-2. [ ] Verify that the command returns `LON-SRV1`.
+2. [ ] Verify that the command returns `LON-SVR1`.
 3. [ ] Run the following command to verify that the lab output file exists.
 
 ```powershell

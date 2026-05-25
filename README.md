@@ -33,9 +33,9 @@ This repository contains all practical labs for the **3-day Windows Server 2025 
 All labs use a standard four-machine environment:
 
 - **LON-DC1** — Windows Server 2025 Domain Controller (AD DS, DNS, Group Policy)
-- **LON-SRV1** — Windows Server 2025 Member Server (primary lab machine)
+- **LON-SVR1** — Windows Server 2025 Member Server (primary lab machine)
 - **CLIENT1** — Windows 11 Enterprise (for testing)
-- **LON-SRV2** — Windows Server 2025 (for advanced labs)
+- **LON-SVR2** — Windows Server 2025 (for advanced labs)
 - **Domain**: `contoso.com`
 
 **Exception**: Lab 13 (Azure Arc) requires a student Azure subscription for cloud-based portions.
@@ -117,7 +117,7 @@ Each lab follows a consistent structure:
 
 ## Prerequisites for Labs
 
-- Windows Server 2025 member server (LON-SRV1)
+- Windows Server 2025 member server (LON-SVR1)
 - Domain access (contoso.com)
 - Administrator credentials
 - Lab environment (virtual machines provided by instructor)

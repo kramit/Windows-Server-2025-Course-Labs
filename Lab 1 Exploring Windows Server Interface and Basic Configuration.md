@@ -20,7 +20,7 @@ In this lab, you will connect to a Windows Server 2025 machine and explore the c
 
 To complete this lab, you must have:
 
-- Access to the LON-SRV1 virtual machine
+- Access to the LON-SVR1 virtual machine
 
 - Administrator credentials for the contoso.com domain
 
@@ -38,7 +38,7 @@ To complete this lab, you must have:
 
   
 
-## Exercise 1: Connecting to LON-SRV1 and Accessing Server Manager
+## Exercise 1: Connecting to LON-SVR1 and Accessing Server Manager
 
   
 
@@ -54,7 +54,7 @@ You need to connect to a member server in your domain and review its basic confi
 
   
 
-### Task 1: Connect to LON-SRV1 via Remote Desktop
+### Task 1: Connect to LON-SVR1 via Remote Desktop
 
   
 
@@ -72,7 +72,7 @@ You need to connect to a member server in your domain and review its basic confi
 
 3. [ ] Click **OK** to open Remote Desktop Connection.
 
-4. [ ] In the **Computer** field, type `LON-SRV1.contoso.com`.
+4. [ ] In the **Computer** field, type `LON-SVR1.contoso.com`.
 
 5. [ ] Click **Connect**.
 
@@ -92,7 +92,7 @@ You need to connect to a member server in your domain and review its basic confi
 
 ::: success
 
-**Results**: After completing this task, you will be connected to LON-SRV1 and can see the Windows Server desktop with the taskbar at the bottom.
+**Results**: After completing this task, you will be connected to LON-SVR1 and can see the Windows Server desktop with the taskbar at the bottom.
 
 :::
 
@@ -102,7 +102,7 @@ You need to connect to a member server in your domain and review its basic confi
 
   
 
-1. [ ] Once connected to LON-SRV1, click start.
+1. [ ] Once connected to LON-SVR1, click start.
 
 2. [ ] You should see a **Server Manager** icon (looks like a blue shield with gears).
 
@@ -170,7 +170,7 @@ You need to view critical server information such as the computer name, domain, 
 
 5. [ ] A new window will open showing detailed system information. Look for the following fields in the **System Summary** section:
 
-   - **Computer Name**: Should show `LON-SRV1`
+   - **Computer Name**: Should show `LON-SVR1`
 
    - **Domain**: Should show `CONTOSO`
 
@@ -190,7 +190,7 @@ You need to view critical server information such as the computer name, domain, 
 
 ::: success
 
-**Results**: After completing this task, you will have verified that LON-SRV1 is correctly named, joined to the CONTOSO domain, and running Windows Server 2025.
+**Results**: After completing this task, you will have verified that LON-SVR1 is correctly named, joined to the CONTOSO domain, and running Windows Server 2025.
 
 :::
 
@@ -251,9 +251,9 @@ You need to become familiar with the core Windows Server interface components th
 
 5. [ ] You will see the Windows Settings page with system information including:
 
-   - Device name (should be LON-SRV1)
+   - Device name (should be LON-SVR1)
 
-   - Full device name (should be LON-SRV1.contoso.com)
+   - Full device name (should be LON-SVR1.contoso.com)
 
    - Device ID
 
@@ -397,7 +397,7 @@ You need to understand what roles and features are installed on your server. A r
 
    - Features
 
-4. [ ] Look for a section titled **Roles and Server Groups** or **Roles**. You should see a list of installed roles. On a fresh LON-SRV1, there may be no roles installed yet, or you may see a role like **Web Server (IIS)** depending on your lab configuration.
+4. [ ] Look for a section titled **Roles and Server Groups** or **Roles**. You should see a list of installed roles. On a fresh LON-SVR1, there may be no roles installed yet, or you may see a role like **Web Server (IIS)** depending on your lab configuration.
 
 5. [ ] Scroll down to see the **Features** section. You should see a list of installed features.
 
@@ -405,7 +405,7 @@ You need to understand what roles and features are installed on your server. A r
 
 ::: warning
 
-**Note**: The exact roles and features installed will depend on how LON-SRV1 was configured for your lab environment. Ask your instructor what to expect.
+**Note**: The exact roles and features installed will depend on how LON-SVR1 was configured for your lab environment. Ask your instructor what to expect.
 
 :::
 

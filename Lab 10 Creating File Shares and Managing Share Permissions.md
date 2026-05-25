@@ -11,7 +11,7 @@ In this lab, you will create shared folders on your Windows Server and configure
 ::: secondary
 To complete this lab, you must have:
 - Completed Lab 0801 (Managing Disks, Volumes, and NTFS Permissions)
-- Administrator access to LON-SRV1
+- Administrator access to LON-SVR1
 - Understanding of NTFS permissions from previous lab
 :::
 
@@ -25,7 +25,7 @@ Your organization needs to share documents with team members. You will create a 
 
 ### Task 1: Create a Folder for Sharing
 
-1. [ ] Connect to LON-SRV1 using Remote Desktop.
+1. [ ] Connect to LON-SVR1 using Remote Desktop.
 2. [ ] Open **File Explorer** by pressing **Windows key + E**.
 3. [ ] Navigate to **C:\ drive**.
 4. [ ] Right-click in the empty space and select **New** > **Folder**.
@@ -56,12 +56,12 @@ Your organization needs to share documents with team members. You will create a 
 ### Task 3: Find the Share Path
 
 1. [ ] Once sharing is configured, a dialog will show the share path.
-2. [ ] The share path will be something like: `\\LON-SRV1\TeamDocuments`
+2. [ ] The share path will be something like: `\\LON-SVR1\TeamDocuments`
 3. [ ] This is the network path other users can use to access the share.
 4. [ ] Click **Done** to close the dialog.
 
 ::: warning
-**Note**: Other computers on the network can now access this folder using the path \\LON-SRV1\TeamDocuments.
+**Note**: Other computers on the network can now access this folder using the path \\LON-SVR1\TeamDocuments.
 :::
 
 ::: success
@@ -141,7 +141,7 @@ You need to create another share where users can create and modify files (higher
 7. [ ] Type **Everyone** in the user field and click **Add**.
 8. [ ] Change the **Permission Level** from **Reader** to **Contributor** (this allows users to modify files).
 9. [ ] Click **Share**.
-10. [ ] Note the share path (\\LON-SRV1\ProjectFiles).
+10. [ ] Note the share path (\\LON-SVR1\ProjectFiles).
 11. [ ] Click **Done**.
 
 ::: success
@@ -180,7 +180,7 @@ You will verify that shared folders are accessible from the network.
 If you have access to another computer (such as CLIENT1):
 
 1. [ ] On the other computer, open **File Explorer**.
-2. [ ] In the address bar, type: `\\LON-SRV1\TeamDocuments`
+2. [ ] In the address bar, type: `\\LON-SVR1\TeamDocuments`
 3. [ ] Press **Enter**.
 4. [ ] You should see the contents of the shared folder (currently empty).
 5. [ ] Try to create a new file:
@@ -188,7 +188,7 @@ If you have access to another computer (such as CLIENT1):
    - Select **New** > **Text Document**
    - You should get a permission error because the share is Read-only
 6. [ ] Try the **ProjectFiles** share:
-   - In the address bar, type: `\\LON-SRV1\ProjectFiles`
+   - In the address bar, type: `\\LON-SVR1\ProjectFiles`
    - Press **Enter**
    - Try to create a new file - this should succeed because Contributor permissions allow modifications
 

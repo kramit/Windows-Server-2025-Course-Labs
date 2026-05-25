@@ -11,7 +11,7 @@ In this lab you will install and configure Git on a Windows Server lab machine, 
 ::: secondary
 The following must be in place before starting this lab:
 
-- You are signed in to **LON-SRV1** as `contoso\Administrator`
+- You are signed in to **LON-SVR1** as `contoso\Administrator`
 :::
 
 ::: warning
@@ -25,12 +25,12 @@ The following must be in place before starting this lab:
 ::: secondary
 **Scenario**
 
-Before using Git, you need to install it on LON-SRV1 and configure your identity. Git tags every commit with the author name and email address, so this configuration must be completed before your first commit.
+Before using Git, you need to install it on LON-SVR1 and configure your identity. Git tags every commit with the author name and email address, so this configuration must be completed before your first commit.
 :::
 
 ### Task 1: Install Git using Winget
 
-1. [ ] On **LON-SRV1**, open **Windows PowerShell** as Administrator.
+1. [ ] On **LON-SVR1**, open **Windows PowerShell** as Administrator.
 
 2. [ ] Run the following command to install Git:
 
@@ -76,7 +76,7 @@ git config --list
 :::
 
 ::: success
-**Results**: After completing this exercise, you will have successfully installed Git on LON-SRV1 and configured your identity for commit tracking.
+**Results**: After completing this exercise, you will have successfully installed Git on LON-SVR1 and configured your identity for commit tracking.
 :::
 
 ---
@@ -177,7 +177,7 @@ git log --oneline
 1. [ ] Append a new line to the script:
 
 ```powershell
-"Write-Host 'Server: LON-SRV1'" | Out-File server-info.ps1 -Append
+"Write-Host 'Server: LON-SVR1'" | Out-File server-info.ps1 -Append
 ```
 
 2. [ ] Review the change before staging:
@@ -363,7 +363,7 @@ git branch
 3. [ ] Add another line to `config.md`:
 
 ```powershell
-"Backup DC: LON-SRV2" | Out-File config.md -Append
+"Backup DC: LON-SVR2" | Out-File config.md -Append
 ```
 
 4. [ ] Review the change before staging:
@@ -395,7 +395,7 @@ git log --oneline --decorate
 Get-Content config.md
 ```
 
-2. [ ] Confirm that the file includes `Backup DC: LON-SRV2`.
+2. [ ] Confirm that the file includes `Backup DC: LON-SVR2`.
 
 3. [ ] Move HEAD to the previous commit:
 
@@ -409,7 +409,7 @@ git switch --detach HEAD~1
 Get-Content config.md
 ```
 
-5. [ ] Confirm that `Backup DC: LON-SRV2` is no longer shown.
+5. [ ] Confirm that `Backup DC: LON-SVR2` is no longer shown.
 
 ::: warning
 **Note**: You are now in detached HEAD state. This is useful for viewing an earlier version, but do not make new commits in this state during this lab.
@@ -455,7 +455,7 @@ dir
 Get-Content config.md
 ```
 
-8. [ ] Confirm that `Backup DC: LON-SRV2` is shown again.
+8. [ ] Confirm that `Backup DC: LON-SVR2` is shown again.
 
 ::: success
 **Results**: After completing this exercise, you will have successfully moved HEAD to earlier commits, inspected older file states, and returned to the master branch.
@@ -501,7 +501,7 @@ gitk --all
 
 3. [ ] Select the commit named **Add backup domain controller note**.
 
-4. [ ] Confirm that Gitk shows the added `Backup DC: LON-SRV2` line.
+4. [ ] Confirm that Gitk shows the added `Backup DC: LON-SVR2` line.
 
 5. [ ] Select the `master` branch label in the history graph.
 

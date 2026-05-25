@@ -11,7 +11,7 @@ In this lab, you will install the Hyper-V role on your Windows Server and create
 ::: secondary
 To complete this lab, you must have:
 - Completed Lab 0501 (Installing Server Roles and Managing Firewall)
-- Administrator access to LON-SRV1
+- Administrator access to LON-SVR1
 - Understanding of virtual machine concepts (basic)
 - Sufficient disk space (at least 10 GB free)
 :::
@@ -26,7 +26,7 @@ You need to install the Hyper-V virtualization role on your server. This enables
 
 ### Task 1: Install Hyper-V Role
 
-1. [ ] Connect to LON-SRV1 using Remote Desktop.
+1. [ ] Connect to LON-SVR1 using Remote Desktop.
 2. [ ] Open **Server Manager**.
 3. [ ] Click **Manage** > **Add Roles and Features**.
 4. [ ] Follow the wizard to the **Server Roles** page.
@@ -45,7 +45,7 @@ You need to install the Hyper-V virtualization role on your server. This enables
 
 After restart, verify Hyper-V is installed:
 
-1. [ ] Reconnect to LON-SRV1 via Remote Desktop.
+1. [ ] Reconnect to LON-SVR1 via Remote Desktop.
 2. [ ] Open **Server Manager**.
 3. [ ] Click on **Hyper-V** in the left panel (if available).
 4. [ ] Or open **Hyper-V Manager** from the Tools menu.
@@ -69,7 +69,7 @@ You will create a new virtual machine with basic configuration. This VM will be 
 1. [ ] In Server Manager, click **Tools** > **Hyper-V Manager**.
 2. [ ] Or press **Windows key + R**, type `virtmgmt.msc`, and click **OK**.
 3. [ ] Hyper-V Manager will open showing:
-   - Left panel: Server name (LON-SRV1)
+   - Left panel: Server name (LON-SVR1)
    - Middle panel: Actions and tasks
    - Right panel: Virtual machines (currently empty)
 

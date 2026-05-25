@@ -11,13 +11,13 @@ In this lab, you will use Server Manager, PowerShell remoting, and administrator
 ::: secondary
 **Scenario**
 
-You need to manage multiple servers from a single administrative console. You will add LON-DC1 and LON-SRV1 to Server Manager so you can view and manage them from one location.
+You need to manage multiple servers from a single administrative console. You will add LON-DC1 and LON-SVR1 to Server Manager so you can view and manage them from one location.
 :::
 
-### Task 1: Connect to LON-SRV1 and Open Server Manager
+### Task 1: Connect to LON-SVR1 and Open Server Manager
 
 1. [ ] In the lab environment, select **HOME**.
-2. [ ] From the server list, select **LON-SRV1**.
+2. [ ] From the server list, select **LON-SVR1**.
 3. [ ] In the **Username** field, enter the username shown for the selected VM on the **HOME** tab.
 4. [ ] In the **Password** field, enter the password shown for the selected VM on the **HOME** tab.
 5. [ ] In the **Tools** section, turn on **Enhanced mode**.
@@ -41,9 +41,9 @@ You need to manage multiple servers from a single administrative console. You wi
 6. [ ] In the computer list, select **LON-DC1**.
 7. [ ] Select **Add >**.
 8. [ ] Verify that **LON-DC1** appears in the **Selected** list.
-9. [ ] In the computer list, select **LON-SRV1**.
+9. [ ] In the computer list, select **LON-SVR1**.
 10. [ ] Select **Add >**.
-11. [ ] Verify that **LON-SRV1** appears in the **Selected** list.
+11. [ ] Verify that **LON-SVR1** appears in the **Selected** list.
 12. [ ] Select **OK**.
 13. [ ] Wait while Server Manager queries the selected servers.
 
@@ -51,14 +51,14 @@ You need to manage multiple servers from a single administrative console. You wi
 
 1. [ ] In **Server Manager**, review the left navigation pane.
 2. [ ] Verify that **LON-DC1** appears in the server list.
-3. [ ] Verify that **LON-SRV1** appears in the server list.
+3. [ ] Verify that **LON-SVR1** appears in the server list.
 4. [ ] Select **LON-DC1**.
 5. [ ] Verify that the details pane shows information for **LON-DC1**, such as the computer name, domain, operating system, and installed roles.
-6. [ ] Select **LON-SRV1**.
-7. [ ] Verify that the details pane shows information for **LON-SRV1**.
+6. [ ] Select **LON-SVR1**.
+7. [ ] Verify that the details pane shows information for **LON-SVR1**.
 
 ::: success
-**Results**: After completing this exercise, you will have added LON-DC1 and LON-SRV1 to Server Manager for centralized administration.
+**Results**: After completing this exercise, you will have added LON-DC1 and LON-SVR1 to Server Manager for centralized administration.
 :::
 
 ## Exercise 2: Using PowerShell for Remote Administration
@@ -66,12 +66,12 @@ You need to manage multiple servers from a single administrative console. You wi
 ::: secondary
 **Scenario**
 
-You need to run administrative commands on LON-DC1 without opening a separate Remote Desktop session. You will use PowerShell remoting from LON-SRV1 to query information from LON-DC1.
+You need to run administrative commands on LON-DC1 without opening a separate Remote Desktop session. You will use PowerShell remoting from LON-SVR1 to query information from LON-DC1.
 :::
 
 ### Task 1: Open PowerShell as Administrator
 
-1. [ ] On LON-SRV1, open **Start**.
+1. [ ] On LON-SVR1, open **Start**.
 2. [ ] Search for **Terminal**.
 3. [ ] Select **Run as administrator** for **Terminal**.
 4. [ ] If prompted by **User Account Control**, select **Yes**.
@@ -89,7 +89,7 @@ You need to run administrative commands on LON-DC1 without opening a separate Re
 Get-ComputerInfo -Property CsComputerName,CsDomain,OsVersion
 ```
 
-2. [ ] Verify that **CsComputerName** shows `LON-SRV1`.
+2. [ ] Verify that **CsComputerName** shows `LON-SVR1`.
 3. [ ] Verify that **CsDomain** shows `CONTOSO`.
 4. [ ] Verify that **OsVersion** displays the Windows Server version.
 
@@ -119,7 +119,7 @@ Invoke-Command -ComputerName LON-DC1 -ScriptBlock { Get-Service | Where-Object {
 
 2. [ ] Review the returned service list.
 3. [ ] Verify that services such as **ADWS**, **Dns**, **EventLog**, or **NTDS** appear if those roles are installed on LON-DC1.
-4. [ ] Confirm that the command output is from LON-DC1 and not the local LON-SRV1 session.
+4. [ ] Confirm that the command output is from LON-DC1 and not the local LON-SVR1 session.
 
 ::: success
 **Results**: After completing this exercise, you will have used PowerShell remoting to run commands and retrieve service information from LON-DC1.
@@ -130,12 +130,12 @@ Invoke-Command -ComputerName LON-DC1 -ScriptBlock { Get-Service | Where-Object {
 ::: secondary
 **Scenario**
 
-You need a browser-based tool for managing Windows Server. You will download and install Windows Admin Center on LON-SRV1, then open it and review the management interface.
+You need a browser-based tool for managing Windows Server. You will download and install Windows Admin Center on LON-SVR1, then open it and review the management interface.
 :::
 
 ### Task 1: Download Windows Admin Center
 
-1. [ ] Return to the elevated PowerShell session on LON-SRV1.
+1. [ ] Return to the elevated PowerShell session on LON-SVR1.
 2. [ ] Run the following command to download the Windows Admin Center installer from Microsoft.
 
 ```powershell
@@ -223,7 +223,7 @@ Start-Process "$env:USERPROFILE\Downloads\WindowsAdminCenter.exe"
 :::
 
 ::: success
-**Results**: After completing this exercise, you will have downloaded, installed, and opened Windows Admin Center on LON-SRV1.
+**Results**: After completing this exercise, you will have downloaded, installed, and opened Windows Admin Center on LON-SVR1.
 :::
 
 ## Exercise 4: Reviewing Role-Based Administration
@@ -231,12 +231,12 @@ Start-Process "$env:USERPROFILE\Downloads\WindowsAdminCenter.exe"
 ::: secondary
 **Scenario**
 
-You need to understand which users and groups can administer a server. You will review the local Administrators group on LON-SRV1 and identify domain-based administrative membership.
+You need to understand which users and groups can administer a server. You will review the local Administrators group on LON-SVR1 and identify domain-based administrative membership.
 :::
 
 ### Task 1: Review Local Administrator Group Membership
 
-1. [ ] Return to the elevated PowerShell session on LON-SRV1.
+1. [ ] Return to the elevated PowerShell session on LON-SVR1.
 2. [ ] Run the following command to view members of the local **Administrators** group.
 
 ```powershell
@@ -253,7 +253,7 @@ Get-LocalGroupMember -Group "Administrators"
 :::
 
 ::: success
-**Results**: After completing this exercise, you will have reviewed how the local Administrators group controls administrative access on LON-SRV1.
+**Results**: After completing this exercise, you will have reviewed how the local Administrators group controls administrative access on LON-SVR1.
 :::
 
 ## Exercise 5: Verifying Remote Administration Skills
@@ -267,7 +267,7 @@ You have used several Windows Server administration methods. You will verify tha
 ### Task 1: Verify Lab Outcomes
 
 1. [ ] In **Server Manager**, verify that **LON-DC1** is listed as a managed server.
-2. [ ] In **Server Manager**, verify that **LON-SRV1** is listed as a managed server.
+2. [ ] In **Server Manager**, verify that **LON-SVR1** is listed as a managed server.
 3. [ ] In PowerShell, run the following command to confirm remote command execution still works.
 
 ```powershell

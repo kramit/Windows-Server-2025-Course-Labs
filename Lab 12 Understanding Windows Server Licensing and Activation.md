@@ -10,7 +10,7 @@ In this lab, you will review Windows Server licensing models, check your current
 
 ::: secondary
 To complete this lab, you must have:
-- Administrator access to LON-SRV1
+- Administrator access to LON-SVR1
 - Understanding of licensing concepts (basic)
 :::
 
@@ -24,7 +24,7 @@ You need to verify that your Windows Server is properly licensed and activated. 
 
 ### Task 1: Check License Status in Settings
 
-1. [ ] Connect to LON-SRV1 using Remote Desktop.
+1. [ ] Connect to LON-SVR1 using Remote Desktop.
 2. [ ] Right-click the **Windows Start button** and select **Settings**.
 3. [ ] In the search box, type **Activation** and press **Enter**.
 4. [ ] Click on **Activation** in the results.

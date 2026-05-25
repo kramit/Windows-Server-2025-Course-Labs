@@ -31,55 +31,38 @@ To complete this lab, you must have:
 Your organization wants to allow secure command-line administration in addition to graphical administration. Windows Server 2025 includes OpenSSH, but the SSH service must be enabled and validated before administrators can use it.
 :::
 
-### Task 1: Connect to LON-SVR1
+### Task 1: Install OpenSSH Server via Server Manager
 
-1. [ ] In the lab platform, select **HOME**.
-2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
-3. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
-4. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
-5. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
-6. [ ] Wait for the Windows Server desktop to appear.
+1. [ ] Connect to LON-SRV1 using Remote Desktop.
+2. [ ] Open Server Manager.
+3. [ ] Click **Manage** menu and select **Add Roles and Features**.
+4. [ ] Follow the wizard to the **Features** page.
+5. [ ] Scroll down to find **OpenSSH Server**.
+6. [ ] Check the checkbox next to **OpenSSH Server**.
+7. [ ] Click **Next >** and then **Install**.
+8. [ ] Wait for installation to complete, then click **Close**.
 
-::: success
-**Results**: After completing this task, you are connected to LON-SVR1 through the lab platform.
-:::
+### Task 2: Verify OpenSSH Installation
 
-### Task 2: Review Remote SSH Access in Server Manager
-
-1. [ ] If **Server Manager** is already open, bring it to the front.
-2. [ ] If **Server Manager** is not open, select **Start**, type **Server Manager**, and select **Server Manager** from the search results.
-3. [ ] In the left navigation pane, select **Local Server**.
-4. [ ] In the **Properties** tile, locate **Remote SSH Access**.
-5. [ ] Review whether **Remote SSH Access** is shown as **Enabled** or **Disabled**.
-6. [ ] If **Remote SSH Access** is **Disabled**, select **Disabled**.
-7. [ ] In the **Remote SSH Access** window, select **Enable remote SSH access to this server**.
-8. [ ] Select **OK**.
-9. [ ] In **Server Manager**, select **Refresh** if the status does not update immediately.
-
-::: success
-**Results**: After completing this task, Remote SSH Access is enabled on LON-SVR1.
-:::
-
-### Task 3: Validate OpenSSH with PowerShell
-
-1. [ ] Select **Start**.
-2. [ ] Type **PowerShell**.
-3. [ ] Right-click **Windows PowerShell** and select **Run as administrator**.
-4. [ ] In the **User Account Control** dialog, select **Yes** if prompted.
-5. [ ] Verify the installed OpenSSH capabilities:
+1. [ ] Open PowerShell as Administrator.
+2. [ ] Type the following command to verify OpenSSH is installed:
 
 ```powershell
-Get-WindowsCapability -Online | Where-Object Name -like 'OpenSSH*' |
-    Select-Object Name, State
+Get-WindowsFeature -Name OpenSSH-Server* | Select-Object DisplayName, InstallState
 ```
 
-6. [ ] Verify that the OpenSSH SSH Server service is running and starts automatically:
+3. [ ] Press **Enter**.
+4. [ ] PowerShell should show:
+   - **Display Name**: OpenSSH Server
+   - **Install State**: Installed
 
-```powershell
-Get-Service -Name sshd | Select-Object Name, Status, StartType
-```
+::: success
+**Results**: After completing this task, OpenSSH Server is installed on LON-SRV1.
+:::
 
-7. [ ] If the service is not running, start it:
+### Task 3: Start SSH Service
+
+1. [ ] In PowerShell, start the SSH service:
 
 ```powershell
 Start-Service -Name sshd

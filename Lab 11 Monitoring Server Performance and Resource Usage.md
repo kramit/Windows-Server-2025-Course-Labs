@@ -11,7 +11,7 @@ In this lab, you will use Windows Server tools to monitor system performance. Yo
 ::: secondary
 To complete this lab, you must have:
 - Completed Lab 0401 (PowerShell Command-Line Administration)
-- Administrator access to LON-SRV1
+- Administrator access to LON-SVR1
 - Understanding of system resources (CPU, Memory, Disk)
 :::
 
@@ -25,7 +25,7 @@ Task Manager provides real-time monitoring of system resources. You will use it 
 
 ### Task 1: Open Task Manager and View Performance
 
-1. [ ] Connect to LON-SRV1 using Remote Desktop.
+1. [ ] Connect to LON-SVR1 using Remote Desktop.
 2. [ ] Right-click on the **Windows Start button** or press **Windows key + X**.
 3. [ ] Click on **Task Manager**.
 4. [ ] Task Manager will open. Click on the **Performance** tab.
