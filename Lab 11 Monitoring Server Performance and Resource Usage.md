@@ -25,21 +25,35 @@ Task Manager provides real-time monitoring of system resources. You will use it 
 
 ### Task 1: Open Task Manager and View Performance
 
-1. [ ] Connect to LON-SVR1 using Remote Desktop.
-2. [ ] Right-click on the **Windows Start button** or press **Windows key + X**.
-3. [ ] Click on **Task Manager**.
-4. [ ] Task Manager will open. Click on the **Performance** tab.
-5. [ ] You will see four graphs:
+1. [ ] In the lab platform, select **HOME**.
+
+2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
+
+3. [ ] Use the **Username** and **Password** values shown for **LON-SVR1** on the **HOME** tab.
+
+4. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+
+5. [ ] Wait for the Windows Server desktop to appear.
+
+6. [ ] Right-click the **Start** button.
+
+7. [ ] Select **Task Manager**.
+
+8. [ ] In **Task Manager**, select the **Performance** tab.
+
+9. [ ] You will see four graphs:
    - **CPU**: Processor usage (should be low at idle, typically 0-5%)
    - **Memory**: RAM usage (should show used vs. total)
    - **Disk**: Disk I/O activity
    - **Network**: Network activity
-6. [ ] Look at the **CPU** section:
+
+10. [ ] Look at the **CPU** section:
    - **Utilization**: Current percentage of CPU being used
    - **Speed**: Current processor clock speed
    - **Processes**: Number of processes running
    - **Threads**: Number of threads running
-7. [ ] Look at the **Memory** section:
+
+11. [ ] Look at the **Memory** section:
    - **In use**: RAM currently being used
    - **Available**: RAM still available
    - **Committed**: Memory committed (in use + reserved)
@@ -57,7 +71,9 @@ $sum = 0; for($i=0; $i -lt 100000000; $i++) { $sum += $i }; Write-Host "Calculat
 ```
 
 2. [ ] While this runs, watch the Task Manager Performance tab.
+
 3. [ ] You should see the **CPU** graph spike upward indicating increased processor usage.
+
 4. [ ] When complete, the CPU graph should return to normal levels.
 
 ::: success
@@ -75,27 +91,43 @@ Performance Monitor provides detailed performance tracking with customizable cou
 ### Task 1: Open Performance Monitor
 
 1. [ ] In Server Manager, click **Tools** menu.
+
 2. [ ] Click **Performance Monitor**.
+
 3. [ ] Performance Monitor will open showing a graph view.
+
 4. [ ] On the left panel, click **Performance Monitor** to see real-time graphing.
+
 5. [ ] The display will show a real-time graph with several colored lines representing different performance counters.
 
 ### Task 2: Add Performance Counters
 
 1. [ ] In Performance Monitor, click the **+** (green plus) button on the toolbar.
+
 2. [ ] The **Add Counters** dialog will open.
+
 3. [ ] You will see:
    - **Select counters from computer**: Choose which computer to monitor
    - **Available counters**: Counters you can monitor
+
 4. [ ] Expand **Processor** by clicking the arrow.
+
 5. [ ] Select **% Processor Time** (shows overall CPU usage).
+
 6. [ ] Click **Add >** to add this counter to the display.
+
 7. [ ] Expand **Memory**.
+
 8. [ ] Select **Available MBytes**.
+
 9. [ ] Click **Add >**.
+
 10. [ ] Expand **PhysicalDisk**.
+
 11. [ ] Select **Disk Time (%)**.
+
 12. [ ] Click **Add >**.
+
 13. [ ] Click **OK** to close the dialog.
 
 ::: success
@@ -105,14 +137,17 @@ Performance Monitor provides detailed performance tracking with customizable cou
 ### Task 3: Observe Performance Trends
 
 1. [ ] Watch the graph as the counters update in real-time.
+
 2. [ ] Each colored line represents one counter:
    - Red might be CPU usage
    - Blue might be Available Memory
    - Green might be Disk Time
+
 3. [ ] Normal server behavior shows:
    - CPU: Usually low (0-10%), spikes during activity
    - Available Memory: Should be above 0 MBytes (if it reaches 0, server may slow down)
    - Disk Time: Low during idle, increases during file operations
+
 4. [ ] These baselines help you identify problems later.
 
 ::: success
@@ -130,7 +165,9 @@ Resource Monitor shows detailed information about resource usage by individual p
 ### Task 1: Open Resource Monitor
 
 1. [ ] Close Performance Monitor.
+
 2. [ ] In Server Manager **Tools** menu, click **Resource Monitor**.
+
 3. [ ] Resource Monitor will open with several tabs:
    - **Overview**: Summary of all resources
    - **CPU**: CPU usage by process
@@ -141,24 +178,31 @@ Resource Monitor shows detailed information about resource usage by individual p
 ### Task 2: Analyze Process Resource Usage
 
 1. [ ] Click on the **CPU** tab.
+
 2. [ ] You will see a list of processes with columns:
    - **Image**: Process name (e.g., System, csrss, services)
    - **PID**: Process ID
    - **Description**: What the process is
    - **CPU %**: Percentage of CPU the process is using
    - **Avg. CPU Time**: Average CPU time per operation
+
 3. [ ] Look for any process using significant CPU (more than 5% when idle).
+
 4. [ ] High CPU usage by an unexpected process might indicate a problem.
 
 ### Task 3: Monitor Memory Usage
 
 1. [ ] Click on the **Memory** tab.
+
 2. [ ] You will see processes sorted by memory usage.
+
 3. [ ] Look at the columns:
    - **Image**: Process name
    - **Memory (Private)**: Unique memory used by the process
    - **Memory (Working Set)**: Total memory used by the process
+
 4. [ ] Normal Windows Server processes (System, services, etc.) should use reasonable memory.
+
 5. [ ] If a third-party application uses more than 50% of total memory, it might need investigation.
 
 ::: success
@@ -176,6 +220,7 @@ PowerShell can gather performance data programmatically and is useful for automa
 ### Task 1: Check CPU and Memory Usage
 
 1. [ ] Open PowerShell as Administrator.
+
 2. [ ] Type the following command:
 
 ```powershell
@@ -183,6 +228,7 @@ Get-Process | Select-Object Name, @{Name="CPUPercent";Expression={$_.CPU}}, @{Na
 ```
 
 3. [ ] Press **Enter**.
+
 4. [ ] This shows processes using more than 50 MB of memory.
 
 ### Task 2: Check Disk Space Usage
@@ -194,7 +240,9 @@ Get-Volume | Select-Object DriveLetter, FileSystem, Size, @{Name="SizeGB";Expres
 ```
 
 2. [ ] Press **Enter**.
+
 3. [ ] This shows disk usage in gigabytes and percentage used.
+
 4. [ ] If any disk is more than 90% full, it needs attention.
 
 ::: success

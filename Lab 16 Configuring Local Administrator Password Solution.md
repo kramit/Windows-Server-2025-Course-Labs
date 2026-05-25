@@ -56,20 +56,34 @@ You need to install LAPS components on your domain. LAPS requires software on bo
 
 ### Task 1: Install LAPS on Domain Controller
 
-1. [ ] Connect to LON-DC1 (domain controller) via Remote Desktop.
-2. [ ] Download LAPS from Microsoft:
+1. [ ] In the lab platform, select **HOME**.
+
+2. [ ] From the **Select VM** dropdown, select **LON-DC1**.
+
+3. [ ] Use the **Username** and **Password** values shown for **LON-DC1** on the **HOME** tab.
+
+4. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+
+5. [ ] Wait for the Windows Server desktop to appear.
+
+6. [ ] Download LAPS from Microsoft:
    - Open Edge browser
    - Navigate to: `https://www.microsoft.com/download/details.aspx?id=46899`
    - Look for **Windows LAPS** (latest version)
-3. [ ] Download the appropriate version (64-bit for Windows Server 2025).
-4. [ ] Run the installer by double-clicking the downloaded MSI file.
-5. [ ] The LAPS installer will open. Accept the license terms.
-6. [ ] Click **Install** to install LAPS on the domain controller.
-7. [ ] Once installation completes, click **Finish**.
 
-::: warning
-**Note**: If LAPS is already installed, ask your instructor. You may skip this task.
-:::
+7. [ ] Download the appropriate version (64-bit for Windows Server 2025).
+
+8. [ ] Run the installer by double-clicking the downloaded MSI file.
+
+9. [ ] The LAPS installer will open. Accept the license terms.
+
+10. [ ] Click **Install** to install LAPS on the domain controller.
+
+11. [ ] Once installation completes, click **Finish**.
+
+   ::: warning
+   **Note**: If LAPS is already installed, ask your instructor. You may skip this task.
+   :::
 
 ::: success
 **Results**: After completing this task, LAPS is installed on the domain controller.
@@ -78,6 +92,7 @@ You need to install LAPS components on your domain. LAPS requires software on bo
 ### Task 2: Extend Active Directory Schema
 
 1. [ ] Open PowerShell as Administrator on LON-DC1.
+
 2. [ ] Run the LAPS schema extension:
 
 ```powershell
@@ -85,7 +100,9 @@ Update-AdmPwdADSchema -Verbose
 ```
 
 3. [ ] Press **Enter**.
+
 4. [ ] PowerShell will extend the Active Directory schema to support LAPS password storage.
+
 5. [ ] You should see a success message.
 
 ::: success
@@ -105,25 +122,34 @@ You will create a Group Policy that enables LAPS on domain member servers. This 
 1. [ ] Open **Group Policy Management** on LON-DC1:
    - Open **Server Manager**
    - Click **Tools** > **Group Policy Management**
+
 2. [ ] Expand **Forest** > **Domains** > **contoso.com**.
+
 3. [ ] Right-click on **contoso.com** and select **Create a GPO in this domain, and Link it here**.
+
 4. [ ] In the dialog:
    - **Name**: Type `LAPS Configuration`
+
 5. [ ] Click **OK** to create the policy.
+
 6. [ ] The new GPO will appear. Right-click on it and select **Edit**.
 
 ### Task 2: Configure LAPS Policy Settings
 
 1. [ ] Group Policy Editor will open.
+
 2. [ ] Navigate to: **Computer Configuration** > **Policies** > **Administrative Templates** > **LAPS**
+
 3. [ ] Look for and configure:
    - **Enable local admin password management**: Double-click this policy
    - Select **Enabled**
    - Click **OK**
+
 4. [ ] Back in the policies folder, also configure:
    - **Password Settings**: Double-click
    - Set password complexity and length requirements
    - Click **OK**
+
 5. [ ] Close the Group Policy Editor.
 
 ::: success
@@ -140,12 +166,22 @@ You need to install LAPS client on LON-SVR1 so it can receive LAPS policy and ma
 
 ### Task 1: Install LAPS on LON-SVR1
 
-1. [ ] Connect to LON-SVR1 via Remote Desktop.
-2. [ ] Download and install LAPS the same way as on LON-DC1:
+1. [ ] In the lab platform, select **HOME**.
+
+2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
+
+3. [ ] Use the **Username** and **Password** values shown for **LON-SVR1** on the **HOME** tab.
+
+4. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+
+5. [ ] Wait for the Windows Server desktop to appear.
+
+6. [ ] Download and install LAPS the same way as on LON-DC1:
    - Download from Microsoft website
    - Run the MSI installer
    - Accept license and click Install
-3. [ ] Once installation completes, the LAPS client is ready.
+
+7. [ ] Once installation completes, the LAPS client is ready.
 
 ::: success
 **Results**: After completing this task, LAPS is installed on the member server.
@@ -154,6 +190,7 @@ You need to install LAPS client on LON-SVR1 so it can receive LAPS policy and ma
 ### Task 2: Force Group Policy Update
 
 1. [ ] On LON-SVR1, open PowerShell as Administrator.
+
 2. [ ] Force the server to apply the LAPS Group Policy immediately:
 
 ```powershell
@@ -161,7 +198,9 @@ gpupdate /force
 ```
 
 3. [ ] Press **Enter**.
+
 4. [ ] PowerShell will apply Group Policy, including LAPS settings.
+
 5. [ ] This may take 1-2 minutes.
 
 ::: success
@@ -179,6 +218,7 @@ Once LAPS is configured, administrator passwords are automatically managed. You 
 ### Task 1: Wait for Password to Be Set
 
 1. [ ] LAPS generates the first password within 30 minutes of policy application.
+
 2. [ ] To force immediate password change, run on LON-SVR1:
 
 ```powershell
@@ -186,6 +226,7 @@ Invoke-LapsPolicyRefresh
 ```
 
 3. [ ] This forces the local admin password to be changed immediately.
+
 4. [ ] The new password is stored in Active Directory automatically.
 
 ::: success
@@ -195,14 +236,20 @@ Invoke-LapsPolicyRefresh
 ### Task 2: Retrieve Password from Active Directory
 
 1. [ ] Go back to LON-DC1.
+
 2. [ ] Open **Active Directory Users and Computers**.
+
 3. [ ] Navigate to the computer object **LON-SVR1**.
+
 4. [ ] Right-click on **LON-SVR1** and select **Properties**.
+
 5. [ ] Click on the **LAPS** tab (or look for LAPS properties if tab is not visible).
+
 6. [ ] You should see:
    - **Stored password**: The encrypted password
    - **Password expiration time**: When it will change next
    - **MS-MCS-AdmPwd**: The attribute storing the password (encrypted)
+
 7. [ ] To view the actual password, use PowerShell:
 
 ```powershell
@@ -211,9 +258,9 @@ Get-AdmPwdPassword -ComputerName LON-SVR1
 
 8. [ ] This will display the current local admin password for the server.
 
-::: warning
-**Note**: Only authorized administrators should have permission to retrieve LAPS passwords. Use discretion.
-:::
+   ::: warning
+   **Note**: Only authorized administrators should have permission to retrieve LAPS passwords. Use discretion.
+   :::
 
 ::: success
 **Results**: After completing this task, you can retrieve LAPS passwords from Active Directory.

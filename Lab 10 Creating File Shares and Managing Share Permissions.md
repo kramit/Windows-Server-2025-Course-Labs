@@ -25,12 +25,25 @@ Your organization needs to share documents with team members. You will create a 
 
 ### Task 1: Create a Folder for Sharing
 
-1. [ ] Connect to LON-SVR1 using Remote Desktop.
-2. [ ] Open **File Explorer** by pressing **Windows key + E**.
-3. [ ] Navigate to **C:\ drive**.
-4. [ ] Right-click in the empty space and select **New** > **Folder**.
-5. [ ] Name the new folder **TeamDocuments**.
-6. [ ] Press **Enter** to confirm.
+1. [ ] In the lab platform, select **HOME**.
+
+2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
+
+3. [ ] Use the **Username** and **Password** values shown for **LON-SVR1** on the **HOME** tab.
+
+4. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+
+5. [ ] Wait for the Windows Server desktop to appear.
+
+6. [ ] Open **File Explorer** from the taskbar or from **Start**.
+
+7. [ ] Navigate to the **C:** drive.
+
+8. [ ] Right-click in the empty space and select **New** > **Folder**.
+
+9. [ ] Name the new folder **TeamDocuments**.
+
+10. [ ] Press **Enter** to confirm.
 
 ::: success
 **Results**: After completing this task, you have created a folder named TeamDocuments.
@@ -39,14 +52,23 @@ Your organization needs to share documents with team members. You will create a 
 ### Task 2: Create a Share
 
 1. [ ] Right-click on the **TeamDocuments** folder.
+
 2. [ ] Click on **Give access to** > **Specific people...** (or **Properties** if the first option is not available).
+
 3. [ ] If you clicked Properties, go to the **Sharing** tab and click **Share...**.
+
 4. [ ] A **File Sharing** window will open asking **Who do you want to share with?**
+
 5. [ ] In the field, type **Everyone** to share with all network users.
+
 6. [ ] Click **Add**.
+
 7. [ ] You will see **Everyone** appears in the user list.
+
 8. [ ] Look at the **Permission Level** dropdown next to Everyone. It should default to **Reader**.
+
 9. [ ] This gives read-only access. Leave it as **Reader** for now.
+
 10. [ ] Click **Share** to create the network share.
 
 ::: success
@@ -56,13 +78,16 @@ Your organization needs to share documents with team members. You will create a 
 ### Task 3: Find the Share Path
 
 1. [ ] Once sharing is configured, a dialog will show the share path.
+
 2. [ ] The share path will be something like: `\\LON-SVR1\TeamDocuments`
+
 3. [ ] This is the network path other users can use to access the share.
+
 4. [ ] Click **Done** to close the dialog.
 
-::: warning
-**Note**: Other computers on the network can now access this folder using the path \\LON-SVR1\TeamDocuments.
-:::
+   ::: warning
+   **Note**: Other computers on the network can now access this folder using the path \\LON-SVR1\TeamDocuments.
+   :::
 
 ::: success
 **Results**: After completing this task, you know the network path to your share.
@@ -79,29 +104,40 @@ Share permissions and NTFS permissions work together. You need to understand how
 ### Task 1: View Share Permissions
 
 1. [ ] Right-click on the **TeamDocuments** folder.
+
 2. [ ] Click **Properties**.
+
 3. [ ] Click on the **Sharing** tab.
+
 4. [ ] Click **Advanced Sharing...** button.
+
 5. [ ] The **Advanced Sharing** dialog will open.
+
 6. [ ] You should see:
    - **Share this folder**: Checked (folder is shared)
    - **Share name**: TeamDocuments
    - **Comments**: (empty, for optional description)
    - **User limit**: Maximum users allowed (typically "No limit")
+
 7. [ ] Click the **Permissions** button to view share permissions.
 
 ### Task 2: Examine Share Permissions
 
 1. [ ] The **Permissions for TeamDocuments** dialog will open.
+
 2. [ ] You will see:
    - **Group or user names**: Everyone
    - **Permissions**: 
      - Allow: Read (checked)
      - Allow: Change (unchecked)
      - Allow: Full Control (unchecked)
+
 3. [ ] This means users with the share have **Read-only** access.
+
 4. [ ] If you wanted users to be able to create and modify files, you would check **Change**.
+
 5. [ ] Click **Cancel** to close without making changes.
+
 6. [ ] Click **Cancel** again to close Advanced Sharing.
 
 ::: success
@@ -133,15 +169,25 @@ You need to create another share where users can create and modify files (higher
 ### Task 1: Create Another Folder
 
 1. [ ] Open File Explorer and navigate to C:\.
+
 2. [ ] Create a new folder named **ProjectFiles**.
+
 3. [ ] Right-click on **ProjectFiles**.
+
 4. [ ] Click **Properties**.
+
 5. [ ] Click the **Sharing** tab.
+
 6. [ ] Click **Share...**.
+
 7. [ ] Type **Everyone** in the user field and click **Add**.
+
 8. [ ] Change the **Permission Level** from **Reader** to **Contributor** (this allows users to modify files).
+
 9. [ ] Click **Share**.
+
 10. [ ] Note the share path (\\LON-SVR1\ProjectFiles).
+
 11. [ ] Click **Done**.
 
 ::: success
@@ -151,16 +197,22 @@ You need to create another share where users can create and modify files (higher
 ### Task 2: Configure NTFS Permissions
 
 1. [ ] The sharing dialog should still be open. Click on the **Security** tab.
+
 2. [ ] If Properties closed, right-click **ProjectFiles** and select **Properties** > **Security** tab.
+
 3. [ ] Click **Edit** to modify permissions.
+
 4. [ ] Click **Everyone** in the user list.
+
 5. [ ] Verify the following permissions are checked for Everyone:
    - **Modify**: This allows users to change files
    - **Read & Execute**: This allows users to read and run files
    - **List Folder Contents**: This allows users to see files in the folder
    - **Read**: This allows reading files
    - **Write**: This allows writing/creating files
+
 6. [ ] If **Modify** is not checked, check it now.
+
 7. [ ] Click **Apply** and **OK**.
 
 ::: success
@@ -180,21 +232,26 @@ You will verify that shared folders are accessible from the network.
 If you have access to another computer (such as CLIENT1):
 
 1. [ ] On the other computer, open **File Explorer**.
+
 2. [ ] In the address bar, type: `\\LON-SVR1\TeamDocuments`
+
 3. [ ] Press **Enter**.
+
 4. [ ] You should see the contents of the shared folder (currently empty).
+
 5. [ ] Try to create a new file:
    - Right-click in the empty space
    - Select **New** > **Text Document**
    - You should get a permission error because the share is Read-only
+
 6. [ ] Try the **ProjectFiles** share:
    - In the address bar, type: `\\LON-SVR1\ProjectFiles`
    - Press **Enter**
    - Try to create a new file - this should succeed because Contributor permissions allow modifications
 
-::: warning
-**Note**: If you don't have access to another computer, you can test shares locally by mapping network drives. Ask your instructor for assistance.
-:::
+   ::: warning
+   **Note**: If you don't have access to another computer, you can test shares locally by mapping network drives. Ask your instructor for assistance.
+   :::
 
 ::: success
 **Results**: After completing this task, you have verified that share permissions are working correctly.
@@ -211,6 +268,7 @@ PowerShell can manage shares with powerful scripting capabilities. You will use 
 ### Task 1: List All Shares
 
 1. [ ] Open PowerShell as Administrator.
+
 2. [ ] Type the following command:
 
 ```powershell
@@ -218,6 +276,7 @@ Get-SmbShare | Select-Object Name, Path, Description | Format-Table
 ```
 
 3. [ ] Press **Enter**.
+
 4. [ ] PowerShell will display all shares on the server:
    - **Name**: Share name (TeamDocuments, ProjectFiles, etc.)
    - **Path**: Full folder path (C:\TeamDocuments, C:\ProjectFiles, etc.)
@@ -236,6 +295,7 @@ Get-SmbShareAccess -Name TeamDocuments | Select-Object AccountName, AccessRight,
 ```
 
 2. [ ] Press **Enter**.
+
 3. [ ] PowerShell will show:
    - **AccountName**: Which user/group has access (Everyone, Domain Admins, etc.)
    - **AccessRight**: What permission (Read, Change, Full)

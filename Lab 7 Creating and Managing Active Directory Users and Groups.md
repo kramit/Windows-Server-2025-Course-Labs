@@ -26,18 +26,29 @@ You need to manage users and groups in the contoso.com domain. You will connect 
 ### Task 1: Open Active Directory Users and Computers
 
 1. [ ] In the lab platform, select **HOME**.
+
 2. [ ] From the **Select VM** dropdown, select **LON-DC1**.
+
 3. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
+
 4. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
+
 5. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+
 6. [ ] Wait for the Windows Server desktop to appear.
+
 7. [ ] If **Server Manager** is already open, bring it to the front.
+
 8. [ ] If **Server Manager** is not open, select **Start**, type **Server Manager**, and select **Server Manager** from the search results.
+
 9. [ ] Click on **Tools** menu at the top.
+
 10. [ ] Look for and click on **Active Directory Users and Computers**.
+
 11. [ ] The Active Directory Users and Computers window will open showing:
    - Left panel: A tree structure with **Active Directory Users and Computers**
    - Right panel: Contents of the selected container
+
 12. [ ] The tree should show:
    - **contoso.com** (your domain)
    - **Builtin**
@@ -52,12 +63,15 @@ You need to manage users and groups in the contoso.com domain. You will connect 
 ### Task 2: Navigate the Active Directory Structure
 
 1. [ ] Click on the **+** symbol next to **contoso.com** to expand it.
+
 2. [ ] You will see the organizational structure of your domain:
    - **Builtin** - System accounts and groups
    - **Computers** - Computer accounts joined to the domain
    - **Users** - User accounts in the domain
    - Possibly **OUs** (organizational units) for specific departments
+
 3. [ ] Click on **Users** to see user accounts in your domain.
+
 4. [ ] You should see accounts like:
    - **Administrator** - The domain administrator account
    - **Guest** - Default guest account
@@ -78,8 +92,11 @@ You need to create a new user account for an employee joining the company. You w
 ### Task 1: Create a User Account
 
 1. [ ] In Active Directory Users and Computers, click on **Users** in the left panel.
+
 2. [ ] Right-click in the empty area of the right panel.
+
 3. [ ] A context menu will appear. Click on **New** > **User**.
+
 4. [ ] The **New Object - User** dialog will open with fields for:
    - **First name**: Type `John`
    - **Last name**: Type `Smith`
@@ -87,22 +104,26 @@ You need to create a new user account for an employee joining the company. You w
    - **User logon name**: Type `jsmith`
    - **User logon name (pre-Windows 2000)**: Should auto-populate as `contoso\jsmith`
 
-::: warning
-**Note**: The user logon name must be unique in the domain. If "jsmith" already exists, use a different name like "jsmith2" or "jsmith123".
-:::
+   ::: warning
+   **Note**: The user logon name must be unique in the domain. If "jsmith" already exists, use a different name like "jsmith2" or "jsmith123".
+   :::
 
 ### Task 2: Set User Password
 
 1. [ ] Click **Next >** to proceed to the next page.
+
 2. [ ] The **Password** page will appear.
+
 3. [ ] Enter a temporary password in both **Password** and **Confirm password** fields. For example: `TempPassword123!`
 
-::: warning
-**Note**: This should be a strong password with uppercase, lowercase, numbers, and special characters. The user will be forced to change this password on first login.
-:::
+   ::: warning
+   **Note**: This should be a strong password with uppercase, lowercase, numbers, and special characters. The user will be forced to change this password on first login.
+   :::
 
 4. [ ] Check the checkbox for **User must change password at next logon**. This forces the user to change their temporary password.
+
 5. [ ] Make sure **Password never expires** is NOT checked (unless specifically required by your organization).
+
 6. [ ] Click **Next >** to continue.
 
 ::: success
@@ -115,7 +136,9 @@ You need to create a new user account for an employee joining the company. You w
    - Full name: John Smith
    - User logon name: CONTOSO\jsmith
    - Password: [hidden]
+
 2. [ ] Click **Finish** to create the user account.
+
 3. [ ] The user account **John Smith (jsmith)** will now appear in the Users list in the right panel.
 
 ::: success
@@ -125,6 +148,7 @@ You need to create a new user account for an employee joining the company. You w
 ### Task 4: Verify User Creation with PowerShell
 
 1. [ ] Open PowerShell as Administrator.
+
 2. [ ] Type the following command to verify the user was created:
 
 ```powershell
@@ -132,6 +156,7 @@ Get-ADUser -Identity jsmith | Select-Object Name, SamAccountName, UserPrincipalN
 ```
 
 3. [ ] Press **Enter**.
+
 4. [ ] PowerShell should display:
    - **Name**: John Smith
    - **SamAccountName**: jsmith (the short username)
@@ -153,14 +178,23 @@ You need to organize users into security groups to manage permissions and access
 ### Task 1: Create a Security Group
 
 1. [ ] In Active Directory Users and Computers, click on **Users** in the left panel.
+
 2. [ ] Right-click in the empty area of the right panel.
+
 3. [ ] Click on **New** > **Group**.
+
 4. [ ] The **New Object - Group** dialog will open.
+
 5. [ ] In the **Group name** field, type `IT Administrators`.
+
 6. [ ] The **Group name (pre-Windows 2000)** field should auto-populate as `IT Administrators`.
+
 7. [ ] For **Group scope**, select **Global** (the default).
+
 8. [ ] For **Group type**, select **Security** (the default).
+
 9. [ ] Click **OK** to create the group.
+
 10. [ ] The new group **IT Administrators** will appear in the Users list.
 
 ::: success
@@ -170,15 +204,25 @@ You need to organize users into security groups to manage permissions and access
 ### Task 2: Add User to Group
 
 1. [ ] In the Users list, find the group **IT Administrators** that you just created.
+
 2. [ ] Double-click on **IT Administrators** to open its properties.
+
 3. [ ] The **IT Administrators** group properties window will open with several tabs.
+
 4. [ ] Click on the **Members** tab.
+
 5. [ ] The tab will show "Members of this group" (currently empty).
+
 6. [ ] Click the **Add...** button.
+
 7. [ ] The **Select Users, Contacts, Computers, Service Accounts, or Groups** dialog will open.
+
 8. [ ] In the **Enter the object names to select** field, type `jsmith` (the user we created).
+
 9. [ ] Click **Check Names** to verify the name.
+
 10. [ ] The name should resolve and be underlined (showing it was found).
+
 11. [ ] Click **OK** to add the user to the group.
 
 ::: success
@@ -189,7 +233,9 @@ You need to organize users into security groups to manage permissions and access
 
 1. [ ] The Members tab should now show:
    - **jsmith**: John Smith
+
 2. [ ] Click **Apply** and **OK** to close the properties window.
+
 3. [ ] Now verify using PowerShell:
 
 ```powershell
@@ -197,9 +243,11 @@ Get-ADGroupMember -Identity "IT Administrators" | Select-Object Name, SamAccount
 ```
 
 4. [ ] Press **Enter**.
+
 5. [ ] PowerShell should display:
    - **Name**: John Smith
    - **SamAccountName**: jsmith
+
 6. [ ] This confirms the user is a member of the group.
 
 ::: success
@@ -217,11 +265,17 @@ Organizational Units (OUs) help organize users and computers by department or fu
 ### Task 1: Create an Organizational Unit
 
 1. [ ] In Active Directory Users and Computers, click on **contoso.com** in the left panel.
+
 2. [ ] Right-click on **contoso.com**.
+
 3. [ ] Click on **New** > **Organizational Unit**.
+
 4. [ ] The **New Object - Organizational Unit** dialog will open.
+
 5. [ ] In the **Name** field, type `Finance` (creating an OU for the Finance department).
+
 6. [ ] Click **OK** to create the OU.
+
 7. [ ] The new OU **Finance** will appear in the contoso.com tree structure.
 
 ::: success
@@ -231,16 +285,21 @@ Organizational Units (OUs) help organize users and computers by department or fu
 ### Task 2: Move User to Organizational Unit
 
 1. [ ] Click on the **+** symbol next to **Finance** OU to expand it.
+
 2. [ ] Click on **Users** in the left panel to show all current users.
+
 3. [ ] Find the user **John Smith (jsmith)** in the right panel.
+
 4. [ ] Drag **jsmith** from the Users folder to the **Finance** OU.
 
-::: warning
-**Note**: Alternatively, you can right-click jsmith, select Cut, then right-click in the Finance OU and select Paste.
-:::
+   ::: warning
+   **Note**: Alternatively, you can right-click jsmith, select Cut, then right-click in the Finance OU and select Paste.
+   :::
 
 5. [ ] The user will be moved to the Finance OU.
+
 6. [ ] Click the **Finance** OU in the left panel.
+
 7. [ ] Verify that **John Smith** appears in the right panel.
 
 ::: success
@@ -258,9 +317,13 @@ User accounts have many properties you can configure including contact informati
 ### Task 1: Open User Properties
 
 1. [ ] In Active Directory Users and Computers, select the **Finance** OU in the left panel.
+
 2. [ ] Find the user **John Smith (jsmith)** in the right panel.
+
 3. [ ] Right-click on **jsmith**.
+
 4. [ ] Click **Properties**.
+
 5. [ ] The user properties dialog will open with multiple tabs:
    - **General**: Basic information
    - **Address**: Office location and contact information
@@ -279,17 +342,26 @@ User accounts have many properties you can configure including contact informati
 ### Task 2: Configure User Information
 
 1. [ ] Click on the **General** tab to see the basic user information.
+
 2. [ ] In the **Description** field, type `Finance Department Employee`.
+
 3. [ ] Click on the **Organization** tab.
+
 4. [ ] Fill in the following information:
    - **Title**: `Junior Accountant`
    - **Department**: `Finance`
    - **Company**: `Contoso Ltd`
+
 5. [ ] Click on the **Telephones** tab.
+
 6. [ ] In the **Telephone number** field, type a phone number (for example, `555-1234`).
+
 7. [ ] Click on the **Address** tab.
+
 8. [ ] Fill in office location information if available.
+
 9. [ ] Click **Apply**.
+
 10. [ ] Click **OK** to save the user properties.
 
 ::: success
@@ -311,9 +383,13 @@ Your organization wants a junior administrator to help manage users and groups w
 ### Task 1: Start the Delegation of Control Wizard
 
 1. [ ] In **Active Directory Users and Computers**, select **contoso.com** in the left panel.
+
 2. [ ] Right-click **contoso.com**.
+
 3. [ ] Select **Delegate Control**.
+
 4. [ ] The **Delegation of Control Wizard** opens.
+
 5. [ ] On the **Welcome to the Delegation of Control Wizard** page, select **Next >**.
 
 ::: success
@@ -323,11 +399,17 @@ Your organization wants a junior administrator to help manage users and groups w
 ### Task 2: Select the User to Receive Delegated Control
 
 1. [ ] On the **Users or Groups** page, select **Add...**.
+
 2. [ ] In the **Select Users, Computers, or Groups** dialog, type `jsmith`.
+
 3. [ ] Select **Check Names**.
+
 4. [ ] Verify that the name resolves to **John Smith**.
+
 5. [ ] Select **OK**.
+
 6. [ ] Verify that **John Smith** appears in the **Selected users and groups** list.
+
 7. [ ] Select **Next >**.
 
 ::: success
@@ -337,31 +419,45 @@ Your organization wants a junior administrator to help manage users and groups w
 ### Task 3: Select Common Tasks to Delegate
 
 1. [ ] On the **Tasks to Delegate** page, make sure **Delegate the following common tasks** is selected.
+
 2. [ ] Select the following checkboxes:
    - **Create, delete, and manage user accounts**
    - **Reset user passwords and force password change at next logon**
    - **Read all user information**
    - **Modify the membership of a group**
+
 3. [ ] Leave **Join a computer to the domain**, **Manage Group Policy links**, and **Generate Resultant Set of Policy (Planning)** unchecked.
+
 4. [ ] Select **Next >**.
 
-::: warning
-**Note**: These delegated tasks allow routine account administration, but they do not make **jsmith** a member of **Domain Admins**. Delegation grants specific permissions on Active Directory objects.
-:::
+   ::: warning
+   **Note**: These delegated tasks allow routine account administration, but they do not make **jsmith** a member of **Domain Admins**. Delegation grants specific permissions on Active Directory objects.
+   :::
 
 ### Task 4: Complete and Verify the Delegation
 
 1. [ ] On the **Completing the Delegation of Control Wizard** page, review the selections.
+
 2. [ ] Confirm that the selected user is **John Smith** and the delegated tasks match the previous task.
+
 3. [ ] Select **Finish**.
+
 4. [ ] In **Active Directory Users and Computers**, select the **View** menu.
+
 5. [ ] If **Advanced Features** does not have a check mark next to it, select **Advanced Features**.
+
 6. [ ] Right-click **contoso.com** and select **Properties**.
+
 7. [ ] Select the **Security** tab.
+
 8. [ ] Select **Advanced**.
+
 9. [ ] On the **Permissions** tab, look for entries where the **Principal** is **John Smith** or **CONTOSO\jsmith**.
+
 10. [ ] Review the **Access** and **Applies to** columns for the delegated permissions.
+
 11. [ ] Select **Cancel** to close **Advanced Security Settings for contoso.com** without making changes.
+
 12. [ ] Select **Cancel** to close the domain properties window.
 
 ::: success
@@ -371,7 +467,9 @@ Your organization wants a junior administrator to help manage users and groups w
 ### Task 5: Review the Security Impact
 
 1. [ ] In your notes, record that **jsmith** can now perform selected account-management tasks in the **contoso.com** domain.
+
 2. [ ] Record that **jsmith** was not added to **Domain Admins**.
+
 3. [ ] Record that domain-level delegation is broad and that OU-level delegation is usually safer for production administration.
 
 ::: success
@@ -393,9 +491,13 @@ Administrators sometimes delete an Active Directory object by mistake. You will 
 ### Task 1: Open Active Directory Administrative Center
 
 1. [ ] If **Server Manager** is open, bring it to the front.
+
 2. [ ] In **Server Manager**, select the **Tools** menu.
+
 3. [ ] Select **Active Directory Administrative Center**.
+
 4. [ ] Wait for **Active Directory Administrative Center** to open.
+
 5. [ ] In the left navigation pane, select **contoso (local)** or **contoso.com**.
 
 ::: success
@@ -405,15 +507,20 @@ Administrators sometimes delete an Active Directory object by mistake. You will 
 ### Task 2: Enable Active Directory Recycle Bin
 
 1. [ ] In the right **Tasks** pane, look for the domain task named **Enable Recycle Bin...**.
+
 2. [ ] Select **Enable Recycle Bin...**.
+
 3. [ ] In the **Enable Recycle Bin Confirmation** message, read the warning that the action cannot be reversed.
+
 4. [ ] Select **OK** to enable Active Directory Recycle Bin.
+
 5. [ ] If a message appears that the Recycle Bin is already enabled, read the message and continue to the next task.
+
 6. [ ] If prompted to refresh Active Directory Administrative Center, select **OK**.
 
-::: warning
-**Note**: Active Directory Recycle Bin is different from the Windows desktop Recycle Bin. It helps recover deleted Active Directory objects, such as users, groups, computers, and OUs.
-:::
+   ::: warning
+   **Note**: Active Directory Recycle Bin is different from the Windows desktop Recycle Bin. It helps recover deleted Active Directory objects, such as users, groups, computers, and OUs.
+   :::
 
 ::: success
 **Results**: After completing this task, Active Directory Recycle Bin is enabled for the **contoso.com** forest or you have confirmed that it was already enabled.
@@ -422,9 +529,13 @@ Administrators sometimes delete an Active Directory object by mistake. You will 
 ### Task 3: Review the Deleted Objects Container
 
 1. [ ] In **Active Directory Administrative Center**, refresh the domain view if prompted.
+
 2. [ ] In the left navigation pane, expand **contoso (local)** or **contoso.com**.
+
 3. [ ] Select **Deleted Objects**.
+
 4. [ ] Review the center pane. It might be empty if no objects have been deleted since Active Directory Recycle Bin was enabled.
+
 5. [ ] In the right **Tasks** pane, notice the restore-related actions that become available when a deleted object is selected.
 
 ::: success
@@ -434,7 +545,9 @@ Administrators sometimes delete an Active Directory object by mistake. You will 
 ### Task 4: Review the Security and Recovery Impact
 
 1. [ ] In your notes, record that Active Directory Recycle Bin is enabled at the forest level.
+
 2. [ ] Record that the feature cannot be disabled after it is enabled.
+
 3. [ ] Record that Recycle Bin improves recovery options, but it does not replace regular system state backups and change-control practices.
 
 ::: success
@@ -452,18 +565,25 @@ When an employee leaves the company, you need to disable their user account rath
 ### Task 1: Disable a User Account
 
 1. [ ] In Active Directory Users and Computers, select the **Finance** OU in the left panel.
+
 2. [ ] Find the user **John Smith (jsmith)** in the right panel.
+
 3. [ ] Right-click on **jsmith**.
+
 4. [ ] Click **Properties**.
+
 5. [ ] Click on the **Account** tab.
+
 6. [ ] Look for the **Account is disabled** checkbox near the bottom of the tab.
 
-::: warning
-**Note**: Do NOT disable the account in this lab. We are just examining how it would be done. Leave this unchecked.
-:::
+   ::: warning
+   **Note**: Do NOT disable the account in this lab. We are just examining how it would be done. Leave this unchecked.
+   :::
 
 7. [ ] If you needed to disable the account, you would check this box and click **OK**.
+
 8. [ ] Once disabled, the user would be unable to log in, but their account and data would remain in Active Directory.
+
 9. [ ] Close the properties window without making changes.
 
 ::: success

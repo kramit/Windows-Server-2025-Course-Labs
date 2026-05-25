@@ -1,10 +1,10 @@
 # Practice Lab 0101: Exploring Windows Server Interface and Basic Configuration
 
-  
+
 
 ## Summary
 
-  
+
 
 ::: secondary
 
@@ -14,7 +14,7 @@ In this lab, you will connect to a Windows Server 2025 machine and explore the c
 
 ### Prerequisites
 
-  
+
 
 ::: secondary
 
@@ -24,71 +24,53 @@ To complete this lab, you must have:
 
 - Administrator credentials for the contoso.com domain
 
-- A remote connection capability (RDP)
+- Access to the lab platform
 
 :::
 
-  
+
 
 ::: warning
 
-**Note**: This lab assumes you have basic Windows operating system knowledge. If you need help connecting via RDP, ask your instructor before proceeding.
+**Note**: This lab assumes you have basic Windows operating system knowledge. If you need help connecting through the lab platform, ask your instructor before proceeding.
 
 :::
 
-  
+
 
 ## Exercise 1: Connecting to LON-SVR1 and Accessing Server Manager
 
-  
+
 
 ::: secondary
 
 **Scenario**
 
-  
+
 
 You need to connect to a member server in your domain and review its basic configuration using Server Manager. This is a common first task when managing Windows Server machines.
 
 :::
 
-  
 
-### Task 1: Connect to LON-SVR1 via Remote Desktop
 
-  
+### Task 1: Connect to LON-SVR1 Through the Lab Platform
 
-::: warning
 
-**Note**: If working in an online lab  platform you can select HOME and then LON-SVR1 from the dropdown box rather than remoting via RDP.
 
-:::
+1. [ ] In the lab platform, select **HOME**.
 
-  
+2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
 
-1. [ ] On your local machine, open **Remote Desktop Connection** by pressing **Start** then searching for **Run**.
+3. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
 
-2. [ ] Type `mstsc` in the **Run** dialog box.
+4. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
 
-3. [ ] Click **OK** to open Remote Desktop Connection.
+5. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 
-4. [ ] In the **Computer** field, type `LON-SVR1.contoso.com`.
+6. [ ] Wait for the Windows Server 2025 desktop to appear.
 
-5. [ ] Click **Connect**.
 
-6. [ ] When prompted for credentials, enter:
-
-   - **Username**: `CONTOSO\Administrator` (or the username provided by your instructor)
-
-   - **Password**: (the password provided by your instructor)
-
-7. [ ] Click **OK**.
-
-8. [ ] If a certificate warning appears, click **Yes** to accept the certificate and proceed.
-
-9. [ ] Wait for the connection to establish. You should see the Windows Server 2025 desktop.
-
-  
 
 ::: success
 
@@ -96,13 +78,13 @@ You need to connect to a member server in your domain and review its basic confi
 
 :::
 
-  
+
 
 ### Task 2: Open Server Manager
 
-  
 
-1. [ ] Once connected to LON-SVR1, click start.
+
+1. [ ] On **LON-SVR1**, select **Start**.
 
 2. [ ] You should see a **Server Manager** icon (looks like a blue shield with gears).
 
@@ -122,15 +104,15 @@ You need to connect to a member server in your domain and review its basic confi
 
    - Performance
 
-  
 
-::: warning
 
-**Note**: If Server Manager does not open, try clicking the icon again. Server Manager can take up to 30 seconds to start on first launch.
+   ::: warning
 
-:::
+   **Note**: If Server Manager does not open, try clicking the icon again. Server Manager can take up to 30 seconds to start on first launch.
 
-  
+   :::
+
+
 
 ::: success
 
@@ -138,27 +120,27 @@ You need to connect to a member server in your domain and review its basic confi
 
 :::
 
-  
+
 
 ## Exercise 2: Exploring Server Information
 
-  
+
 
 ::: secondary
 
 **Scenario**
 
-  
+
 
 You need to view critical server information such as the computer name, domain, operating system version, and hardware specifications. This information helps you confirm the server is properly configured.
 
 :::
 
-  
+
 
 ### Task 1: Access System Information
 
-  
+
 
 1. [ ] In Server Manager, look at the top right of the window.
 
@@ -178,15 +160,15 @@ You need to view critical server information such as the computer name, domain, 
 
    - **System Manufacturer** and **System Model**: Details about the virtual machine
 
-  
 
-::: warning
 
-**Note**: If you don't see all the fields, scroll down in the System Information window. The window may need to be expanded to see all details.
+   ::: warning
 
-:::
+   **Note**: If you don't see all the fields, scroll down in the System Information window. The window may need to be expanded to see all details.
 
-  
+   :::
+
+
 
 ::: success
 
@@ -194,11 +176,11 @@ You need to view critical server information such as the computer name, domain, 
 
 :::
 
-  
+
 
 ### Task 2: Check Network Configuration
 
-  
+
 
 1. [ ] Still in the System Information window, look on the left side for a list of categories.
 
@@ -210,8 +192,8 @@ You need to view critical server information such as the computer name, domain, 
 
 5. [ ] Look for the **Default Gateway** field. It should show a gateway IP address.
 
-  
-  
+
+
 
 ::: success
 
@@ -219,27 +201,27 @@ You need to view critical server information such as the computer name, domain, 
 
 :::
 
-  
+
 
 ## Exercise 3: Exploring Key Windows Server Interface Components
 
-  
+
 
 ::: secondary
 
 **Scenario**
 
-  
+
 
 You need to become familiar with the core Windows Server interface components that you will use throughout this course. Understanding where to find important system tools will make your work more efficient.
 
 :::
 
-  
+
 
 ### Task 1: Explore the Control Panel
 
-  
+
 
 1. [ ] Close the System Information window by clicking the **X** button in the top right corner.
 
@@ -261,7 +243,7 @@ You need to become familiar with the core Windows Server interface components th
 
    - Installed RAM
 
-  
+
 
 ::: success
 
@@ -269,11 +251,11 @@ You need to become familiar with the core Windows Server interface components th
 
 :::
 
-  
+
 
 ### Task 2: Access the Control Panel
 
-  
+
 
 1. [ ] Still in the Settings window, look at the top left for a **Search** box.
 
@@ -303,15 +285,15 @@ You need to become familiar with the core Windows Server interface components th
 
    - Power Options
 
-  
 
-::: warning
 
-**Note**: The Control Panel is a legacy interface. In newer Windows Server versions, many settings are moving to Settings, but Control Panel is still important for certain administrative tasks.
+   ::: warning
 
-:::
+   **Note**: The Control Panel is a legacy interface. In newer Windows Server versions, many settings are moving to Settings, but Control Panel is still important for certain administrative tasks.
 
-  
+   :::
+
+
 
 ::: success
 
@@ -319,11 +301,11 @@ You need to become familiar with the core Windows Server interface components th
 
 :::
 
-  
+
 
 ### Task 3: Open Task Manager
 
-  
+
 
 1. [ ] Right-click on the **Windows Start button** again (bottom left corner).
 
@@ -353,7 +335,7 @@ You need to become familiar with the core Windows Server interface components th
 
    - Server Manager (if it's still open)
 
-  
+
 
 ::: success
 
@@ -361,27 +343,27 @@ You need to become familiar with the core Windows Server interface components th
 
 :::
 
-  
+
 
 ## Exercise 4: Understanding Windows Server Roles and Features
 
-  
+
 
 ::: secondary
 
 **Scenario**
 
-  
+
 
 You need to understand what roles and features are installed on your server. A role is a major server function (like file server or domain controller), and features are additional capabilities.
 
 :::
 
-  
+
 
 ### Task 1: View Installed Roles and Features
 
-  
+
 
 1. [ ] Click on **Server Manager** icon in the taskbar to bring it back into focus.
 
@@ -401,16 +383,16 @@ You need to understand what roles and features are installed on your server. A r
 
 5. [ ] Scroll down to see the **Features** section. You should see a list of installed features.
 
-  
 
-::: warning
 
-**Note**: The exact roles and features installed will depend on how LON-SVR1 was configured for your lab environment. Ask your instructor what to expect.
+   ::: warning
 
-:::
+   **Note**: The exact roles and features installed will depend on how LON-SVR1 was configured for your lab environment. Ask your instructor what to expect.
 
-  
-  
+   :::
+
+
+
 
 ::: success
 
@@ -429,8 +411,11 @@ You need to use PowerShell to quickly review the server update state and common 
 ### Task 1: Open Windows PowerShell
 
 1. [ ] Right-click the **Windows Start button**.
+
 2. [ ] Select **Terminal** or **Windows PowerShell**.
+
 3. [ ] If prompted by **User Account Control**, select **Yes**.
+
 4. [ ] Verify that a PowerShell window opens.
 
 ::: success
@@ -463,9 +448,9 @@ Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servi
 
 6. [ ] Verify whether the command returns `True` or `False`.
 
-::: warning
-**Note**: A result of `True` means Windows has pending update-related restart activity. Do not restart the server unless instructed.
-:::
+   ::: warning
+   **Note**: A result of `True` means Windows has pending update-related restart activity. Do not restart the server unless instructed.
+   :::
 
 ::: success
 **Results**: After completing this task, you will have checked the Windows Update service, recent installed updates, and pending restart state.
@@ -505,9 +490,9 @@ Get-NetFirewallRule -DisplayGroup 'Remote Desktop' | Select-Object DisplayName, 
 
 8. [ ] Review whether Remote Desktop firewall rules are enabled.
 
-::: warning
-**Note**: Some security settings may differ depending on the lab image, domain policy, or instructor configuration.
-:::
+   ::: warning
+   **Note**: Some security settings may differ depending on the lab image, domain policy, or instructor configuration.
+   :::
 
 ::: success
 **Results**: After completing this exercise, you will have reviewed common update and security settings by using PowerShell.

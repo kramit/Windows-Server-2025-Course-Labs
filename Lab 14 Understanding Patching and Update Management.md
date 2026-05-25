@@ -25,17 +25,32 @@ You need to understand what updates are available for your server and how to man
 
 ### Task 1: Check for Windows Updates
 
-1. [ ] Connect to LON-SVR1 using Remote Desktop.
-2. [ ] Open **Settings** by pressing **Windows key + I**.
-3. [ ] Search for **Windows Update** in the search box.
-4. [ ] Click on **Windows Update**.
-5. [ ] Click **Check for updates**.
-6. [ ] Windows will scan for available updates. Wait for the scan to complete (1-2 minutes).
-7. [ ] You will see:
+1. [ ] In the lab platform, select **HOME**.
+
+2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
+
+3. [ ] Use the **Username** and **Password** values shown for **LON-SVR1** on the **HOME** tab.
+
+4. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+
+5. [ ] Wait for the Windows Server desktop to appear.
+
+6. [ ] Open **Start**, type **Settings**, and select **Settings**.
+
+7. [ ] Search for **Windows Update** in the search box.
+
+8. [ ] Select **Windows Update**.
+
+9. [ ] Select **Check for updates**.
+
+10. [ ] Windows will scan for available updates. Wait for the scan to complete (1-2 minutes).
+
+11. [ ] You will see:
    - **Current status**: Updates available (or "Your device is up to date")
    - **Windows Updates**: Security and quality updates
    - **Optional updates**: Non-critical updates
-8. [ ] Look for the types of updates available:
+
+12. [ ] Look for the types of updates available:
    - **Security updates**: Fix vulnerabilities
    - **Quality updates**: Fix bugs and improve performance
    - **Feature updates**: Major version updates (rare for in-service servers)
@@ -47,12 +62,15 @@ You need to understand what updates are available for your server and how to man
 ### Task 2: View Installed Updates
 
 1. [ ] Open **Settings** > **System** > **Windows Update**.
+
 2. [ ] Click **Update history** or **Windows Update** > **View update history**.
+
 3. [ ] You will see a list of previously installed updates:
    - **Date installed**: When the patch was applied
    - **Name**: Update name
    - **Status**: Successfully installed or failed
    - **KB number**: Knowledge base article (e.g., KB5001234)
+
 4. [ ] Each update has a KB number you can look up on Microsoft Support for details.
 
 ::: success
@@ -124,7 +142,9 @@ Windows Hotpatch is a feature that allows security updates without rebooting. Yo
    - **Running on Azure**
    - **Managed through Azure Arc**
    - **Azure Hybrid Benefit active**
+
 2. [ ] Since your server is on-premises (LON-SVR1), it may not be Hotpatch-eligible unless configured in Azure.
+
 3. [ ] If the server were connected to Azure Arc and running there, you could enable Hotpatch.
 
 ::: success
@@ -142,11 +162,14 @@ For production servers, you should configure automatic updates but with restart 
 ### Task 1: Configure Update Schedule
 
 1. [ ] Open **Settings** > **System** > **Windows Update**.
+
 2. [ ] Click **Advanced options**.
+
 3. [ ] Look for:
    - **Receive updates for other Microsoft products**: Toggle On (recommended)
    - **Automatic updates**: Should be enabled
    - **Schedule installs**: Look for an option to schedule updates
+
 4. [ ] Some organizations prefer:
    - **Tuesday updates**: Patch Tuesday is the second Tuesday of each month
    - **After-hours installation**: Minimize disruption to users
@@ -167,6 +190,7 @@ PowerShell provides powerful tools for managing updates at scale.
 ### Task 1: Check Update Status
 
 1. [ ] Open PowerShell as Administrator.
+
 2. [ ] Type the following command to check for available updates:
 
 ```powershell
@@ -174,6 +198,7 @@ Get-WUInstall -ListOnly -Verbose
 ```
 
 3. [ ] Press **Enter**.
+
 4. [ ] This may require the PSWindowsUpdate module. If not available, Windows Update cmdlets work differently:
 
 ```powershell

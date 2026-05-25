@@ -71,9 +71,9 @@ git config --list
 
 3. [ ] Confirm that `user.name` and `user.email` appear in the output.
 
-::: warning
-**Note**: The `--global` flag saves this configuration to your user profile. It applies to all repositories on this machine. If you are working on a shared machine, use `--local` inside a specific repository instead.
-:::
+   ::: warning
+   **Note**: The `--global` flag saves this configuration to your user profile. It applies to all repositories on this machine. If you are working on a shared machine, use `--local` inside a specific repository instead.
+   :::
 
 ::: success
 **Results**: After completing this exercise, you will have successfully installed Git on LON-SVR1 and configured your identity for commit tracking.
@@ -126,9 +126,9 @@ No commits yet
 nothing to commit (create/copy files and use "git add" to track)
 ```
 
-::: warning
-**Note**: Run `dir -Force` to see the hidden `.git` folder that Git creates. This folder contains the entire repository history. Do not delete or modify it manually.
-:::
+   ::: warning
+   **Note**: Run `dir -Force` to see the hidden `.git` folder that Git creates. This folder contains the entire repository history. Do not delete or modify it manually.
+   :::
 
 ### Task 2: Create files and make the first commit
 
@@ -286,9 +286,9 @@ dir
 git switch feature/add-config
 ```
 
-::: warning
-**Note**: Git manages the actual file system state when you switch branches. Files that only exist on a branch will appear and disappear as you switch. This is expected behaviour.
-:::
+   ::: warning
+   **Note**: Git manages the actual file system state when you switch branches. Files that only exist on a branch will appear and disappear as you switch. This is expected behaviour.
+   :::
 
 ::: success
 **Results**: After completing this exercise, you will have successfully created a feature branch, committed changes to it, and verified that the master branch remains unaffected.
@@ -411,9 +411,9 @@ Get-Content config.md
 
 5. [ ] Confirm that `Backup DC: LON-SVR2` is no longer shown.
 
-::: warning
-**Note**: You are now in detached HEAD state. This is useful for viewing an earlier version, but do not make new commits in this state during this lab.
-:::
+   ::: warning
+   **Note**: You are now in detached HEAD state. This is useful for viewing an earlier version, but do not make new commits in this state during this lab.
+   :::
 
 ### Task 3: Move HEAD farther back in history
 

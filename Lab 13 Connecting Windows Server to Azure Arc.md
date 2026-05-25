@@ -27,18 +27,26 @@ You need to prepare your Azure environment before connecting your server. You wi
 ### Task 1: Log Into Azure Portal
 
 1. [ ] On LON-SVR1, open **Microsoft Edge** browser.
+
 2. [ ] Navigate to **https://portal.azure.com**.
+
 3. [ ] You will be prompted to sign in with your Azure account.
+
 4. [ ] Enter your **email address** provided by your instructor (format: student@company.onmicrosoft.com or similar).
+
 5. [ ] Click **Next**.
+
 6. [ ] Enter your **password**.
+
 7. [ ] Click **Sign in**.
+
 8. [ ] You may be prompted for **Multi-Factor Authentication (MFA)**. Complete this step as prompted.
+
 9. [ ] Once signed in, you will see the Azure Portal dashboard.
 
-::: warning
-**Note**: If you don't have an Azure account, contact your instructor. They will provide access to a student subscription.
-:::
+   ::: warning
+   **Note**: If you don't have an Azure account, contact your instructor. They will provide access to a student subscription.
+   :::
 
 ::: success
 **Results**: After completing this task, you are logged into the Azure Portal.
@@ -47,13 +55,17 @@ You need to prepare your Azure environment before connecting your server. You wi
 ### Task 2: Locate the Azure Arc Service
 
 1. [ ] In the Azure Portal, use the search box at the top to search for **Azure Arc**.
+
 2. [ ] Click on **Azure Arc** in the search results.
+
 3. [ ] The Azure Arc overview page will open.
+
 4. [ ] You will see options including:
    - **Servers**
    - **Kubernetes clusters**
    - **SQL Servers**
    - **Data Services**
+
 5. [ ] Click on **Servers** to manage connected servers.
 
 ::: success
@@ -71,18 +83,23 @@ Before connecting your server, you need to create an Azure resource group and se
 ### Task 1: Create a Resource Group (Optional if Not Existing)
 
 1. [ ] In Azure Portal, search for **Resource groups**.
+
 2. [ ] Click on **Resource groups**.
+
 3. [ ] Click **+ Create** button.
+
 4. [ ] Fill in the details:
    - **Subscription**: Select your student subscription
    - **Resource group name**: Type `WindowsServer-RG`
    - **Region**: Select a region close to your location (e.g., **East US** or **UK South**)
+
 5. [ ] Click **Review + create**.
+
 6. [ ] Click **Create** to create the resource group.
 
-::: warning
-**Note**: If a resource group already exists, you can use that. Ask your instructor which resource group to use.
-:::
+   ::: warning
+   **Note**: If a resource group already exists, you can use that. Ask your instructor which resource group to use.
+   :::
 
 ::: success
 **Results**: After completing this task, you have a resource group ready for Azure Arc.
@@ -91,13 +108,16 @@ Before connecting your server, you need to create an Azure resource group and se
 ### Task 2: Verify Sufficient Permissions
 
 1. [ ] In Azure Portal, click your **profile icon** in the top right.
+
 2. [ ] Click **View my permissions** (or navigate to **Role assignments** in your subscription).
+
 3. [ ] Verify you have at least **Contributor** or **Owner** role on the subscription.
+
 4. [ ] You need these permissions to register servers with Azure Arc.
 
-::: warning
-**Note**: If you don't have sufficient permissions, contact your Azure administrator or instructor.
-:::
+   ::: warning
+   **Note**: If you don't have sufficient permissions, contact your Azure administrator or instructor.
+   :::
 
 ::: success
 **Results**: After completing this task, you have verified necessary permissions.
@@ -114,16 +134,22 @@ You will now download and run the Azure Arc agent to connect LON-SVR1 to Azure.
 ### Task 1: Generate Connection Script
 
 1. [ ] In Azure Portal, go to **Azure Arc** > **Servers**.
+
 2. [ ] Click **+ Add** button or **+ Create**.
+
 3. [ ] Select **Add a single server**.
+
 4. [ ] You will be prompted to **Generate a script** to connect the server.
+
 5. [ ] Fill in:
    - **Subscription**: Your student subscription
    - **Resource group**: `WindowsServer-RG` (or your chosen group)
    - **Region**: Your chosen region
    - **Operating system**: **Windows**
    - **Resource name**: `LON-SVR1` (or a descriptive name)
+
 6. [ ] Click **Generate script** button.
+
 7. [ ] A PowerShell script will be displayed. This is the connection script.
 
 ::: success
@@ -133,8 +159,11 @@ You will now download and run the Azure Arc agent to connect LON-SVR1 to Azure.
 ### Task 2: Download and Run the Connection Script
 
 1. [ ] Click **Download** to download the PowerShell script.
+
 2. [ ] The script will be saved to your **Downloads** folder.
+
 3. [ ] On LON-SVR1, open **PowerShell as Administrator**.
+
 4. [ ] Navigate to the Downloads folder:
 
 ```powershell
@@ -158,11 +187,12 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser -Force
    - Install the agent
    - Register the server with Azure Arc
    - This may take 2-5 minutes to complete
+
 8. [ ] Once complete, you should see a success message.
 
-::: warning
-**Note**: The script may require internet connectivity to Azure. If connection fails, verify that LON-SVR1 has internet access.
-:::
+   ::: warning
+   **Note**: The script may require internet connectivity to Azure. If connection fails, verify that LON-SVR1 has internet access.
+   :::
 
 ::: success
 **Results**: After completing this task, your server is connected to Azure Arc.
@@ -179,14 +209,18 @@ You will verify that the server has successfully connected to Azure Arc.
 ### Task 1: Check Connection in Azure Portal
 
 1. [ ] Return to the Azure Portal in your browser.
+
 2. [ ] Go to **Azure Arc** > **Servers**.
+
 3. [ ] You should see your server **LON-SVR1** listed with status **Connected**.
+
 4. [ ] Click on **LON-SVR1** to see detailed information:
    - **Status**: Connected (green indicator)
    - **OS**: Windows Server 2025
    - **Agent status**: Connected
    - **Last activity**: Recent timestamp
    - **IP address**: The server's IP address
+
 5. [ ] This confirms the server is successfully registered with Azure Arc.
 
 ::: success
@@ -196,6 +230,7 @@ You will verify that the server has successfully connected to Azure Arc.
 ### Task 2: Verify Agent on Server
 
 1. [ ] On LON-SVR1, open PowerShell as Administrator.
+
 2. [ ] Verify the Azure Arc agent is running:
 
 ```powershell
@@ -203,6 +238,7 @@ Get-Service -Name himds | Select-Object Name, DisplayName, Status
 ```
 
 3. [ ] Press **Enter**.
+
 4. [ ] You should see:
    - **Name**: himds (Azure Arc agent)
    - **DisplayName**: Azure Arc Agent Service
@@ -223,12 +259,15 @@ Now that your server is connected to Azure Arc, you can manage it from Azure Por
 ### Task 1: Access Server Properties in Azure Arc
 
 1. [ ] In Azure Portal, go to **Azure Arc** > **Servers** > **LON-SVR1**.
+
 2. [ ] Review the available information:
    - **Overview**: Server status and properties
    - **Logs**: Connection and diagnostic logs
    - **Updates**: Show available Windows updates
    - **Extensions**: Installed Azure Arc extensions
+
 3. [ ] Click on **Updates** to see what patches are available for this server.
+
 4. [ ] Azure Arc shows available Windows updates that you can deploy from Azure.
 
 ::: success
@@ -238,11 +277,14 @@ Now that your server is connected to Azure Arc, you can manage it from Azure Por
 ### Task 2: Enable Azure Arc Extensions
 
 1. [ ] On the LON-SVR1 Azure Arc page, click **Extensions**.
+
 2. [ ] You will see available extensions such as:
    - **Microsoft Monitoring Agent**: For monitoring and logging
    - **Custom Script Extension**: For running PowerShell scripts
    - **Desired State Configuration**: For compliance and configuration management
+
 3. [ ] These extensions extend Azure capabilities to your on-premises server.
+
 4. [ ] Your instructor may ask you to install specific extensions.
 
 ::: success

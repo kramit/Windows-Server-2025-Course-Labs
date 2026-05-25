@@ -25,17 +25,30 @@ You need to understand the current network configuration of your server. You wil
 
 ### Task 1: View Network Configuration in Settings
 
-1. [ ] Connect to LON-SVR1 using Remote Desktop.
-2. [ ] Open **Settings** by pressing **Windows key + I**.
-3. [ ] Search for **Network settings** and click on it.
-4. [ ] Click on **Ethernet** or your network adapter name.
-5. [ ] You will see:
+1. [ ] In the lab platform, select **HOME**.
+
+2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
+
+3. [ ] Use the **Username** and **Password** values shown for **LON-SVR1** on the **HOME** tab.
+
+4. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+
+5. [ ] Wait for the Windows Server desktop to appear.
+
+6. [ ] Open **Start**, type **Settings**, and select **Settings**.
+
+7. [ ] Search for **Network settings** and select it.
+
+8. [ ] Select **Ethernet** or your network adapter name.
+
+9. [ ] You will see:
    - **Status**: Connected
    - **IP address**: Your server's IPv4 address (e.g., 192.168.1.100)
    - **Subnet mask**: Network mask (e.g., 255.255.255.0)
    - **Gateway**: Default gateway (e.g., 192.168.1.1)
    - **DNS servers**: One or more DNS server addresses
-6. [ ] Click **Edit** if you want to modify settings.
+
+10. [ ] Select **Edit** if you want to modify settings.
 
 ::: success
 **Results**: After completing this task, you can view network configuration.
@@ -44,6 +57,7 @@ You need to understand the current network configuration of your server. You wil
 ### Task 2: View Network Configuration via Command Line
 
 1. [ ] Open **Command Prompt** or **PowerShell** as Administrator.
+
 2. [ ] Type the following command to see all network adapters:
 
 ```powershell
@@ -51,10 +65,12 @@ Get-NetAdapter | Select-Object Name, Status, MacAddress | Format-Table
 ```
 
 3. [ ] Press **Enter**.
+
 4. [ ] This shows:
    - **Name**: Adapter name (Ethernet)
    - **Status**: Connected or Disconnected
    - **MacAddress**: Physical hardware address
+
 5. [ ] View IP configuration:
 
 ```powershell
@@ -62,6 +78,7 @@ Get-NetIPAddress | Select-Object InterfaceAlias, AddressFamily, IPAddress, Prefi
 ```
 
 6. [ ] Press **Enter**.
+
 7. [ ] This shows:
    - **InterfaceAlias**: Adapter name
    - **AddressFamily**: IPv4 or IPv6
@@ -97,24 +114,33 @@ Record:
 ### Task 2: Change to Static IP (Using Settings)
 
 1. [ ] Open **Settings** > **Network & Internet** > **Ethernet**.
+
 2. [ ] Click **Edit** next to "IP assignment".
+
 3. [ ] A dropdown will appear. Change from **Automatic (DHCP)** to **Manual**.
+
 4. [ ] Toggle **IPv4** to **On**.
+
 5. [ ] Fill in the fields:
    - **IP address**: Your server's static IP (use current IP or assign a new one from your network admin)
    - **Subnet mask**: Your network's subnet mask (e.g., 255.255.255.0)
    - **Gateway**: Your network's default gateway
+
 6. [ ] Scroll down to DNS settings.
+
 7. [ ] Change **Automatic** to **Manual**.
+
 8. [ ] Enter DNS server addresses:
    - **Preferred DNS**: Usually your domain controller IP or ISP DNS (e.g., 8.8.8.8 for Google DNS)
    - **Alternate DNS**: Backup DNS server (optional)
+
 9. [ ] Click **Save**.
+
 10. [ ] The network adapter will be reconfigured. You may briefly lose connectivity.
 
-::: warning
-**Note**: Choose IP address carefully. Duplicate IPs will cause network problems. Consult your network administrator.
-:::
+   ::: warning
+   **Note**: Choose IP address carefully. Duplicate IPs will cause network problems. Consult your network administrator.
+   :::
 
 ::: success
 **Results**: After completing this task, the server has a static IP address.
@@ -123,10 +149,12 @@ Record:
 ### Task 3: Verify Static Configuration
 
 1. [ ] Return to **Settings** > **Ethernet**.
+
 2. [ ] Verify that:
    - **IP assignment** shows your static IP address
    - **DNS servers** show your configured DNS
    - Status shows **Connected**
+
 3. [ ] Via PowerShell, verify:
 
 ```powershell
@@ -150,6 +178,7 @@ You need to troubleshoot network problems. You will use tools to diagnose connec
 ### Task 1: Test Basic Connectivity
 
 1. [ ] Open PowerShell as Administrator.
+
 2. [ ] Test connectivity to the default gateway:
 
 ```powershell
@@ -157,12 +186,15 @@ Test-NetConnection -ComputerName 192.168.1.1
 ```
 
 3. [ ] Replace 192.168.1.1 with your actual gateway IP.
+
 4. [ ] Press **Enter**.
+
 5. [ ] You should see:
    - **ComputerName**: The computer you pinged
    - **RemoteAddress**: The IP you pinged
    - **PingSucceeded**: True (if connectivity works)
    - **PingReplyDetails**: Latency information
+
 6. [ ] If PingSucceeded shows False, there's a connectivity problem.
 
 ::: success
@@ -178,10 +210,12 @@ Resolve-DnsName -Name contoso.com
 ```
 
 2. [ ] Press **Enter**.
+
 3. [ ] PowerShell should return:
    - **Name**: The domain name
    - **Type**: A (IPv4 address record)
    - **IPAddress**: The resolved IP address
+
 4. [ ] If resolution fails, DNS is not configured properly.
 
 ::: success
@@ -219,6 +253,7 @@ DNS is critical for name resolution. You will configure DNS properly for your do
 ### Task 1: Verify DNS Configuration
 
 1. [ ] Open PowerShell as Administrator.
+
 2. [ ] View current DNS configuration:
 
 ```powershell
@@ -226,7 +261,9 @@ Get-DnsClientServerAddress -AddressFamily IPv4 | Select-Object InterfaceAlias, S
 ```
 
 3. [ ] Press **Enter**.
+
 4. [ ] You should see your DNS servers listed.
+
 5. [ ] For a domain-joined server, the primary DNS should typically be the domain controller (LON-DC1).
 
 ::: success
@@ -244,9 +281,11 @@ Set-DnsClientServerAddress -InterfaceAlias Ethernet -ServerAddresses 192.168.1.5
 ```
 
 2. [ ] Press **Enter**.
+
 3. [ ] This sets:
    - Primary DNS: 192.168.1.50 (your domain controller)
    - Secondary DNS: 8.8.8.8 (Google DNS for backup)
+
 4. [ ] Verify with:
 
 ```powershell
