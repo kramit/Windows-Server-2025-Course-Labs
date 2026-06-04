@@ -14,6 +14,7 @@ Use the exact VM names shown in the lab platform and existing lab files. The cou
 - **LON-DC1**: Windows Server 2025 domain controller for the **contoso.com** domain.
 - **LON-SVR1**: Windows Server 2025 member server joined to the **contoso.com** domain.
 - **LON-SVR2**: Windows Server 2025 member server joined to the **contoso.com** domain.
+- **CLIENT1**: Windows 11 Client joined to the **contoso.com** domain.
 
 The servers are on the same lab network and can communicate with each other. When a lab benefits from demonstrating server-to-server behavior, it is appropriate to switch between these VMs in the lab platform and send traffic between them. Examples include testing firewall rules, validating name resolution, accessing a web site hosted on another server, testing file share access, checking domain-based administration, or confirming remote management behavior.
 
