@@ -29,9 +29,9 @@ Your organization needs to share documents with team members. You will create a 
 
 2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
 
-3. [ ] Use the **Username** and **Password** values shown for **LON-SVR1** on the **HOME** tab.
+3. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 
-4. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+4. [ ] Use the **Username** and **Password** values shown for **LON-SVR1** on the **HOME** tab.
 
 5. [ ] Wait for the Windows Server desktop to appear.
 
@@ -233,9 +233,9 @@ Your organization wants one shared location for departmental folders. Finance us
 
 2. [ ] From the **Select VM** dropdown, select **LON-DC1**.
 
-3. [ ] Use the **Username** and **Password** values shown for **LON-DC1** on the **HOME** tab.
+3. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 
-4. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+4. [ ] Use the **Username** and **Password** values shown for **LON-DC1** on the **HOME** tab.
 
 5. [ ] Wait for the Windows Server desktop to appear.
 
@@ -316,9 +316,9 @@ Your organization wants one shared location for departmental folders. Finance us
 
 2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
 
-3. [ ] Use the **Username** and **Password** values shown for **LON-SVR1** on the **HOME** tab.
+3. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 
-4. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+4. [ ] Use the **Username** and **Password** values shown for **LON-SVR1** on the **HOME** tab.
 
 5. [ ] Wait for the Windows Server desktop to appear.
 
@@ -520,9 +520,9 @@ Your organization wants one shared location for departmental folders. Finance us
 
 2. [ ] From the **Select VM** dropdown, select **CLIENT1**.
 
-3. [ ] Use the **Username** and **Password** values shown for **CLIENT1** on the **HOME** tab.
+3. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 
-4. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+4. [ ] Use the **Username** and **Password** values shown for **CLIENT1** on the **HOME** tab.
 
 5. [ ] Wait for the Windows desktop to appear.
 
@@ -596,9 +596,9 @@ You will verify that shared folders are accessible from the network.
 
 2. [ ] From the **Select VM** dropdown, select **CLIENT1**.
 
-3. [ ] Use the **Username** and **Password** values shown for **CLIENT1** on the **HOME** tab.
+3. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 
-4. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+4. [ ] Use the **Username** and **Password** values shown for **CLIENT1** on the **HOME** tab.
 
 5. [ ] Wait for the Windows desktop to appear.
 
@@ -648,9 +648,9 @@ PowerShell can manage shares with powerful scripting capabilities. You will use 
 
 2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
 
-3. [ ] Use the **Username** and **Password** values shown for **LON-SVR1** on the **HOME** tab.
+3. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 
-4. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+4. [ ] Use the **Username** and **Password** values shown for **LON-SVR1** on the **HOME** tab.
 
 5. [ ] Wait for the Windows Server desktop to appear.
 

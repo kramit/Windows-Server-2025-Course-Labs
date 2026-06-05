@@ -30,9 +30,9 @@ You need to install the Hyper-V virtualization role on your server. This enables
 
 2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
 
-3. [ ] Use the **Username** and **Password** values shown for **LON-SVR1** on the **HOME** tab.
+3. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 
-4. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+4. [ ] Use the **Username** and **Password** values shown for **LON-SVR1** on the **HOME** tab.
 
 5. [ ] Wait for the Windows Server desktop to appear.
 

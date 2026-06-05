@@ -33,11 +33,11 @@ Your organization needs to host internal web content on Windows Server. Before m
 
 2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
 
-3. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
+3. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 
-4. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
+4. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
 
-5. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+5. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
 
 6. [ ] Wait for the Windows Server desktop to appear.
 
@@ -838,38 +838,6 @@ Invoke-WebRequest -Uri http://localhost/lab5.html | Select-Object StatusCode, St
 **Results**: After completing this exercise, you have validated the IIS role, service state, firewall rule, and web page response by using PowerShell.
 :::
 
-## Exercise 10: Record the Administrative Change
-
-::: secondary
-**Scenario**
-
-Administrators should be able to describe what changed, how it was validated, and what risk was considered. You will record a brief change summary for the lab.
-:::
-
-### Task 1: Complete the Change Summary
-
-Record the following information in your lab notes:
-
-1. [ ] Server changed: **LON-SVR1**
-
-2. [ ] Role installed: **Web Server (IIS)**
-
-3. [ ] Website reviewed: **Default Web Site**
-
-4. [ ] Test page created: `C:\inetpub\wwwroot\lab5.html`
-
-5. [ ] IIS service reviewed: **World Wide Web Publishing Service**
-
-6. [ ] Firewall rule reviewed or created:
-   - **World Wide Web Services (HTTP Traffic-In)**, or
-   - **Allow HTTP Traffic**
-
-7. [ ] Validation methods used:
-   - IIS Manager browse test
-   - Services console service check
-   - Firewall rule review
-   - Event Viewer review
-   - PowerShell validation
 
 ::: success
 **Results**: You have completed Lab 0501. You can now:

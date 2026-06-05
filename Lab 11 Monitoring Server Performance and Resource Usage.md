@@ -34,11 +34,11 @@ Users sometimes report that a server is slow, but "slow" is a symptom, not a dia
 
 2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
 
-3. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
+3. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 
-4. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
+4. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
 
-5. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+5. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
 
 6. [ ] Wait for the Windows Server desktop to appear.
 

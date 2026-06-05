@@ -36,11 +36,11 @@ You need to use PowerShell as your primary command-line administration tool. You
 
 2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
 
-3. [ ] In the **Username** field, enter the username shown for the selected VM on the **HOME** tab.
+3. [ ] In the **Tools** section, turn on **Enhanced mode**.
 
-4. [ ] In the **Password** field, enter the password shown for the selected VM on the **HOME** tab.
+4. [ ] In the **Username** field, enter the username shown for the selected VM on the **HOME** tab.
 
-5. [ ] In the **Tools** section, turn on **Enhanced mode**.
+5. [ ] In the **Password** field, enter the password shown for the selected VM on the **HOME** tab.
 
 6. [ ] Verify that the virtual machine display adjusts to use the best screen resolution for your monitor.
 
@@ -569,10 +569,14 @@ oh-my-posh font install meslo
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 ```
 
-2. [ ] Run the following command to configure the current PowerShell profile to load the lab prompt theme.
+2. [ ] Run the following command to open notepas to check the profile. Then add the following line to the $PROFILE file and save it 
 
 ```powershell
-C:\LabOutput\07-SetupOhMyPoshPrompt.ps1
+notepad $PROFILE
+```
+
+```code
+oh-my-posh init pwsh | Invoke-Expression
 ```
 
 3. [ ] Run the following command to reload the PowerShell profile.

@@ -35,11 +35,11 @@ Your organization wants to present storage from one server to another server ove
 
 2. [ ] From the **Select VM** dropdown, select **LON-SVR2**.
 
-3. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
+3. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 
-4. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
+4. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
 
-5. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+5. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
 
 6. [ ] Wait for the Windows Server desktop to appear.
 
@@ -141,11 +141,11 @@ LON-SVR1 will use the iSCSI disks as raw storage for a new storage pool. You wil
 
 2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
 
-3. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
+3. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 
-4. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
+4. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
 
-5. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+5. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
 
 6. [ ] Wait for the Windows Server desktop to appear.
 
@@ -525,11 +525,11 @@ You will now switch to the domain controller and access the share across the lab
 
 2. [ ] From the **Select VM** dropdown, select **LON-DC1**.
 
-3. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
+3. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 
-4. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
+4. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
 
-5. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+5. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
 
 6. [ ] Wait for the Windows Server desktop to appear.
 

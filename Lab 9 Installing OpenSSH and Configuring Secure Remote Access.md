@@ -37,9 +37,9 @@ Your organization wants to allow secure command-line administration in addition 
 
 2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
 
-3. [ ] Use the **Username** and **Password** values shown for **LON-SVR1** on the **HOME** tab.
+3. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 
-4. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+4. [ ] Use the **Username** and **Password** values shown for **LON-SVR1** on the **HOME** tab.
 
 5. [ ] Wait for the Windows Server desktop to appear.
 
@@ -166,9 +166,9 @@ Set-NetFirewallRule -DisplayName 'OpenSSH Server (sshd)' -Profile Domain,Private
 
 2. [ ] From the **Select VM** dropdown, select **LON-SVR2**.
 
-3. [ ] Use the **Username** and **Password** values shown for **LON-SVR2** on the **HOME** tab.
+3. [ ] In the **Tools** section, turn on **Enhanced mode** if it is not already enabled.
 
-4. [ ] In the **Tools** section, turn on **Enhanced mode** if it is not already enabled.
+4. [ ] Use the **Username** and **Password** values shown for **LON-SVR2** on the **HOME** tab.
 
 5. [ ] Open **Windows PowerShell**.
 
@@ -312,11 +312,11 @@ Your organization needs internally trusted certificates for services such as HTT
 
 2. [ ] From the **Select VM** dropdown, select **LON-DC1**.
 
-3. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
+3. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 
-4. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
+4. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
 
-5. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+5. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
 
 6. [ ] Wait for the Windows Server desktop to appear.
 

@@ -20,11 +20,11 @@ You need to manage multiple servers from a single administrative console. You wi
 
 2. [ ] From the server list, select **LON-SVR1**.
 
-3. [ ] In the **Username** field, enter the username shown for the selected VM on the **HOME** tab.
+3. [ ] In the **Tools** section, turn on **Enhanced mode**.
 
-4. [ ] In the **Password** field, enter the password shown for the selected VM on the **HOME** tab.
+4. [ ] In the **Username** field, enter the username shown for the selected VM on the **HOME** tab.
 
-5. [ ] In the **Tools** section, turn on **Enhanced mode**.
+5. [ ] In the **Password** field, enter the password shown for the selected VM on the **HOME** tab.
 
 6. [ ] Verify that the virtual machine display adjusts to use the best screen resolution for your monitor.
 

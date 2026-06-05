@@ -37,11 +37,11 @@ Before you harden a server, you need to know what system you are administering a
 
 2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
 
-3. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
+3. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 
-4. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
+4. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
 
-5. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+5. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
 
 6. [ ] Wait for the Windows Server desktop to appear.
 
@@ -120,10 +120,6 @@ Initial setup decisions affect every later administration task. You will confirm
 4. [ ] In **Settings** > **System** > **About**, review **Windows specifications**.
 
 5. [ ] Verify that the server is running a Windows Server 2025 edition.
-
-6. [ ] Review the desktop shell, taskbar, Settings app, File Explorer, and Server Manager.
-
-7. [ ] Record in your lab notes that **LON-SVR1** is using **Server with Desktop Experience**.
 
    ::: warning
    **Note**: **Server with Desktop Experience** and **Server Core** are installation options selected during setup. Switching between them requires a clean installation, so administrators should choose the option deliberately.
@@ -251,9 +247,9 @@ Test-Connection LON-DC1 -Count 2
 
 2. [ ] From the **Select VM** dropdown, select **LON-SVR2**.
 
-3. [ ] Use the **Username** and **Password** values shown for **LON-SVR2** on the **HOME** tab.
+3. [ ] In the **Tools** section, turn on **Enhanced mode**.
 
-4. [ ] In the **Tools** section, turn on **Enhanced mode**.
+4. [ ] Use the **Username** and **Password** values shown for **LON-SVR2** on the **HOME** tab.
 
 5. [ ] Wait for the Windows Server desktop to appear.
 
@@ -627,73 +623,10 @@ Get-NetFirewallRule -DisplayGroup "Windows Remote Management" |
 **Results**: After completing this task, you have validated firewall profile and remote management rule posture with PowerShell.
 :::
 
-## Exercise 7: Review Installed Roles, Features, and Services
+## Exercise 7: Review Installed Services to check fro common exposure
 
-::: secondary
-**Scenario**
 
-Security hardening starts with workload-aware reduction. A server should not run unnecessary roles, features, or services. You will review what is installed, connect it to the previous IIS lab, and harden one commonly exposed service if needed.
-:::
-
-### Task 1: Review Installed Roles and Features in Server Manager
-
-1. [ ] In **Server Manager**, select **Manage**.
-
-2. [ ] Select **Remove Roles and Features**.
-
-3. [ ] On the **Before You Begin** page, select **Next >**.
-
-4. [ ] On the **Server Selection** page, verify that **LON-SVR1.contoso.com** is selected.
-
-5. [ ] Select **Next >**.
-
-6. [ ] On the **Server Roles** page, review which roles are selected.
-
-7. [ ] Confirm whether **Web Server (IIS)** is selected from Lab 0501.
-
-8. [ ] Do not clear any role checkboxes.
-
-9. [ ] Select **Next >**.
-
-10. [ ] On the **Features** page, review selected features.
-
-11. [ ] Do not clear any feature checkboxes.
-
-12. [ ] Select **Cancel** to exit the wizard.
-
-   ::: warning
-   **Note**: This task uses the Remove Roles and Features Wizard as a safe review tool. Removing a role can break applications, firewall rules, management tools, scheduled tasks, monitoring, and course dependencies.
-   :::
-
-::: success
-**Results**: After completing this task, you have reviewed installed roles and features without removing required components.
-:::
-
-### Task 2: Validate Installed Roles with PowerShell
-
-1. [ ] In elevated **Windows PowerShell**, run the following command:
-
-```powershell
-Get-WindowsFeature | Where-Object Installed | Select-Object Name, DisplayName, InstallState
-```
-
-2. [ ] Review the installed roles and features.
-
-3. [ ] Record whether **Web-Server** appears in the list.
-
-4. [ ] Run the following command:
-
-```powershell
-Get-WindowsFeature -Name Web-Server
-```
-
-5. [ ] Verify whether **Install State** shows **Installed**.
-
-::: success
-**Results**: After completing this task, you have validated installed roles and features by using PowerShell.
-:::
-
-### Task 3: Review Service Exposure in Services
+### Task 1: Review Service Exposure in Services
 
 1. [ ] In **Server Manager**, select **Tools**.
 
@@ -1025,94 +958,6 @@ Get-WinEvent -LogName Security -MaxEvents 10 |
 
 ::: success
 **Results**: After completing this task, you have validated that event information can be reviewed through both Event Viewer and PowerShell.
-:::
-
-## Exercise 11: Complete the Post-Installation Hardening Checklist
-
-::: secondary
-**Scenario**
-
-Administrators should finish configuration work by recording what they verified, what they changed, and what risk remains. You will complete a brief checklist and administrative change summary.
-:::
-
-### Task 1: Complete the Configuration Checklist
-
-Verify and record the following in your lab notes:
-
-1. [ ] **Connection method**: Connected to **LON-SVR1** through the lab platform.
-
-2. [ ] **Server identity**: Computer name is **LON-SVR1**.
-
-3. [ ] **Domain membership**: Server is joined to **contoso.com**.
-
-4. [ ] **Installation option**: Server is using **Server with Desktop Experience**.
-
-5. [ ] **Network configuration**: IPv4 address and DNS server are present.
-
-6. [ ] **Name resolution**: **LON-DC1.contoso.com** resolves from **LON-SVR1**.
-
-7. [ ] **Server-to-server validation**: **LON-SVR2** can resolve **LON-SVR1.contoso.com**.
-
-8. [ ] **Time configuration**: Time zone and time synchronization were reviewed.
-
-9. [ ] **Update posture**: Windows Update and recent hotfixes were reviewed.
-
-10. [ ] **Remote management**: Server Manager, WinRM service, and WinRM firewall rules were reviewed.
-
-11. [ ] **Firewall posture**: Firewall profiles are enabled.
-
-12. [ ] **Roles and features**: Installed roles and features were reviewed.
-
-13. [ ] **Service hardening**: **Remote Registry** is disabled or confirmed as already disabled.
-
-14. [ ] **Local policy**: Password, lockout, and interactive logon policy locations were reviewed.
-
-15. [ ] **Platform protection**: TPM, Secure Boot, and VBS readiness were assessed.
-
-16. [ ] **Event review**: System and Security logs were reviewed.
-
-::: success
-**Results**: After completing this task, you have a concise record of the server's post-installation configuration and hardening posture.
-:::
-
-### Task 2: Record the Administrative Change Summary
-
-Record the following change summary in your lab notes:
-
-1. [ ] **Server reviewed**: **LON-SVR1**
-
-2. [ ] **Domain**: **contoso.com**
-
-3. [ ] **Primary tools used**:
-   - Server Manager
-   - Settings
-   - Services
-   - Windows Defender Firewall with Advanced Security
-   - Local Security Policy
-   - System Information
-   - Windows Security
-   - Event Viewer
-   - Windows PowerShell
-   - SConfig
-
-4. [ ] **Configuration changed**: **Remote Registry** was disabled if it was not already disabled.
-
-5. [ ] **Configuration reviewed but not changed**:
-   - Server name and domain membership
-   - Network addressing and DNS
-   - Time zone and time synchronization
-   - Windows Update status
-   - Firewall profiles and WinRM rules
-   - Installed roles and features
-   - Local security policy
-   - Secured-core and platform protection readiness
-
-6. [ ] **Security impact**: The lab reduced unnecessary service exposure and confirmed that required management paths remain visible and reviewable.
-
-7. [ ] **Production note**: In a production environment, these settings should be applied through approved baselines, Group Policy, change control, maintenance windows, and monitoring.
-
-::: success
-**Results**: After completing this task, you have documented the manual checks and administrative decisions from the lab.
 :::
 
 ## Exercise 12: Generate a PowerShell HTML Validation Report

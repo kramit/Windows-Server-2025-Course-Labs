@@ -29,11 +29,11 @@ You need to manage users and groups in the contoso.com domain. You will connect 
 
 2. [ ] From the **Select VM** dropdown, select **LON-DC1**.
 
-3. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
+3. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 
-4. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
+4. [ ] Use the **Username** value shown for the selected VM on the **HOME** tab.
 
-5. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
+5. [ ] Use the **Password** value shown for the selected VM on the **HOME** tab.
 
 6. [ ] Wait for the Windows Server desktop to appear.
 
@@ -464,13 +464,7 @@ Your organization wants a junior administrator to help manage users and groups w
 **Results**: After completing this task, you have delegated selected user and group management permissions to **jsmith** at the domain level and reviewed the permission entries created by the wizard.
 :::
 
-### Task 5: Review the Security Impact
 
-1. [ ] In your notes, record that **jsmith** can now perform selected account-management tasks in the **contoso.com** domain.
-
-2. [ ] Record that **jsmith** was not added to **Domain Admins**.
-
-3. [ ] Record that domain-level delegation is broad and that OU-level delegation is usually safer for production administration.
 
 ::: success
 **Results**: After completing this task, you can explain the difference between delegated administration and full domain administrative membership.
