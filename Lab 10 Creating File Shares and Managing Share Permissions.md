@@ -65,9 +65,9 @@ Your organization needs to share documents with team members. You will create a 
 
 7. [ ] You will see **Everyone** appears in the user list.
 
-8. [ ] Look at the **Permission Level** dropdown next to Everyone. It should default to **Reader**.
+8. [ ] Look at the **Permission Level** dropdown next to Everyone. It should default to **Read**.
 
-9. [ ] This gives read-only access. Leave it as **Reader** for now.
+9. [ ] This gives read-only access. Leave it as **Read** for now.
 
 10. [ ] Click **Share** to create the network share.
 
@@ -147,7 +147,7 @@ Share permissions and NTFS permissions work together. You need to understand how
 ### Task 3: Understand Permission Combination
 
 The effective permission is the **most restrictive** of:
-- **Share Permission** (e.g., Reader = Read-only)
+- **Share Permission** (e.g., Read = Read-only)
 - **NTFS Permission** (e.g., Modify = can change files)
 
 Example: If share permission is "Read" and NTFS permission is "Modify", the effective permission is "Read" (the more restrictive one).
@@ -182,7 +182,7 @@ You need to create another share where users can create and modify files (higher
 
 7. [ ] Type **Everyone** in the user field and click **Add**.
 
-8. [ ] Change the **Permission Level** from **Reader** to **Contributor** (this allows users to modify files).
+8. [ ] Change the **Permission Level** from **Read** to **Read/Write** (this allows users to modify files).
 
 9. [ ] Click **Share**.
 

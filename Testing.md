@@ -9,7 +9,7 @@
 | - [x] |         0701 | Creating and Managing Active Directory Users and Groups       |                                                                                            |
 | - [x] |         0801 | Creating Storage Pools and SMB Shares                         | need to add download for the supporting scripts                                            |
 | - [x] |         0901 | Installing OpenSSH and Configuring Certificate-Based HTTPS    |                                                                                            |
-| - [ ] |         1001 | Creating File Shares and Managing Share Permissions           |                                                                                            |
+| - [x] |         1001 | Creating File Shares and Managing Share Permissions           |                                                                                            |
 | - [ ] |         1101 | Monitoring Server Performance and Resource Usage              |                                                                                            |
 | - [ ] |         1201 | Understanding Windows Server Licensing and Activation         |                                                                                            |
 | - [ ] |         1301 | Connecting Windows Server to Azure Arc                        |                                                                                            |
