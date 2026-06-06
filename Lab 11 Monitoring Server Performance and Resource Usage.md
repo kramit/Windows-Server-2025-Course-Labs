@@ -46,28 +46,6 @@ Users sometimes report that a server is slow, but "slow" is a symptom, not a dia
 **Results**: After completing this task, you are connected to LON-SVR1 through the lab platform.
 :::
 
-### Task 2: Review the Monitoring Workflow
-
-1. [ ] Open **Server Manager** if it is not already open.
-
-2. [ ] In **Server Manager**, select **Dashboard**.
-
-3. [ ] Review the **Roles and Server Groups** section.
-
-4. [ ] Confirm that you are working on **LON-SVR1**.
-
-5. [ ] Review the tools you will use in this lab:
-   - **Task Manager** for quick real-time usage
-   - **Resource Monitor** for process-level details
-   - **Performance Monitor** for custom counters and graphs
-   - **Data Collector Sets** for short baseline capture
-   - **Event Viewer** for related warnings and errors
-   - **PowerShell** for repeatable validation
-
-::: success
-**Results**: After completing this task, you understand the monitoring workflow you will follow in this lab.
-:::
-
 ## Exercise 2: Use Task Manager for Real-Time Monitoring
 
 ::: secondary
@@ -435,10 +413,10 @@ Performance Monitor lets you select specific counters and watch them over time. 
 ::: secondary
 **Scenario**
 
-A baseline is a record of normal performance during a known period. You will create a short Data Collector Set from the built-in **Basic** template so you can compare idle performance against later activity.
+A baseline is a record of normal performance during a known period. You will create a short Data Collector Set so you can compare idle performance against later activity.
 :::
 
-### Task 1: Create a Data Collector Set from the Basic Template
+### Task 1: Create a User Defined Data Collector Set
 
 1. [ ] In **Performance Monitor**, expand **Data Collector Sets**.
 
@@ -450,25 +428,40 @@ A baseline is a record of normal performance during a known period. You will cre
 
 5. [ ] In **Name**, enter `LON-SVR1 Baseline`.
 
-6. [ ] Select **Create from a template (Recommended)**.
+6. [ ] Select **Create manually (Advanced)**.
 
 7. [ ] Select **Next >**.
 
-8. [ ] On the **Which template would you like to use?** page, select **Basic**.
+8. [ ] On the **What type of data do you want to include?** page, select **Performance counter**.
 
 9. [ ] Select **Next >**.
 
-10. [ ] On the **Where would you like the data to be saved?** page, accept the default location.
+10. [ ] On the **Which performance counters would you like to log?** page, select **Add...**.
 
-11. [ ] Select **Next >**.
+11. [ ] Add the same counters you used in Exercise 4:
+   - **Processor(_Total)\% Processor Time**
+   - **System\Processor Queue Length**
+   - **Memory\Available MBytes**
+   - **Memory\Pages/sec**
+   - **LogicalDisk(C:)\% Free Space**
+   - **PhysicalDisk(_Total)\Avg. Disk sec/Read**
+   - **Network Interface** active adapter **Bytes Total/sec**
 
-12. [ ] On the **Create the data collector set?** page, select **Save and close**.
+12. [ ] Select **OK**.
 
-13. [ ] Select **Finish**.
+13. [ ] In **Sample interval**, enter `5`.
 
-   ::: warning
-   **Note**: The **Basic** template already supplies a standard starter set of counters. You do not need to build a custom counter list for this baseline.
-   :::
+14. [ ] Verify that the unit is **Seconds**.
+
+15. [ ] Select **Next >**.
+
+16. [ ] On the **Where would you like the data to be saved?** page, accept the default location.
+
+17. [ ] Select **Next >**.
+
+18. [ ] On the **Create the data collector set?** page, select **Save and close**.
+
+19. [ ] Select **Finish**.
 
 ::: success
 **Results**: After completing this task, you have created a Data Collector Set named LON-SVR1 Baseline.
@@ -867,9 +860,7 @@ Record the following information in your lab notes:
 
 3. [ ] Data Collector Set created: **LON-SVR1 Baseline**
 
-4. [ ] Template used: **Basic**
-
-5. [ ] Counters collected:
+4. [ ] Counters collected:
    - **Processor(_Total)\% Processor Time**
    - **System\Processor Queue Length**
    - **Memory\Available MBytes**
@@ -878,16 +869,16 @@ Record the following information in your lab notes:
    - **PhysicalDisk(_Total)\Avg. Disk sec/Read**
    - **Network Interface\Bytes Total/sec**
 
-6. [ ] Controlled workload generated:
+5. [ ] Controlled workload generated:
    - CPU activity with Windows PowerShell
    - Disk activity by copying temporary files
    - Network connectivity test to **LON-DC1**
 
-7. [ ] Most visible resource change observed
+6. [ ] Most visible resource change observed
 
-8. [ ] Event Viewer findings
+7. [ ] Event Viewer findings
 
-9. [ ] Cleanup completed
+8. [ ] Cleanup completed
 
 ::: success
 **Results**: You have successfully completed Lab 1101. You can now:
@@ -895,7 +886,7 @@ Record the following information in your lab notes:
 - Use Task Manager to identify real-time resource usage
 - Use Resource Monitor to investigate process-level CPU, memory, disk, and network activity
 - Use Performance Monitor to add and interpret custom counters
-- Create a Data Collector Set from a template to capture a short performance baseline
+- Create a Data Collector Set to capture a short performance baseline
 - Compare idle performance with controlled activity
 - Review System and Application logs for supporting evidence
 - Validate resource information with PowerShell
