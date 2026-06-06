@@ -8,7 +8,7 @@
 | - [ ] |         0601 | Post-Installation Server Configuration and Security Hardening | Add an EICAR Test to the tasks to check the AV is working                                  |
 | - [x] |         0701 | Creating and Managing Active Directory Users and Groups       |                                                                                            |
 | - [x] |         0801 | Creating Storage Pools and SMB Shares                         | need to add download for the supporting scripts                                            |
-| - [ ] |         0901 | Installing OpenSSH and Configuring Certificate-Based HTTPS    |                                                                                            |
+| - [x] |         0901 | Installing OpenSSH and Configuring Certificate-Based HTTPS    |                                                                                            |
 | - [ ] |         1001 | Creating File Shares and Managing Share Permissions           |                                                                                            |
 | - [ ] |         1101 | Monitoring Server Performance and Resource Usage              |                                                                                            |
 | - [ ] |         1201 | Understanding Windows Server Licensing and Activation         |                                                                                            |

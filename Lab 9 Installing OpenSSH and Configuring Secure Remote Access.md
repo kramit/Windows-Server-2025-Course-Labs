@@ -428,7 +428,7 @@ Your organization needs internally trusted certificates for services such as HTT
 **Results**: After completing this exercise, LON-DC1 is configured as an Enterprise Root CA for the contoso.com domain.
 :::
 
-### Task 4: Create and Issue a Server Certificate Template
+### Task 4: Duplicate and Configure the Computer Certificate Template
 
 1. [ ] On **LON-DC1**, open **Server Manager**.
 
@@ -445,6 +445,10 @@ Your organization needs internally trusted certificates for services such as HTT
 7. [ ] In the **Certificate Templates Console**, locate **Computer**.
 
 8. [ ] Right-click **Computer** and select **Duplicate Template**.
+
+   ::: warning
+   **Important**: Duplicate the built-in **Computer** template. Do not modify the built-in template directly. The duplicated template will provide computer certificates to domain-joined computers through autoenrollment.
+   :::
 
 9. [ ] On the **Compatibility** tab, keep the default compatibility settings for this lab.
 
@@ -466,30 +470,42 @@ Your organization needs internally trusted certificates for services such as HTT
 
 18. [ ] Select **Domain Computers**.
 
-19. [ ] In the permissions list, select **Read**, **Enroll**, and **Autoenroll**.
+19. [ ] In **Permissions for Domain Computers**, select **Allow** for **Read**.
 
-20. [ ] Select **OK** to create the template.
+20. [ ] Select **Allow** for **Enroll**.
 
-21. [ ] Close the **Certificate Templates Console**.
+21. [ ] Select **Allow** for **Autoenroll**.
 
-22. [ ] In **Certification Authority**, right-click **Certificate Templates**.
+22. [ ] Verify that **Domain Computers** has **Read**, **Enroll**, and **Autoenroll** permissions.
 
-23. [ ] Select **New**.
+23. [ ] Select **OK** to create the duplicated template.
 
-24. [ ] Select **Certificate Template to Issue**.
+::: success
+**Results**: After completing this task, you have duplicated the built-in Computer template and allowed domain computers to enroll and autoenroll.
+:::
 
-25. [ ] Select **Lab 9 Web Server**.
+### Task 5: Publish the Duplicated Computer Certificate Template
 
-26. [ ] Select **OK**.
+1. [ ] Close the **Certificate Templates Console**.
 
-27. [ ] Verify that **Lab 9 Web Server** appears in the **Certificate Templates** list for the CA.
+2. [ ] In **Certification Authority**, right-click **Certificate Templates**.
+
+3. [ ] Select **New**.
+
+4. [ ] Select **Certificate Template to Issue**.
+
+5. [ ] Select **Lab 9 Web Server**.
+
+6. [ ] Select **OK**.
+
+7. [ ] Verify that **Lab 9 Web Server** appears in the **Certificate Templates** list for **Contoso-LON-DC1-CA**.
 
    ::: warning
-   **Note**: This lab grants autoenrollment to **Domain Computers** so the workflow is easy to validate. In production, administrators often scope autoenrollment to a specific security group that contains only the servers that need that certificate template.
+   **Note**: Creating a duplicated template does not make it available for enrollment by itself. The template must also be published by selecting **New** > **Certificate Template to Issue** on the CA.
    :::
 
 ::: success
-**Results**: After completing this task, the CA can issue a server certificate template that domain computers can autoenroll.
+**Results**: After completing this task, the CA can issue the duplicated computer certificate template to domain computers.
 :::
 
 ## Exercise 5: Configure Certificate Autoenrollment by Using Group Policy
@@ -497,7 +513,7 @@ Your organization needs internally trusted certificates for services such as HTT
 ::: secondary
 **Scenario**
 
-Domain members trust certificates issued by the Enterprise Root CA. You will now configure computer certificate autoenrollment so domain-joined servers can automatically receive certificates from the **Lab 9 Web Server** template.
+Domain members trust certificates issued by the Enterprise Root CA. You will now configure computer certificate autoenrollment for all computers in the **contoso.com** domain. Computers that have permission on the published **Lab 9 Web Server** template can then request the certificate automatically.
 :::
 
 ### Task 1: Create a Certificate Autoenrollment GPO
@@ -520,8 +536,20 @@ Domain members trust certificates issued by the Enterprise Root CA. You will now
 
 9. [ ] Select **OK**.
 
+10. [ ] Select **Lab 9 - Computer Certificate Autoenrollment**.
+
+11. [ ] On the **Scope** tab, verify that **contoso.com** appears in the **Links** section.
+
+12. [ ] Verify that **Link Enabled** is set to **Yes**.
+
+13. [ ] In **Security Filtering**, verify that **Authenticated Users** is listed.
+
+   ::: warning
+   **Note**: The GPO is linked at the root of **contoso.com**, so its computer settings apply to domain computers in the domain and its organizational units unless inheritance is blocked or another policy setting prevents application.
+   :::
+
 ::: success
-**Results**: After completing this task, you have created and linked a GPO for computer certificate autoenrollment.
+**Results**: After completing this task, you have created a domain-linked GPO that places all contoso.com computers in scope for certificate autoenrollment.
 :::
 
 ### Task 2: Enable Computer Certificate Autoenrollment
@@ -555,7 +583,7 @@ Domain members trust certificates issued by the Enterprise Root CA. You will now
 14. [ ] Close **Group Policy Management Editor**.
 
 ::: success
-**Results**: After completing this task, domain computers can autoenroll certificates from AD CS when Group Policy refreshes.
+**Results**: After completing this task, computers in the contoso.com domain can autoenroll certificates from published templates for which they have Autoenroll permission.
 :::
 
 ### Task 3: Refresh Group Policy on LON-SVR1
@@ -623,13 +651,17 @@ Before binding HTTPS in IIS, you need to verify that LON-SVR1 received a certifi
    :::
 
    ::: warning
+   **Tip**: Linking the GPO at the domain root is correct for this lab. If you still only see the existing `WMSvc-SHA2-LON-SVR1` certificate, check **LON-DC1** and verify that the **Lab 9 Web Server** template is published and that **Domain Computers** has **Read**, **Enroll**, and **Autoenroll** permissions on the template. Then return to **LON-SVR1** and run `gpupdate /force` and `certutil -pulse` again.
+   :::
+
+   ::: warning
    **Troubleshooting**: If only local self-signed certificates appear in the Personal store, verify the certificate template and enrollment path:
 
    1. [ ] On **LON-DC1**, open **Certification Authority**.
    2. [ ] Expand **Contoso-LON-DC1-CA**.
    3. [ ] Select **Certificate Templates**.
    4. [ ] Verify that **Lab 9 Web Server** is listed.
-   5. [ ] If **Lab 9 Web Server** is missing, repeat Exercise 4, Task 4.
+   5. [ ] If **Lab 9 Web Server** is missing, repeat Exercise 4, Task 5.
    6. [ ] On **LON-SVR1**, run:
 
 ```powershell
