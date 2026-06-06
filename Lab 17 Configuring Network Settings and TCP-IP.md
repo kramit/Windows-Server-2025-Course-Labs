@@ -329,36 +329,3 @@ Network configuration should include security considerations.
 ::: success
 **Results**: After completing this task, you understand network security considerations.
 :::
-
-## Exercise 6: Verification and Summary
-
-::: secondary
-**Scenario**
-
-You have configured and verified network settings on your Windows Server.
-:::
-
-### Task 1: Network Configuration Checklist
-
-Verify the following are complete:
-
-1. ✓ Current network configuration understood
-2. ✓ Static IP address configured
-3. ✓ DNS servers configured
-4. ✓ Gateway configured
-5. ✓ Network connectivity verified (ping test)
-6. ✓ DNS resolution working
-7. ✓ Network adapter properly configured
-8. ✓ Firewall is enabled
-
-::: success
-**Results**: You have successfully completed Lab 1701. You now understand:
-- How to view network configuration
-- How to configure static IP addresses
-- How to configure DNS settings
-- How to troubleshoot network connectivity
-- How to use PowerShell for network management
-- Network security considerations
-
-Proper network configuration is fundamental for Windows Server operations. All future server roles and services depend on correct network setup. In production, collaborate with network administrators to ensure proper IP addressing and DNS configuration.
-:::

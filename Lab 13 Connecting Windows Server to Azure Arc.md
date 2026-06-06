@@ -58,15 +58,15 @@ You need to prepare your Azure environment before connecting your server. You wi
 
 2. [ ] Click on **Azure Arc** in the search results.
 
-3. [ ] The Azure Arc overview page will open.
+3. [ ] The Azure Arc overview page will open, expand the options on the left pane.
 
 4. [ ] You will see options including:
-   - **Servers**
+   - **Machines**
    - **Kubernetes clusters**
    - **SQL Servers**
    - **Data Services**
 
-5. [ ] Click on **Servers** to manage connected servers.
+5. [ ] Click on **Machines** under **Infrastructure** to manage connected servers.
 
 ::: success
 **Results**: After completing this task, you can navigate to Azure Arc for server management.
@@ -109,7 +109,7 @@ Before connecting your server, you need to create an Azure resource group and se
 
 1. [ ] In Azure Portal, click your **profile icon** in the top right.
 
-2. [ ] Click **View my permissions** (or navigate to **Role assignments** in your subscription).
+2. [ ] Click **My permissions** it might be under the 3 dots **...**.
 
 3. [ ] Verify you have at least **Contributor** or **Owner** role on the subscription.
 
@@ -133,22 +133,21 @@ You will now download and run the Azure Arc agent to connect LON-SVR1 to Azure.
 
 ### Task 1: Generate Connection Script
 
-1. [ ] In Azure Portal, go to **Azure Arc** > **Servers**.
+1. [ ] In Azure Portal, go to **Azure Arc** > **Infrastructure** > **Machines**.
 
-2. [ ] Click **+ Add** button or **+ Create**.
+2. [ ] Click **+ Onboard/Create*** 
 
-3. [ ] Select **Add a single server**.
+3. [ ] Select **Onboard Existing Machines**.
 
 4. [ ] You will be prompted to **Generate a script** to connect the server.
 
 5. [ ] Fill in:
    - **Subscription**: Your student subscription
    - **Resource group**: `WindowsServer-RG` (or your chosen group)
-   - **Region**: Your chosen region
+   - **Region**: Your chosen region (UK South or East US)
    - **Operating system**: **Windows**
-   - **Resource name**: `LON-SVR1` (or a descriptive name)
 
-6. [ ] Click **Generate script** button.
+6. [ ] Click **Download and run script** button.
 
 7. [ ] A PowerShell script will be displayed. This is the connection script.
 
@@ -179,7 +178,7 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser -Force
 6. [ ] Run the downloaded script (the filename may vary):
 
 ```powershell
-.\Connect-AzureArc.ps1
+.\OnboardingScript.ps1
 ```
 
 7. [ ] The script will:
@@ -188,7 +187,7 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser -Force
    - Register the server with Azure Arc
    - This may take 2-5 minutes to complete
 
-8. [ ] Once complete, you should see a success message.
+8. [ ] If requested to login, do so with your Azure account. Once complete, you should see a success message.
 
    ::: warning
    **Note**: The script may require internet connectivity to Azure. If connection fails, verify that LON-SVR1 has internet access.
@@ -210,7 +209,7 @@ You will verify that the server has successfully connected to Azure Arc.
 
 1. [ ] Return to the Azure Portal in your browser.
 
-2. [ ] Go to **Azure Arc** > **Servers**.
+2. [ ] Go to **Azure Arc** > **Infrasturcture** > **Machines**.
 
 3. [ ] You should see your server **LON-SVR1** listed with status **Connected**.
 
@@ -258,7 +257,7 @@ Now that your server is connected to Azure Arc, you can manage it from Azure Por
 
 ### Task 1: Access Server Properties in Azure Arc
 
-1. [ ] In Azure Portal, go to **Azure Arc** > **Servers** > **LON-SVR1**.
+1. [ ] In Azure Portal, go to **Azure Arc** > **Machines** > **LON-SVR1**.
 
 2. [ ] Review the available information:
    - **Overview**: Server status and properties
@@ -266,9 +265,17 @@ Now that your server is connected to Azure Arc, you can manage it from Azure Por
    - **Updates**: Show available Windows updates
    - **Extensions**: Installed Azure Arc extensions
 
-3. [ ] Click on **Updates** to see what patches are available for this server.
+3. [ ] Click on **Updates** under **Operations** to see what patches are available for this server.
 
 4. [ ] Azure Arc shows available Windows updates that you can deploy from Azure.
+
+5. [ ] To enable Updates on this machine click **Enable Now** next to periodic assesment
+
+6. [ ] Enable periodic assesment and click save
+
+7. [ ] Click **Check for updates** and trigger the assesment
+
+8. [ ] You can refresh the updates section to see the state of the updates, it is checking updates so will take some time, do not wait around for this to complete. You can check it in 5 mins.
 
 ::: success
 **Results**: After completing this task, you understand Azure Arc management capabilities.
@@ -276,7 +283,7 @@ Now that your server is connected to Azure Arc, you can manage it from Azure Por
 
 ### Task 2: Enable Azure Arc Extensions
 
-1. [ ] On the LON-SVR1 Azure Arc page, click **Extensions**.
+1. [ ] On the LON-SVR1 Azure Arc page, click **Extensions** and click **add**
 
 2. [ ] You will see available extensions such as:
    - **Microsoft Monitoring Agent**: For monitoring and logging
@@ -284,8 +291,6 @@ Now that your server is connected to Azure Arc, you can manage it from Azure Por
    - **Desired State Configuration**: For compliance and configuration management
 
 3. [ ] These extensions extend Azure capabilities to your on-premises server.
-
-4. [ ] Your instructor may ask you to install specific extensions.
 
 ::: success
 **Results**: After completing this task, you understand Azure Arc extensions.
@@ -315,35 +320,4 @@ Without Azure Arc, you would need to manage on-premises and cloud servers separa
 
 ::: success
 **Results**: After completing this task, you understand the value of Azure Arc.
-:::
-
-## Exercise 7: Verification and Summary
-
-::: secondary
-**Scenario**
-
-You have successfully connected your Windows Server to Azure Arc.
-:::
-
-### Task 1: Azure Arc Connection Checklist
-
-Verify the following are complete:
-
-1. ✓ Azure account login successful
-2. ✓ Resource group created
-3. ✓ Connection script executed
-4. ✓ Server shows as "Connected" in Azure Arc
-5. ✓ Azure Arc agent service is running
-6. ✓ Server is visible in Azure Portal
-7. ✓ Extensions are available
-
-::: success
-**Results**: You have successfully completed Lab 1301. You now understand:
-- How to connect on-premises Windows Server to Azure Arc
-- How to verify the connection in Azure Portal
-- How to access Azure Arc agent status
-- What Azure Arc extensions are available
-- The benefits of Azure Arc for hybrid infrastructure
-
-Azure Arc is essential for modern hybrid cloud environments. In future labs, you will configure advanced Azure Arc features such as compliance monitoring and automated patching.
 :::

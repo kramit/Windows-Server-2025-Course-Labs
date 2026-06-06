@@ -10,10 +10,10 @@
 | - [x] |         0801 | Creating Storage Pools and SMB Shares                         | need to add download for the supporting scripts                                            |
 | - [x] |         0901 | Installing OpenSSH and Configuring Certificate-Based HTTPS    |                                                                                            |
 | - [x] |         1001 | Creating File Shares and Managing Share Permissions           |                                                                                            |
-| - [ ] |         1101 | Monitoring Server Performance and Resource Usage              |                                                                                            |
-| - [ ] |         1201 | Understanding Windows Server Licensing and Activation         |                                                                                            |
+| - [x] |         1101 | Monitoring Server Performance and Resource Usage              |                                                                                            |
+| - [x] |         1201 | Understanding Windows Server Licensing and Activation         |                                                                                            |
 | - [ ] |         1301 | Connecting Windows Server to Azure Arc                        |                                                                                            |
-| - [ ] |         1401 | Understanding Patching and Update Management                  |                                                                                            |
-| - [ ] |         1501 | Installing Hyper-V and Creating Virtual Machines              |                                                                                            |
-| - [ ] |         1601 | Configuring Local Administrator Password Solution (LAPS)      |                                                                                            |
-| - [ ] |         1701 | Configuring Network Settings and TCP/IP                       |                                                                                            |
+| - [x] |         1401 | Understanding Patching and Update Management                  |                                                                                            |
+| - [ ] |         1501 | Installing Hyper-V and Creating Virtual Machines              | need vt turned on godeploy                                                                 |
+| - [x] |         1601 | Configuring Local Administrator Password Solution (LAPS)      |                                                                                            |
+| - [x] |         1701 | Configuring Network Settings and TCP/IP                       |                                                                                            |

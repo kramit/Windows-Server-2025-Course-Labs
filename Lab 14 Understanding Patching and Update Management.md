@@ -60,14 +60,14 @@ Before changing update settings, administrators should collect a baseline. You w
 
 6. [ ] Review the **Windows specifications** section.
 
-7. [ ] Record the following information in your lab notes:
+7. [ ] Review the following information:
    - **Edition**
    - **Version**
    - **OS build**
    - **Experience**
 
    ::: warning
-   **Note**: The exact build number can vary depending on the lab image and installed updates. Administrators record the actual value shown on the server.
+   **Note**: The exact build number can vary depending on the lab image and installed updates.
    :::
 
 ::: success
@@ -80,9 +80,9 @@ Before changing update settings, administrators should collect a baseline. You w
 
 2. [ ] Review the current update status at the top of the page.
 
-3. [ ] Record whether the page shows **You're up to date**, **Updates available**, **Restart required**, or another status.
+3. [ ] Note whether the page shows **You're up to date**, **Updates available**, **Restart required**, or another status.
 
-4. [ ] Record the **Last checked** time if it is displayed.
+4. [ ] Note the **Last checked** time if it is displayed.
 
 5. [ ] Look for any message that indicates a restart is pending.
 
@@ -116,7 +116,7 @@ You need to understand how Windows Update presents available updates, installed 
 
 5. [ ] If updates are listed, review the update names and any visible KB numbers.
 
-6. [ ] If the page shows **You're up to date**, record that no updates were offered during the scan.
+6. [ ] If the page shows **You're up to date**, confirm that no updates were offered during the scan.
 
 7. [ ] Do not install updates unless your instructor specifically tells you to.
 
@@ -138,7 +138,7 @@ You need to understand how Windows Update presents available updates, installed 
 
 4. [ ] Locate the most recent installed update.
 
-5. [ ] Record the update name, KB number, and installation date if they are displayed.
+5. [ ] Review the update name, KB number, and installation date if they are displayed.
 
 6. [ ] Select any available link for an update only if you want to review Microsoft support information for that KB.
 
@@ -158,10 +158,10 @@ You need to understand how Windows Update presents available updates, installed 
 
 5. [ ] Do not change the options unless your instructor specifically tells you to.
 
-6. [ ] Record any setting that appears important for restart planning or update scheduling.
+6. [ ] Identify any setting that appears important for restart planning or update scheduling.
 
    ::: warning
-   **Note**: Some Windows Update options can be hidden, disabled, or controlled by policy. If a setting is unavailable, continue with the lab and record what you see.
+   **Note**: Some Windows Update options can be hidden, disabled, or controlled by policy. If a setting is unavailable, continue with the lab and note what you see.
    :::
 
 ::: success
@@ -276,68 +276,34 @@ Windows Update depends on several services. You will use the Services console to
 Administrators use event logs to confirm update activity and investigate update failures. You will review Windows Update events by using Event Viewer.
 :::
 
-### Task 1: Open Event Viewer
+### Task 1: Open Event Viewer and Review the Windows Update Log
 
 1. [ ] In **Server Manager**, select **Tools**.
 
 2. [ ] Select **Event Viewer**.
 
-3. [ ] In the left pane, expand **Windows Logs**.
+3. [ ] In the left pane, expand **Applications and Services Logs**.
 
-4. [ ] Select **System**.
+4. [ ] Expand **Microsoft**.
 
-5. [ ] Review recent events in the center pane.
+5. [ ] Expand **Windows**.
 
-::: success
-**Results**: After completing this task, you have opened Event Viewer and reviewed the System log.
-:::
+6. [ ] Scroll to and expand **WindowsUpdateClient**.
 
-### Task 2: Review the WindowsUpdateClient Operational Log
+7. [ ] Select **Operational**.
 
-1. [ ] In the left pane, expand **Applications and Services Logs**.
+8. [ ] Review the recent events in the center pane.
 
-2. [ ] Expand **Microsoft**.
+9. [ ] Select a recent event.
 
-3. [ ] Expand **Windows**.
-
-4. [ ] Scroll to and expand **WindowsUpdateClient**.
-
-5. [ ] Select **Operational**.
-
-6. [ ] Review the recent events in the center pane.
-
-7. [ ] Select a recent event.
-
-8. [ ] In the lower pane, review the **General** tab.
-
-9. [ ] Record the **Log Name**, **Source**, **Event ID**, **Level**, and event message for one recent Windows Update event.
+10. [ ] In the lower pane, review the **General** tab.
 
    ::: warning
    **Note**: Warning or error events do not automatically mean the server is broken. Administrators compare the event time, source, event ID, and message with observed update behavior.
    :::
 
 ::: success
-**Results**: After completing this task, you have reviewed Windows Update operational events.
-:::
-
-### Task 3: Filter Recent Windows Update Events
-
-1. [ ] With **Operational** selected under **WindowsUpdateClient**, select **Filter Current Log...** in the **Actions** pane.
-
-2. [ ] In the **Filter Current Log** window, review the **Logged** dropdown.
-
-3. [ ] Select **Last 7 days** if it is available.
-
-4. [ ] Under **Event level**, select **Critical**, **Warning**, **Error**, and **Information**.
-
-5. [ ] Select **OK**.
-
-6. [ ] Review the filtered event list.
-
-7. [ ] In the **Actions** pane, select **Clear Filter** when you are finished.
-
-::: success
-**Results**: After completing this exercise, you have used Event Viewer to review and filter Windows Update events.
+**Results**: After completing this task, you have opened Event Viewer and reviewed the WindowsUpdateClient Operational log.
 :::
 
 ## Exercise 5: Review Automatic Update and WSUS Policy Locations
@@ -420,6 +386,15 @@ Larger organizations often control update behavior with Group Policy and WSUS. Y
 Different environments need different update management strategies. You will compare common options and review where Windows Server Hotpatch fits into a modern patching plan.
 :::
 
+::: tip
+**Recommended reading**:
+
+- [Hotpatch for Windows Server](https://learn.microsoft.com/en-us/windows-server/get-started/hotpatch)
+- [Enable Hotpatch for Azure Arc-enabled servers](https://learn.microsoft.com/en-us/windows-server/get-started/enable-hotpatch-azure-arc-enabled-servers)
+
+Hotpatch is different from standard patching because supported security updates can be applied without an immediate restart. Standard cumulative updates still require planned reboots, and Hotpatch also uses periodic baseline updates that do require a restart.
+:::
+
 ### Task 1: Compare Update Management Options
 
 Review the following update management options:
@@ -450,7 +425,7 @@ Most organizations choose a strategy based on:
 
 ### Task 2: Review Windows Server Hotpatch Concepts
 
-Review the following Hotpatch concepts:
+Review the following Hotpatch concepts. Use the Microsoft Learn articles above as the reference for this task:
 
 1. [ ] Hotpatch can apply certain Windows Server security updates without requiring an immediate restart.
 
@@ -478,7 +453,7 @@ Review the following Hotpatch concepts:
 
 2. [ ] Compare the checklist with LON-SVR1 in this lab environment.
 
-3. [ ] Record that LON-SVR1 can be reviewed for Hotpatch concepts, but Hotpatch should not be enabled in this lab unless your instructor specifically provides Azure Arc and Hotpatch instructions.
+3. [ ] Confirm that LON-SVR1 can be reviewed for Hotpatch concepts, but Hotpatch should not be enabled in this lab unless your instructor specifically provides Azure Arc and Hotpatch instructions.
 
    ::: warning
    **Note**: Hotpatch eligibility depends on edition, build, security capabilities, Azure Arc onboarding, and update management configuration. Do not assume every Windows Server 2025 system is ready for Hotpatch without checking the requirements.
@@ -558,7 +533,7 @@ Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servi
 
 2. [ ] Review the result.
 
-3. [ ] Record whether the command returns `True` or `False`.
+3. [ ] Review whether the command returns `True` or `False`.
 
 4. [ ] If the command returns `True`, do not restart the server unless your instructor specifically tells you to.
 
@@ -570,17 +545,17 @@ Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servi
 **Results**: After completing this exercise, you have validated update services, recent updates, and pending restart evidence with PowerShell.
 :::
 
-## Exercise 8: Record the Administrative Patch Summary
+## Exercise 8: Review the Administrative Patch Summary
 
 ::: secondary
 **Scenario**
 
-Administrators should be able to describe patch posture, management approach, and restart risk. You will record a short administrative summary for LON-SVR1.
+Administrators should be able to describe patch posture, management approach, and restart risk. You will review a short administrative summary for LON-SVR1.
 :::
 
-### Task 1: Complete the Patch Management Summary
+### Task 1: Review the Patch Management Summary
 
-Record the following information in your lab notes:
+Review the following information:
 
 1. [ ] Server reviewed: **LON-SVR1**
 
@@ -610,5 +585,5 @@ Record the following information in your lab notes:
    - **High-availability Windows Server 2025 workloads**: Evaluate Hotpatch eligibility and baseline restart planning.
 
 ::: success
-**Results**: You have completed Lab 1401. You can now review Windows Update status and history, inspect update-related services and events, locate automatic update and WSUS policy settings, compare patch management strategies, explain Windows Server Hotpatch eligibility, validate update posture with PowerShell, and record an administrative patch summary.
+**Results**: You have completed Lab 1401. You can now review Windows Update status and history, inspect update-related services and events, locate automatic update and WSUS policy settings, compare patch management strategies, explain Windows Server Hotpatch eligibility, validate update posture with PowerShell, and review an administrative patch summary.
 :::

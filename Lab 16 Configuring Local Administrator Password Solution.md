@@ -3,7 +3,11 @@
 ## Summary
 
 ::: secondary
-In this lab, you will configure Windows LAPS (Local Administrator Password Solution) to securely manage local administrator passwords across your domain. LAPS automatically manages local admin passwords and stores them in Active Directory for audited retrieval.
+In this lab, you will configure Windows LAPS (Local Administrator Password Solution) in an on-premises, domain-based scenario to securely manage local administrator passwords across your domain. LAPS automatically manages local admin passwords and stores them in Active Directory for audited retrieval.
+
+::: note
+**Modern approach**: Microsoft’s current cloud-managed approach is to deploy Windows LAPS with Microsoft Intune and Microsoft Entra ID. For that method, see [Deploy Windows LAPS policy with Microsoft Intune](https://learn.microsoft.com/en-us/intune/device-security/laps/deploy-policy).
+:::
 :::
 
 ### Prerequisites
@@ -303,33 +307,3 @@ LAPS requires proper security practices to be effective.
 **Results**: After completing this task, you understand LAPS best practices.
 :::
 
-## Exercise 7: Verification and Summary
-
-::: secondary
-**Scenario**
-
-You have successfully configured LAPS for your domain.
-:::
-
-### Task 1: LAPS Configuration Checklist
-
-Verify the following are complete:
-
-1. ✓ LAPS installed on domain controller
-2. ✓ LAPS installed on member servers
-3. ✓ Active Directory schema extended
-4. ✓ Group Policy configured for LAPS
-5. ✓ Policy applied to servers
-6. ✓ Passwords generated and stored in AD
-7. ✓ Passwords can be retrieved
-
-::: success
-**Results**: You have successfully completed Lab 1601. You now understand:
-- Why LAPS is important for security
-- How to install and configure LAPS
-- How LAPS automates password management
-- How to retrieve LAPS passwords from Active Directory
-- LAPS best practices and security considerations
-
-LAPS is critical for preventing local administrator account compromise. Proper LAPS implementation significantly improves security posture across your domain.
-:::
