@@ -24,7 +24,7 @@ This repository contains all practical labs for the **3-day Windows Server 2025 
 | 12 | Understanding Windows Server Licensing and Activation | 12 | License status, editions, licensing models, compliance |
 | 13 | Connecting Windows Server to Azure Arc | 13 | Azure Arc enrollment, agent installation, cloud management |
 | 14 | Understanding Patching and Update Management | 14 | Windows Update, patch strategies, Hotpatch, best practices |
-| 15 | Installing Hyper-V and Creating Virtual Machines | 15 | Hyper-V role, VM creation, virtual networking, storage |
+| 15 | Installing Hyper-V and Performing Live Migration | 15 | Hyper-V role, VM deployment, Kerberos constrained delegation, live migration |
 | 16 | Configuring Local Administrator Password Solution (LAPS) | 16 | LAPS installation, configuration, password management |
 | 17 | Configuring Network Settings and TCP/IP | 17 | Static IP, DNS, network troubleshooting, connectivity |
 
