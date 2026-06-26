@@ -219,150 +219,72 @@ systeminfo.exe
 ::: secondary
 **Scenario**
 
-Both servers will act as Hyper-V hosts. You will install the same role and management tools on each server and restart them to load the Hyper-V hypervisor.
+Both servers will act as Hyper-V hosts. You will run a PowerShell fan-out script from LON-DC1 to install the same role and management tools on LON-SVR1 and LON-SVR2, then restart only the servers that require it.
 :::
 
-### Task 1: Install Hyper-V on LON-SVR2
+### Task 1: Run the Hyper-V Fan-Out Install Script
 
-1. [ ] On LON-SVR2, open **Server Manager**.
+1. [ ] In the lab platform, select **HOME**.
 
-2. [ ] In Server Manager, select **Dashboard**.
+2. [ ] From the **Select VM** dropdown, select **LON-DC1**.
 
-3. [ ] In the upper-right corner, select **Manage**.
+3. [ ] Verify that **Enhanced mode** is turned on.
 
-4. [ ] Select **Add Roles and Features**.
+4. [ ] Use the **Username** and **Password** values shown for LON-DC1 on the **HOME** tab.
 
-5. [ ] On the **Before You Begin** page, select **Next >**.
+5. [ ] Verify that you are signing in with an account that is a member of **Domain Admins**.
 
-6. [ ] On the **Installation Type** page, verify that **Role-based or feature-based installation** is selected.
+6. [ ] Wait for the Windows Server desktop to appear.
 
-7. [ ] Select **Next >**.
+7. [ ] Open **File Explorer**.
 
-8. [ ] On the **Server Selection** page, verify that **Select a server from the server pool** is selected.
+8. [ ] Browse to `C:\LabFiles\supporting content\Lab15`.
 
-9. [ ] In the **Server Pool** list, select **LON-SVR2.contoso.com**.
+9. [ ] Verify that the folder contains `Install-Lab15HyperV.ps1`.
 
-10. [ ] Select **Next >**.
+10. [ ] Select **Start**.
 
-11. [ ] On the **Server Roles** page, select **Hyper-V**.
+11. [ ] Type **PowerShell**.
 
-12. [ ] In the **Add features that are required for Hyper-V?** dialog, verify that the Hyper-V management tools are listed.
+12. [ ] In the search results, right-click **Windows PowerShell**.
 
-13. [ ] Select **Add Features**.
+13. [ ] Select **Run as administrator**.
 
-14. [ ] Verify that **Hyper-V** is selected.
+14. [ ] If a **User Account Control** prompt appears, select **Yes**.
 
-15. [ ] Select **Next >**.
+15. [ ] Run the following command:
 
-16. [ ] On the **Features** page, select **Next >**.
+```powershell
+Set-Location "C:\LabFiles\supporting content\Lab15"
+```
 
-17. [ ] On the **Hyper-V** page, review the role information.
+16. [ ] Run the following command:
 
-18. [ ] Select **Next >**.
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+```
 
-19. [ ] On the **Create Virtual Switches** page, do not select a network adapter.
+17. [ ] Run the following command:
 
-20. [ ] Select **Next >**.
+```powershell
+.\Install-Lab15HyperV.ps1
+```
 
-21. [ ] On the **Virtual Machine Migration** page, leave **Allow this server to send and receive live migrations of virtual machines** cleared.
+18. [ ] Wait while the script installs Hyper-V on LON-SVR1 and LON-SVR2.
 
-22. [ ] Select **Next >**.
+19. [ ] If the script restarts either server, wait for the script to report that the restart is complete.
 
    ::: warning
-   **Note**: You will configure live migration explicitly after Kerberos constrained delegation is in place.
+   **Note**: The script installs Hyper-V and the management tools only. You will create virtual switches and configure live migration settings in later exercises.
    :::
 
-23. [ ] On the **Default Stores** page, review the default virtual hard disk and virtual machine configuration paths.
+20. [ ] Verify that the final verification table shows `True` in the **HyperVInstalled** column for LON-SVR1 and LON-SVR2.
 
-24. [ ] Select **Next >**.
+   ::: danger
+   **Stop**: Do not continue if the script reports that PowerShell remoting is unavailable, the installation failed, or Hyper-V could not be verified on either server. Resolve the reported issue, then rerun the script.
+   :::
 
-25. [ ] On the **Confirmation** page, select **Restart the destination server automatically if required**.
-
-26. [ ] If a confirmation message appears, select **Yes**.
-
-27. [ ] Select **Install**.
-
-28. [ ] Wait while the role is installed and LON-SVR2 restarts.
-
-### Task 2: Verify Hyper-V on LON-SVR2
-
-1. [ ] In the lab platform, select **HOME**.
-
-2. [ ] From the **Select VM** dropdown, select **LON-SVR2**.
-
-3. [ ] Verify that **Enhanced mode** is turned on.
-
-4. [ ] Use the **Username** and **Password** values shown for LON-SVR2 on the **HOME** tab.
-
-5. [ ] Wait for the Windows Server desktop and Server Manager to appear.
-
-6. [ ] In Server Manager, select **Tools**.
-
-7. [ ] Select **Hyper-V Manager**.
-
-8. [ ] In the left pane, verify that **LON-SVR2** appears under **Hyper-V Manager**.
-
-9. [ ] Select **LON-SVR2**.
-
-10. [ ] Verify that the **Virtual Machines** pane opens without an error.
-
-11. [ ] Close Hyper-V Manager.
-
-### Task 3: Install Hyper-V on LON-SVR1
-
-1. [ ] In the lab platform, select **HOME**.
-
-2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
-
-3. [ ] Verify that **Enhanced mode** is turned on.
-
-4. [ ] Use the **Username** and **Password** values shown for LON-SVR1 on the **HOME** tab.
-
-5. [ ] Wait for the Windows Server desktop to appear.
-
-6. [ ] Open **Server Manager**.
-
-7. [ ] Select **Manage** > **Add Roles and Features**.
-
-8. [ ] On the **Before You Begin** page, select **Next >**.
-
-9. [ ] On the **Installation Type** page, select **Role-based or feature-based installation**.
-
-10. [ ] Select **Next >**.
-
-11. [ ] On the **Server Selection** page, select **LON-SVR1.contoso.com**.
-
-12. [ ] Select **Next >**.
-
-13. [ ] On the **Server Roles** page, select **Hyper-V**.
-
-14. [ ] In the **Add features that are required for Hyper-V?** dialog, select **Add Features**.
-
-15. [ ] Select **Next >**.
-
-16. [ ] On the **Features** page, select **Next >**.
-
-17. [ ] On the **Hyper-V** page, select **Next >**.
-
-18. [ ] On the **Create Virtual Switches** page, do not select a network adapter.
-
-19. [ ] Select **Next >**.
-
-20. [ ] On the **Virtual Machine Migration** page, leave **Allow this server to send and receive live migrations of virtual machines** cleared.
-
-21. [ ] Select **Next >**.
-
-22. [ ] On the **Default Stores** page, review the paths and select **Next >**.
-
-23. [ ] On the **Confirmation** page, select **Restart the destination server automatically if required**.
-
-24. [ ] If a confirmation message appears, select **Yes**.
-
-25. [ ] Select **Install**.
-
-26. [ ] Wait while the role is installed and LON-SVR1 restarts.
-
-### Task 4: Verify Hyper-V on LON-SVR1
+### Task 2: Verify Hyper-V on LON-SVR1
 
 1. [ ] In the lab platform, select **HOME**.
 
@@ -379,6 +301,28 @@ Both servers will act as Hyper-V hosts. You will install the same role and manag
 7. [ ] In the left pane, verify that **LON-SVR1** appears under **Hyper-V Manager**.
 
 8. [ ] Select **LON-SVR1**.
+
+9. [ ] Verify that the **Virtual Machines** pane opens without an error.
+
+10. [ ] Close Hyper-V Manager.
+
+### Task 3: Verify Hyper-V on LON-SVR2
+
+1. [ ] In the lab platform, select **HOME**.
+
+2. [ ] From the **Select VM** dropdown, select **LON-SVR2**.
+
+3. [ ] Verify that **Enhanced mode** is turned on.
+
+4. [ ] Use the **Username** and **Password** values shown for LON-SVR2 on the **HOME** tab.
+
+5. [ ] Wait for the Windows Server desktop and Server Manager to appear.
+
+6. [ ] In Server Manager, select **Tools** > **Hyper-V Manager**.
+
+7. [ ] In the left pane, verify that **LON-SVR2** appears under **Hyper-V Manager**.
+
+8. [ ] Select **LON-SVR2**.
 
 9. [ ] Verify that the **Virtual Machines** pane opens without an error.
 
