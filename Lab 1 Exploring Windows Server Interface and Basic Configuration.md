@@ -422,7 +422,31 @@ You need to use PowerShell to quickly review the server update state and common 
 **Results**: After completing this task, you will have opened PowerShell with administrative access.
 :::
 
-### Task 2: Check Windows Update Status
+### Task 2: Download the Course Lab Files
+
+1. [ ] Run the following command to download the course GitHub repository and prepare `C:\LabFiles` for later labs.
+
+```powershell
+$ZipPath = "$env:TEMP\Windows-Server-2025-Course-Labs.zip"; $ExtractPath = "$env:TEMP\Windows-Server-2025-Course-Labs"; Remove-Item -Path $ZipPath,$ExtractPath -Recurse -Force -ErrorAction SilentlyContinue; New-Item -Path "C:\LabFiles" -ItemType Directory -Force | Out-Null; Invoke-WebRequest -Uri "https://github.com/kramit/Windows-Server-2025-Course-Labs/archive/refs/heads/master.zip" -OutFile $ZipPath; Expand-Archive -Path $ZipPath -DestinationPath $ExtractPath -Force; Copy-Item -Path "$ExtractPath\Windows-Server-2025-Course-Labs-master\*" -Destination "C:\LabFiles" -Recurse -Force
+```
+
+2. [ ] Run the following command to verify that the supporting content folder is available.
+
+```powershell
+Test-Path "C:\LabFiles\supporting content"
+```
+
+3. [ ] Verify that the command returns `True`.
+
+   ::: warning
+   **Note**: Later labs use scripts from `C:\LabFiles\supporting content`. If this command returns `False`, rerun the download command or ask your instructor to verify internet access from LON-SVR1.
+   :::
+
+::: success
+**Results**: After completing this task, the course lab files are available in `C:\LabFiles`.
+:::
+
+### Task 3: Check Windows Update Status
 
 1. [ ] Run the following command to check the Windows Update service status.
 
@@ -456,7 +480,7 @@ Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servi
 **Results**: After completing this task, you will have checked the Windows Update service, recent installed updates, and pending restart state.
 :::
 
-### Task 3: Check Common Security Settings
+### Task 4: Check Common Security Settings
 
 1. [ ] Run the following command to check Windows Defender Firewall profile status.
 
