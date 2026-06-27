@@ -3,7 +3,7 @@
 ## Summary
 
 ::: secondary
-In this lab, you will use Server Manager, PowerShell remoting, and administrator group membership checks to manage Windows Server remotely. You will connect to multiple servers from one console, run commands against a remote server, and review how administrative access is controlled.
+In this lab, you will use Server Manager, PowerShell remoting, WinGet package management, and administrator group membership checks to manage Windows Server remotely. You will connect to multiple servers from one console, run commands against a remote server, install and remove an application from the command line, and review how administrative access is controlled.
 :::
 
 ## Exercise 1: Adding Multiple Servers to Server Manager
@@ -160,7 +160,103 @@ Invoke-Command -ComputerName LON-DC1 -ScriptBlock { Get-Service | Where-Object {
 **Results**: After completing this exercise, you will have used PowerShell remoting to run commands and retrieve service information from LON-DC1.
 :::
 
-## Exercise 3: Using Windows Admin Center
+## Exercise 3: Managing Applications with WinGet
+
+::: secondary
+**Scenario**
+
+You need to install and remove software from the command line. You will use WinGet, the Windows Package Manager command-line tool, to search for Python, install it, verify it is present, and then uninstall it.
+:::
+
+::: warning
+**Security note**: Install only software that you trust and that is approved for your environment. Before installing a package, review the package name, package ID, publisher, and source.
+:::
+
+### Task 1: Verify WinGet Availability
+
+1. [ ] Return to the elevated PowerShell session on LON-SVR1.
+
+2. [ ] Run the following command to verify that WinGet is available.
+
+```powershell
+winget --version
+```
+
+3. [ ] Verify that a WinGet version is displayed.
+
+4. [ ] If WinGet is not recognized, run the following command to request App Installer registration for the current Windows installation.
+
+```powershell
+Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe
+```
+
+5. [ ] Run `winget --version` again.
+
+6. [ ] If WinGet is still unavailable, ask your instructor to confirm that App Installer and Windows Package Manager are available in the lab image.
+
+   ::: warning
+   **Note**: On Windows Server 2025, WinGet is provided through App Installer and can require first-user registration before it is available from the command line.
+   :::
+
+### Task 2: Search for Python
+
+1. [ ] Run the following command to search the WinGet source for Python 3.13.
+
+```powershell
+winget search --id Python.Python.3.13 --source winget
+```
+
+2. [ ] Review the returned package information.
+
+3. [ ] Verify that the package ID is `Python.Python.3.13`.
+
+4. [ ] Verify that the source is `winget`.
+
+### Task 3: Install and Verify Python
+
+1. [ ] Run the following command to install Python.
+
+```powershell
+winget install --id Python.Python.3.13 --exact --source winget --accept-package-agreements --accept-source-agreements
+```
+
+2. [ ] Wait for the installation to finish.
+
+3. [ ] Run the following command to verify that WinGet lists Python as installed.
+
+```powershell
+winget list --id Python.Python.3.13
+```
+
+4. [ ] Verify that `Python.Python.3.13` appears in the output.
+
+   ::: warning
+   **Note**: If the install command reports that no package is found, the WinGet source may need to update or internet access may be restricted. Ask your instructor before changing source settings.
+   :::
+
+### Task 4: Uninstall Python and Verify Removal
+
+1. [ ] Run the following command to uninstall Python.
+
+```powershell
+winget uninstall --id Python.Python.3.13 --exact
+```
+
+2. [ ] Wait for the uninstall operation to finish.
+
+3. [ ] Run the following command again.
+
+```powershell
+winget list --id Python.Python.3.13
+```
+
+4. [ ] Verify that Python no longer appears as an installed package.
+
+::: success
+**Results**: After completing this exercise, you will have used WinGet to search for, install, verify, uninstall, and confirm removal of an application.
+:::
+
+## Exercise 4: Using Windows Admin Center
 
 ::: secondary
 **Scenario**
@@ -297,7 +393,7 @@ Start-Process "$env:USERPROFILE\Downloads\WindowsAdminCenter.exe"
 **Results**: After completing this exercise, you will have downloaded, installed, and opened Windows Admin Center on LON-SVR1.
 :::
 
-## Exercise 4: Reviewing Role-Based Administration
+## Exercise 5: Reviewing Role-Based Administration
 
 ::: secondary
 **Scenario**
@@ -331,7 +427,7 @@ Get-LocalGroupMember -Group "Administrators"
 **Results**: After completing this exercise, you will have reviewed how the local Administrators group controls administrative access on LON-SVR1.
 :::
 
-## Exercise 5: Verifying Remote Administration Skills
+## Exercise 6: Verifying Remote Administration Skills
 
 ::: secondary
 **Scenario**
@@ -357,12 +453,14 @@ Invoke-Command -ComputerName LON-DC1 -ScriptBlock { hostname }
 
 6. [ ] Identify **PowerShell remoting** as the command-line method used to run commands on remote servers.
 
-7. [ ] Identify the local **Administrators** group as one place where server administrative access is controlled.
+7. [ ] Identify **WinGet** as the command-line tool used to search for, install, list, and uninstall applications.
 
-8. [ ] Close any open administration windows if instructed by your instructor.
+8. [ ] Identify the local **Administrators** group as one place where server administrative access is controlled.
+
+9. [ ] Close any open administration windows if instructed by your instructor.
 
 ::: success
-**Results**: After completing this exercise, you will have verified the core remote administration methods used to manage Windows Server in this lab.
+**Results**: After completing this exercise, you will have verified the core remote administration methods and package-management commands used to manage Windows Server in this lab.
 :::
 
 
