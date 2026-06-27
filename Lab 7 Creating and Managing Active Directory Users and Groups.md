@@ -3,7 +3,7 @@
 ## Summary
 
 ::: secondary
-In this lab, you will create user accounts and groups in Active Directory. You will use Active Directory Users and Computers, Active Directory Administrative Center, and PowerShell to manage domain users. You will also use the Delegation of Control Wizard to assign limited administrative permissions and enable Active Directory Recycle Bin to support object recovery. These are common administrative tasks in a Windows Server environment.
+In this lab, you will create user accounts and groups in Active Directory. You will use Active Directory Users and Computers, Active Directory Administrative Center, and PowerShell to manage domain users. You will also use the Delegation of Control Wizard to assign limited administrative permissions, enable Active Directory Recycle Bin to support object recovery, and configure a fine-grained password policy for administrative users. These are common administrative tasks in a Windows Server environment.
 :::
 
 ### Prerequisites
@@ -548,7 +548,127 @@ Administrators sometimes delete an Active Directory object by mistake. You will 
 **Results**: After completing this task, you can explain why Active Directory Recycle Bin is useful and why enabling it should be treated as an administrative change.
 :::
 
-## Exercise 8: Disable a User Account
+## Exercise 8: Configure a Fine-Grained Password Policy
+
+::: secondary
+**Scenario**
+
+Administrative accounts often need stricter password and lockout settings than standard users. You will create a fine-grained password policy for the **IT Administrators** group and verify that it applies to **jsmith**.
+:::
+
+::: warning
+**Security note**: Fine-grained password policies apply directly to users or global security groups. They are not linked to organizational units like Group Policy objects. In production, target these policies carefully and document which privileged groups receive stricter password requirements.
+:::
+
+### Task 1: Open the Password Settings Container
+
+1. [ ] In **Active Directory Administrative Center**, select **contoso (local)** or **contoso.com** in the left navigation pane.
+
+2. [ ] In the center pane, double-click **System**.
+
+3. [ ] In the **System** container, double-click **Password Settings Container**.
+
+4. [ ] Verify that the center pane shows any existing password settings objects.
+
+::: success
+**Results**: After completing this task, you have opened the container where fine-grained password policies are created and managed.
+:::
+
+### Task 2: Create the Password Settings Object
+
+1. [ ] In the right **Tasks** pane, select **New** > **Password Settings**.
+
+2. [ ] In the **Create Password Settings** window, enter the following values:
+
+   - **Name**: `IT Administrators Password Policy`
+   - **Precedence**: `10`
+   - **Minimum password length**: `14`
+   - **Number of passwords remembered**: `24`
+   - **Maximum password age**: `60 days`
+   - **Minimum password age**: `1 day`
+   - **Number of failed logon attempts allowed**: `5`
+   - **Reset failed logon attempts count after**: `30 minutes`
+   - **Account will be locked out**: `30 minutes`
+
+3. [ ] Verify that **Password must meet complexity requirements** is selected.
+
+4. [ ] Verify that **Store passwords using reversible encryption** is not selected.
+
+   ::: warning
+   **Note**: A lower precedence value wins if more than one fine-grained password policy applies to a user. Use clear names and documented precedence values when multiple policies exist.
+   :::
+
+### Task 3: Apply the Policy to IT Administrators
+
+1. [ ] In the **Directly Applies To** section, select **Add...**.
+
+2. [ ] In the **Select Users or Groups** dialog, type `IT Administrators`.
+
+3. [ ] Select **Check Names**.
+
+4. [ ] Verify that the group name resolves.
+
+5. [ ] Select **OK**.
+
+6. [ ] Verify that **IT Administrators** appears in the **Directly Applies To** list.
+
+7. [ ] Select **OK** to create the password settings object.
+
+8. [ ] Verify that `IT Administrators Password Policy` appears in the **Password Settings Container**.
+
+::: success
+**Results**: After completing this task, the fine-grained password policy applies directly to the **IT Administrators** global security group.
+:::
+
+### Task 4: View Resultant Password Settings for jsmith
+
+1. [ ] In the left navigation pane, select **contoso (local)** or **contoso.com**.
+
+2. [ ] In the center pane, open the **Finance** OU.
+
+3. [ ] Select **John Smith**.
+
+4. [ ] In the right **Tasks** pane, select **View resultant password settings**.
+
+5. [ ] Verify that the resultant password settings show `IT Administrators Password Policy`.
+
+6. [ ] Close the resultant password settings window.
+
+   ::: warning
+   **Note**: If the resultant password settings do not show the new policy, confirm that **jsmith** is still a member of **IT Administrators** and that the policy was applied to the group.
+   :::
+
+::: success
+**Results**: After completing this task, you have verified the effective fine-grained password policy for **jsmith** by using Active Directory Administrative Center.
+:::
+
+### Task 5: Validate the Policy with PowerShell
+
+1. [ ] Open Windows PowerShell as Administrator if it is not already open.
+
+2. [ ] Run the following command to view the fine-grained password policy:
+
+```powershell
+Get-ADFineGrainedPasswordPolicy -Identity "IT Administrators Password Policy" |
+    Select-Object Name, Precedence, MinPasswordLength, PasswordHistoryCount, ComplexityEnabled, MaxPasswordAge, MinPasswordAge, LockoutThreshold, LockoutDuration, AppliesTo
+```
+
+3. [ ] Verify that the output shows the settings you configured.
+
+4. [ ] Run the following command to view the resultant password policy for **jsmith**:
+
+```powershell
+Get-ADUserResultantPasswordPolicy -Identity jsmith |
+    Select-Object Name, Precedence, MinPasswordLength, PasswordHistoryCount, ComplexityEnabled, MaxPasswordAge, MinPasswordAge, LockoutThreshold, LockoutDuration
+```
+
+5. [ ] Verify that the **Name** value is `IT Administrators Password Policy`.
+
+::: success
+**Results**: After completing this exercise, you have created a fine-grained password policy, applied it to a global security group, and verified the resultant password policy for a user.
+:::
+
+## Exercise 9: Disable a User Account
 
 ::: secondary
 **Scenario**
@@ -584,7 +704,7 @@ When an employee leaves the company, you need to disable their user account rath
 **Results**: After completing this task, you know how to disable user accounts.
 :::
 
-## Exercise 9: Verification and Summary
+## Exercise 10: Verification and Summary
 
 ::: secondary
 **Scenario**
@@ -605,7 +725,9 @@ You have successfully:
 7. **Configured user properties** - Added detailed user information
 8. **Delegated administrative control** - Assigned selected domain-level user and group management tasks to jsmith
 9. **Enabled Active Directory Recycle Bin** - Improved recovery options for deleted Active Directory objects
-10. **Understood account management** - Know how to disable/enable accounts
+10. **Configured a fine-grained password policy** - Applied stricter password and lockout settings to IT Administrators
+11. **Verified resultant password settings** - Confirmed that jsmith receives the fine-grained password policy
+12. **Understood account management** - Know how to disable/enable accounts
 
 ### Administrative Change Summary
 
@@ -619,6 +741,9 @@ During this lab, you made the following administrative changes:
 - Configured user properties for **jsmith**.
 - Delegated selected account-management permissions to **jsmith** at the **contoso.com** domain level.
 - Enabled Active Directory Recycle Bin for the **contoso.com** forest or confirmed that it was already enabled.
+- Created the **IT Administrators Password Policy** fine-grained password policy.
+- Applied the fine-grained password policy to the **IT Administrators** group.
+- Verified the resultant password policy for **jsmith**.
 
 ::: success
 **Results**: You have successfully completed Lab 0701. You now understand:
@@ -629,6 +754,7 @@ During this lab, you made the following administrative changes:
 - How to organize users in organizational units
 - How to delegate selected Active Directory administration tasks
 - How to enable Active Directory Recycle Bin by using Active Directory Administrative Center
+- How to configure and validate fine-grained password policies
 - How to disable accounts
 
 These are core skills for managing a Windows Server Active Directory environment. In future labs, you will use these skills to manage permissions, apply group policies, and maintain domain security.
