@@ -192,7 +192,7 @@ Import-Module Microsoft.OSConfig
 1. [ ] Run the following command:
 
 ```powershell
-Set-OSConfigDesiredConfiguration -Scenario SecurityBaseline/WS2025/MemberServer -Default
+Set-OSConfigDesiredConfiguration -Scenario SecurityBaseline/Windowsserver/2025/MemberServer -Default
 ```
 
 2. [ ] Read the PowerShell output and watch for any prompts or warnings.
@@ -200,7 +200,7 @@ Set-OSConfigDesiredConfiguration -Scenario SecurityBaseline/WS2025/MemberServer 
 3. [ ] Run the following command to review the current baseline compliance details:
 
 ```powershell
-Get-OSConfigDesiredConfiguration -Scenario SecurityBaseline/WS2025/MemberServer | Format-Table Name, @{ Name = "Status"; Expression = { $_.Compliance.Status } }, @{ Name = "Reason"; Expression = { $_.Compliance.Reason } } -AutoSize -Wrap
+Get-OSConfigDesiredConfiguration -Scenario SecurityBaseline/WindowsServer/2025/MemberServer | Format-Table Name, @{ Name = "Status"; Expression = { $_.Compliance.Status } }, @{ Name = "Reason"; Expression = { $_.Compliance.Reason } } -AutoSize -Wrap
 ```
 
 4. [ ] Review the table and confirm that OSConfig is reporting the baseline items for the member server scenario.
@@ -298,7 +298,7 @@ Security baselines should be removable as well as deployable. You will disable t
 2. [ ] Run the following command:
 
 ```powershell
-Remove-OSConfigDesiredConfiguration -Scenario SecurityBaseline/WS2025/MemberServer
+Remove-OSConfigDesiredConfiguration -Scenario SecurityBaseline/Windowsserver/2025/MemberServer
 ```
 
 3. [ ] Read the PowerShell output and note any restart prompt or warning.
