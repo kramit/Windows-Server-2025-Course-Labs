@@ -48,29 +48,30 @@ function Set-LabConstrainedDelegation {
         $sourceShortName = Get-ShortComputerName -Name $sourceHost
         $sourceComputer = Get-ADComputer -Identity $sourceShortName -Properties msDS-AllowedToDelegateTo, userAccountControl
 
-        $targetSpns = foreach ($targetHost in $HyperVHosts) {
+        $targetSpnList = [System.Collections.Generic.List[string]]::new()
+        foreach ($targetHost in $HyperVHosts) {
             $targetShortName = Get-ShortComputerName -Name $targetHost
             if ($targetShortName -eq $sourceShortName) {
                 continue
             }
 
             $targetFqdn = "$($targetShortName.ToLowerInvariant()).$($domain.DNSRoot)"
-            "cifs/$targetShortName"
-            "cifs/$targetFqdn"
-            "Microsoft Virtual System Migration Service/$targetShortName"
-            "Microsoft Virtual System Migration Service/$targetFqdn"
+            $targetSpnList.Add("cifs/$targetShortName")
+            $targetSpnList.Add("cifs/$targetFqdn")
+            $targetSpnList.Add("Microsoft Virtual System Migration Service/$targetShortName")
+            $targetSpnList.Add("Microsoft Virtual System Migration Service/$targetFqdn")
         }
 
-        $targetSpns = @($targetSpns | Where-Object { $_ } | Select-Object -Unique)
-        $existingSpns = @($sourceComputer.'msDS-AllowedToDelegateTo')
-        $missingSpns = @($targetSpns | Where-Object { $existingSpns -notcontains $_ })
+        $targetSpns = [string[]]@($targetSpnList.ToArray() | Sort-Object -Unique)
+        $existingSpns = [string[]]@($sourceComputer.'msDS-AllowedToDelegateTo')
+        $missingSpns = [string[]]@($targetSpns | Where-Object { $existingSpns -notcontains [string]$_ })
 
         if ($missingSpns.Count -gt 0) {
-            Set-ADComputer -Identity $sourceComputer -Add @{ "msDS-AllowedToDelegateTo" = $missingSpns }
+            Set-ADComputer -Identity $sourceComputer.DistinguishedName -Add @{ "msDS-AllowedToDelegateTo" = $missingSpns }
         }
 
         if (($sourceComputer.userAccountControl -band $trustedToAuthForDelegation) -eq 0) {
-            Set-ADAccountControl -Identity $sourceComputer -TrustedToAuthForDelegation $true
+            Set-ADAccountControl -Identity $sourceComputer.DistinguishedName -TrustedToAuthForDelegation $true
         }
 
         [pscustomobject]@{
