@@ -43,6 +43,12 @@ if ($ComputerName.Count -eq 0) {
     throw "Specify at least one server name."
 }
 
+if (-not $Credential) {
+    # Lab-only credential used so remote role installation runs with the intended domain administrator account.
+    $labPassword = ConvertTo-SecureString "Pa55w.rd" -AsPlainText -Force
+    $Credential = [System.Management.Automation.PSCredential]::new("CONTOSO\Administrator", $labPassword)
+}
+
 Write-LabSection "Checking PowerShell remoting"
 
 $unreachableServers = New-Object System.Collections.Generic.List[string]
