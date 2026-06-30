@@ -3,7 +3,8 @@
 [CmdletBinding()]
 param(
     [string[]]$ComputerName = @("LON-SVR1", "LON-SVR2"),
-    [int]$RestartTimeoutSeconds = 900
+    [int]$RestartTimeoutSeconds = 900,
+    [System.Management.Automation.PSCredential]$Credential
 )
 
 $ErrorActionPreference = "Stop"
@@ -24,6 +25,15 @@ function Test-IsAdministrator {
     $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 }
 
+function Get-ShortComputerName {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Name
+    )
+
+    ($Name.Split(".")[0]).ToUpperInvariant()
+}
+
 if (-not (Test-IsAdministrator)) {
     throw "Run this script from an elevated Windows PowerShell session."
 }
@@ -36,6 +46,8 @@ if ($ComputerName.Count -eq 0) {
 Write-LabSection "Checking PowerShell remoting"
 
 $unreachableServers = New-Object System.Collections.Generic.List[string]
+$remoteCommandFailures = New-Object System.Collections.Generic.List[string]
+$localComputerName = Get-ShortComputerName -Name $env:COMPUTERNAME
 foreach ($server in $ComputerName) {
     Write-Host "Testing remoting to $server..."
     try {
@@ -52,15 +64,103 @@ if ($unreachableServers.Count -gt 0) {
     throw "Resolve PowerShell remoting connectivity before installing Hyper-V. Unreachable server(s): $($unreachableServers -join ', ')"
 }
 
+Write-LabSection "Checking command access"
+
+$sessionOptions = @{
+    ErrorAction = "Stop"
+}
+if ($Credential) {
+    $sessionOptions.Credential = $Credential
+}
+
+$remoteSessions = @{}
+foreach ($server in $ComputerName) {
+    $session = $null
+    $shortServerName = Get-ShortComputerName -Name $server
+    if ($shortServerName -eq $localComputerName) {
+        Write-Host "$server is the local computer. The install will run locally instead of through remoting."
+        continue
+    }
+
+    Write-Host "Creating a remote session to $server..."
+    try {
+        $session = New-PSSession -ComputerName $server @sessionOptions
+        $accessCheck = Invoke-Command -Session $session -ScriptBlock {
+            $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+            $principal = [Security.Principal.WindowsPrincipal]::new($identity)
+            [pscustomobject]@{
+                ComputerName = $env:COMPUTERNAME
+                UserName = $identity.Name
+                IsAdministrator = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+            }
+        } -ErrorAction Stop
+
+        if (-not $accessCheck.IsAdministrator) {
+            throw "The remote session is running as $($accessCheck.UserName), but that account is not an administrator on $server."
+        }
+
+        $remoteSessions[$server] = $session
+        Write-Host "Remote command access is available on $server as $($accessCheck.UserName)." -ForegroundColor Green
+    }
+    catch {
+        Write-Warning "Remote command access failed on $server. $($_.Exception.Message)"
+        if ($session) {
+            Remove-PSSession -Session $session -ErrorAction SilentlyContinue
+        }
+        $remoteCommandFailures.Add($server)
+    }
+}
+
+if ($remoteCommandFailures.Count -gt 0) {
+    throw "Resolve remote command access before installing Hyper-V. Failed server(s): $($remoteCommandFailures -join ', ')"
+}
+
+Write-LabSection "Checking current Hyper-V status"
+
+$hyperVStatusScript = {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$TargetComputerName
+    )
+
+    $feature = Get-WindowsFeature -Name Hyper-V
+    [pscustomobject]@{
+        ComputerName = $TargetComputerName
+        ActualComputerName = $env:COMPUTERNAME
+        HyperVInstalled = [bool]$feature.Installed
+        InstallState = [string]$feature.InstallState
+    }
+}
+
+$preInstallHyperVStatus = foreach ($server in $ComputerName) {
+    $shortServerName = Get-ShortComputerName -Name $server
+    if ($shortServerName -eq $localComputerName) {
+        & $hyperVStatusScript -TargetComputerName $server
+    }
+    else {
+        Invoke-Command -Session $remoteSessions[$server] -ScriptBlock $hyperVStatusScript -ArgumentList $server -ErrorAction Stop
+    }
+}
+
+$preInstallHyperVStatus |
+    Sort-Object ComputerName |
+    Format-Table ComputerName, ActualComputerName, HyperVInstalled, InstallState -AutoSize
+
 Write-LabSection "Installing Hyper-V with management tools"
 
 $installScript = {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$TargetComputerName
+    )
+
     $ErrorActionPreference = "Stop"
 
     $feature = Get-WindowsFeature -Name Hyper-V
     if ($feature.Installed) {
         [pscustomobject]@{
-            ComputerName = $env:COMPUTERNAME
+            ComputerName = $TargetComputerName
+            ActualComputerName = $env:COMPUTERNAME
             Status = "Already installed"
             Success = $true
             RestartNeeded = "No"
@@ -71,7 +171,8 @@ $installScript = {
 
     $result = Install-WindowsFeature -Name Hyper-V -IncludeManagementTools
     [pscustomobject]@{
-        ComputerName = $env:COMPUTERNAME
+        ComputerName = $TargetComputerName
+        ActualComputerName = $env:COMPUTERNAME
         Status = if ($result.Success) { "Installed" } else { "Install failed" }
         Success = [bool]$result.Success
         RestartNeeded = [string]$result.RestartNeeded
@@ -79,25 +180,27 @@ $installScript = {
     }
 }
 
-$job = Invoke-Command -ComputerName $ComputerName -ScriptBlock $installScript -AsJob
-Wait-Job -Job $job | Out-Null
-$installJobFailures = @(
-    $job.ChildJobs |
-        Where-Object { $_.State -ne "Completed" } |
-        ForEach-Object {
+$installResults = foreach ($server in $ComputerName) {
+    Write-Host "Installing Hyper-V on $server..."
+    $shortServerName = Get-ShortComputerName -Name $server
+    if ($shortServerName -eq $localComputerName) {
+        & $installScript -TargetComputerName $server
+    }
+    else {
+        try {
+            Invoke-Command -Session $remoteSessions[$server] -ScriptBlock $installScript -ArgumentList $server -ErrorAction Stop
+        }
+        catch {
             [pscustomobject]@{
-                ComputerName = $_.Location
-                State = $_.State
-                Error = ($_.JobStateInfo.Reason.Message)
+                ComputerName = $server
+                ActualComputerName = $null
+                Status = "Install failed"
+                Success = $false
+                RestartNeeded = "Unknown"
+                Message = $_.Exception.Message
             }
         }
-)
-$installResults = Receive-Job -Job $job
-Remove-Job -Job $job
-
-if ($installJobFailures.Count -gt 0) {
-    $installJobFailures | Format-Table ComputerName, State, Error -AutoSize
-    throw "Hyper-V installation did not complete on: $($installJobFailures.ComputerName -join ', ')"
+    }
 }
 
 $missingInstallResults = @(
@@ -110,11 +213,11 @@ if ($missingInstallResults.Count -gt 0) {
 
 $installResults |
     Sort-Object ComputerName |
-    Format-Table ComputerName, Status, Success, RestartNeeded, Message -AutoSize
+    Format-Table ComputerName, ActualComputerName, Status, Success, RestartNeeded, Message -AutoSize
 
 $failedInstalls = @($installResults | Where-Object { -not $_.Success })
 if ($failedInstalls.Count -gt 0) {
-    throw "Hyper-V installation failed on: $($failedInstalls.ComputerName -join ', ')"
+    throw "Hyper-V installation failed on: $($failedInstalls.ComputerName -join ', '). Review the Message column for the remote error."
 }
 
 $serversNeedingRestart = @(
@@ -126,7 +229,22 @@ $serversNeedingRestart = @(
 if ($serversNeedingRestart.Count -gt 0) {
     Write-LabSection "Restarting servers that require it"
     Write-Host "Restarting: $($serversNeedingRestart -join ', ')"
-    Restart-Computer -ComputerName $serversNeedingRestart -Force -Wait -For PowerShell -Timeout $RestartTimeoutSeconds -Delay 15
+    if ($remoteSessions.Count -gt 0) {
+        $remoteSessions.Values | Remove-PSSession -ErrorAction SilentlyContinue
+        $remoteSessions.Clear()
+    }
+    $restartOptions = @{
+        ComputerName = $serversNeedingRestart
+        Force = $true
+        Wait = $true
+        For = "PowerShell"
+        Timeout = $RestartTimeoutSeconds
+        Delay = 15
+    }
+    if ($Credential) {
+        $restartOptions.Credential = $Credential
+    }
+    Restart-Computer @restartOptions
     Write-Host "Restart complete." -ForegroundColor Green
 }
 else {
@@ -137,18 +255,32 @@ else {
 Write-LabSection "Verifying Hyper-V installation"
 
 $verificationScript = {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$TargetComputerName
+    )
+
     $feature = Get-WindowsFeature -Name Hyper-V
     [pscustomobject]@{
-        ComputerName = $env:COMPUTERNAME
+        ComputerName = $TargetComputerName
+        ActualComputerName = $env:COMPUTERNAME
         HyperVInstalled = [bool]$feature.Installed
         InstallState = [string]$feature.InstallState
     }
 }
 
-$verificationResults = Invoke-Command -ComputerName $ComputerName -ScriptBlock $verificationScript
+$verificationResults = foreach ($server in $ComputerName) {
+    $shortServerName = Get-ShortComputerName -Name $server
+    if ($shortServerName -eq $localComputerName) {
+        & $verificationScript -TargetComputerName $server
+    }
+    else {
+        Invoke-Command -ComputerName $server @sessionOptions -ScriptBlock $verificationScript -ArgumentList $server
+    }
+}
 $verificationResults |
     Sort-Object ComputerName |
-    Format-Table ComputerName, HyperVInstalled, InstallState -AutoSize
+    Format-Table ComputerName, ActualComputerName, HyperVInstalled, InstallState -AutoSize
 
 $missingHyperV = @($verificationResults | Where-Object { -not $_.HyperVInstalled })
 if ($missingHyperV.Count -gt 0) {
@@ -157,3 +289,7 @@ if ($missingHyperV.Count -gt 0) {
 
 Write-Host ""
 Write-Host "Hyper-V installation and verification completed for $($ComputerName -join ', ')." -ForegroundColor Green
+
+if ($remoteSessions.Count -gt 0) {
+    $remoteSessions.Values | Remove-PSSession
+}
