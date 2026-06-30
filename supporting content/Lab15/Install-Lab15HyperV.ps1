@@ -34,6 +34,56 @@ function Get-ShortComputerName {
     ($Name.Split(".")[0]).ToUpperInvariant()
 }
 
+function Set-LabConstrainedDelegation {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string[]]$HyperVHosts
+    )
+
+    Import-Module ActiveDirectory -ErrorAction Stop
+
+    $domain = Get-ADDomain
+    $trustedToAuthForDelegation = 0x1000000
+    $delegationResults = foreach ($sourceHost in $HyperVHosts) {
+        $sourceShortName = Get-ShortComputerName -Name $sourceHost
+        $sourceComputer = Get-ADComputer -Identity $sourceShortName -Properties msDS-AllowedToDelegateTo, userAccountControl
+
+        $targetSpns = foreach ($targetHost in $HyperVHosts) {
+            $targetShortName = Get-ShortComputerName -Name $targetHost
+            if ($targetShortName -eq $sourceShortName) {
+                continue
+            }
+
+            $targetFqdn = "$($targetShortName.ToLowerInvariant()).$($domain.DNSRoot)"
+            "cifs/$targetShortName"
+            "cifs/$targetFqdn"
+            "Microsoft Virtual System Migration Service/$targetShortName"
+            "Microsoft Virtual System Migration Service/$targetFqdn"
+        }
+
+        $targetSpns = @($targetSpns | Where-Object { $_ } | Select-Object -Unique)
+        $existingSpns = @($sourceComputer.'msDS-AllowedToDelegateTo')
+        $missingSpns = @($targetSpns | Where-Object { $existingSpns -notcontains $_ })
+
+        if ($missingSpns.Count -gt 0) {
+            Set-ADComputer -Identity $sourceComputer -Add @{ "msDS-AllowedToDelegateTo" = $missingSpns }
+        }
+
+        if (($sourceComputer.userAccountControl -band $trustedToAuthForDelegation) -eq 0) {
+            Set-ADAccountControl -Identity $sourceComputer -TrustedToAuthForDelegation $true
+        }
+
+        [pscustomobject]@{
+            ComputerName = $sourceShortName
+            AddedDelegationEntries = $missingSpns.Count
+            DelegationEntries = ($targetSpns -join "; ")
+            ProtocolTransitionEnabled = $true
+        }
+    }
+
+    $delegationResults
+}
+
 if (-not (Test-IsAdministrator)) {
     throw "Run this script from an elevated Windows PowerShell session."
 }
@@ -48,6 +98,13 @@ if (-not $Credential) {
     $labPassword = ConvertTo-SecureString "Pa55w.rd" -AsPlainText -Force
     $Credential = [System.Management.Automation.PSCredential]::new("CONTOSO\Administrator", $labPassword)
 }
+
+Write-LabSection "Configuring Kerberos constrained delegation"
+
+$delegationResults = Set-LabConstrainedDelegation -HyperVHosts $ComputerName
+$delegationResults |
+    Sort-Object ComputerName |
+    Format-Table ComputerName, AddedDelegationEntries, ProtocolTransitionEnabled, DelegationEntries -AutoSize
 
 Write-LabSection "Checking PowerShell remoting"
 

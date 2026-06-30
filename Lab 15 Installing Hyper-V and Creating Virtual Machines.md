@@ -16,7 +16,7 @@ To complete this lab, you must have:
 - Completed Lab 0501 (Installing Server Roles and Managing Firewall)
 - Nested virtualization enabled for both LON-SVR1 and LON-SVR2 in the lab platform
 - Domain Administrator credentials for the contoso.com domain
-- Internet access from LON-SVR1
+- Internet access from LON-DC1 and LON-SVR1
 - At least 25 GB of free disk space on both LON-SVR1 and LON-SVR2
 - At least 2 GB of memory available for the nested virtual machine on LON-SVR1 and LON-SVR2
 - Permission to restart LON-SVR1 and LON-SVR2
@@ -30,261 +30,69 @@ To complete this lab, you must have:
 **Note**: This lab changes Active Directory delegation settings. Constrained delegation should be limited to the required destination computers and services. Do not configure unrestricted delegation.
 :::
 
-## Exercise 1: Validate the Hyper-V Lab Environment
+## Exercise 1: Install Hyper-V and Configure Delegation
 
 ::: secondary
 **Scenario**
 
-Before installing Hyper-V, you need to confirm that both member servers can communicate, have sufficient resources, and can access the virtualization extensions supplied by the lab platform.
+Both servers will act as Hyper-V hosts. You will run a prepared PowerShell script from LON-DC1 that downloads the current installer from GitHub, configures Kerberos constrained delegation, installs Hyper-V and the management tools on LON-SVR1 and LON-SVR2, and restarts only the servers that require it.
 :::
 
-### Task 1: Connect to LON-SVR1
-
-1. [ ] In the lab platform, select **HOME**.
-
-2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
-
-3. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
-
-4. [ ] Use the **Username** value shown for LON-SVR1 on the **HOME** tab.
-
-5. [ ] Use the **Password** value shown for LON-SVR1 on the **HOME** tab.
-
-6. [ ] Wait for the Windows Server desktop to appear.
-
-::: success
-**Results**: After completing this task, you are connected to LON-SVR1 through the lab platform.
-:::
-
-### Task 2: Verify Name Resolution and Connectivity from LON-SVR1
-
-1. [ ] Select **Start**.
-
-2. [ ] Type **PowerShell**.
-
-3. [ ] In the search results, right-click **Windows PowerShell**.
-
-4. [ ] Select **Run as administrator**.
-
-5. [ ] If a **User Account Control** prompt appears, select **Yes**.
-
-6. [ ] Run the following command:
-
-```powershell
-Resolve-DnsName -Name LON-SVR2.contoso.com
-```
-
-7. [ ] Verify that the command returns an IP address for LON-SVR2.
-
-8. [ ] Run the following command:
-
-```powershell
-Test-NetConnection -ComputerName LON-SVR2.contoso.com -Port 445
-```
-
-9. [ ] Verify that **TcpTestSucceeded** shows `True`.
-
-   ::: warning
-   **Note**: Live migration depends on reliable name resolution and host-to-host communication. If either test fails, verify that LON-SVR2 is running and that both servers are connected to the lab network before continuing.
-   :::
-
-### Task 3: Check Virtualization Support on LON-SVR1
-
-1. [ ] In the elevated Windows PowerShell window, run the following command:
-
-```powershell
-Get-CimInstance -ClassName Win32_Processor |
-    Select-Object Name,
-        VirtualizationFirmwareEnabled,
-        SecondLevelAddressTranslationExtensions,
-        VMMonitorModeExtensions
-```
-
-2. [ ] Review the virtualization properties returned by the command.
-
-3. [ ] Note whether the virtualization properties show `True`.
-
-4. [ ] Run the following command:
-
-```powershell
-systeminfo.exe
-```
-
-5. [ ] Review the **Hyper-V Requirements** information near the end of the output.
-
-6. [ ] Verify that the output either shows `Yes` for the Hyper-V requirements or reports that a hypervisor has been detected.
-
-   ::: danger
-   **Stop**: Do not continue if the output explicitly reports that virtualization, VM monitor mode extensions, or second-level address translation is unavailable and it does not report that a hypervisor is already detected. Ask the instructor to enable nested virtualization for LON-SVR1 in the lab platform, then repeat this task.
-   :::
-
-### Task 4: Check Memory and Disk Space on LON-SVR1
-
-1. [ ] Close Windows PowerShell.
-
-2. [ ] Select **Start**.
-
-3. [ ] Type **Task Manager**.
-
-4. [ ] Select **Task Manager** from the search results.
-
-5. [ ] Select **Performance**.
-
-6. [ ] Select **Memory**.
-
-7. [ ] Verify that LON-SVR1 has enough available memory to assign 2 GB to the nested virtual machine.
-
-8. [ ] Close Task Manager.
-
-9. [ ] Open **File Explorer** from the Start menu.
-
-10. [ ] In the left navigation pane, select **This PC**.
-
-11. [ ] Review the free space shown for **Local Disk (C:)**.
-
-12. [ ] Verify that at least 25 GB is free.
-
-13. [ ] Close File Explorer.
-
-   ::: danger
-   **Stop**: Do not continue if less than 25 GB is free. The downloaded VHDX, running virtual machine, and migration process require substantial storage.
-   :::
-
-### Task 5: Validate LON-SVR2
-
-1. [ ] In the lab platform, select **HOME**.
-
-2. [ ] From the **Select VM** dropdown, select **LON-SVR2**.
-
-3. [ ] In the **Tools** section, verify that **Enhanced mode** is turned on.
-
-4. [ ] Use the **Username** and **Password** values shown for LON-SVR2 on the **HOME** tab.
-
-5. [ ] Wait for the Windows Server desktop to appear.
-
-6. [ ] Open Windows PowerShell as Administrator by using the Start menu.
-
-7. [ ] Run the following command:
-
-```powershell
-Resolve-DnsName -Name LON-SVR1.contoso.com
-```
-
-8. [ ] Verify that the command returns an IP address for LON-SVR1.
-
-9. [ ] Run the following command:
-
-```powershell
-Test-NetConnection -ComputerName LON-SVR1.contoso.com -Port 445
-```
-
-10. [ ] Verify that **TcpTestSucceeded** shows `True`.
-
-11. [ ] Run the following command:
-
-```powershell
-Get-CimInstance -ClassName Win32_Processor |
-    Select-Object Name,
-        VirtualizationFirmwareEnabled,
-        SecondLevelAddressTranslationExtensions,
-        VMMonitorModeExtensions
-```
-
-12. [ ] Note whether the virtualization properties show `True`.
-
-13. [ ] Run the following command:
-
-```powershell
-systeminfo.exe
-```
-
-14. [ ] Verify that the output either shows `Yes` for the Hyper-V requirements or reports that a hypervisor has been detected.
-
-15. [ ] Close Windows PowerShell.
-
-16. [ ] Use **Task Manager** > **Performance** > **Memory** to verify that at least 2 GB of memory can be assigned to the nested virtual machine.
-
-17. [ ] Use **File Explorer** > **This PC** to verify that at least 25 GB is free on **Local Disk (C:)**.
-
-   ::: danger
-   **Stop**: Do not continue if the output explicitly reports that a Hyper-V requirement is unavailable without detecting an existing hypervisor, or if memory, disk space, name resolution, or connectivity is unavailable on LON-SVR2.
-   :::
-
-::: success
-**Results**: After completing this exercise, you have confirmed that both member servers meet the basic requirements for nested Hyper-V and live migration.
-:::
-
-## Exercise 2: Install Hyper-V on LON-SVR1 and LON-SVR2
-
-::: secondary
-**Scenario**
-
-Both servers will act as Hyper-V hosts. You will run a PowerShell fan-out script from LON-DC1 to install the same role and management tools on LON-SVR1 and LON-SVR2, then restart only the servers that require it.
-:::
-
-### Task 1: Run the Hyper-V Fan-Out Install Script
+### Task 1: Run the Hyper-V Install Script from LON-DC1
 
 1. [ ] In the lab platform, select **HOME**.
 
 2. [ ] From the **Select VM** dropdown, select **LON-DC1**.
 
-3. [ ] Verify that **Enhanced mode** is turned on.
+3. [ ] In the **Tools** section, turn on **Enhanced mode** so the virtual machine uses the best screen resolution for your monitor.
 
-4. [ ] Use the **Username** and **Password** values shown for LON-DC1 on the **HOME** tab.
+4. [ ] Use the **Username** value shown for LON-DC1 on the **HOME** tab.
 
-5. [ ] Verify that you are signing in with an account that is a member of **Domain Admins**.
+5. [ ] Use the **Password** value shown for LON-DC1 on the **HOME** tab.
 
 6. [ ] Wait for the Windows Server desktop to appear.
 
-7. [ ] Open **File Explorer**.
+7. [ ] Select **Start**.
 
-8. [ ] Browse to `C:\LabFiles\supporting content\Lab15`.
+8. [ ] Type **PowerShell**.
 
-9. [ ] Verify that the folder contains `Install-Lab15HyperV.ps1`.
+9. [ ] In the search results, right-click **Windows PowerShell**.
 
-10. [ ] Select **Start**.
+10. [ ] Select **Run as administrator**.
 
-11. [ ] Type **PowerShell**.
+11. [ ] If a **User Account Control** prompt appears, select **Yes**.
 
-12. [ ] In the search results, right-click **Windows PowerShell**.
-
-13. [ ] Select **Run as administrator**.
-
-14. [ ] If a **User Account Control** prompt appears, select **Yes**.
-
-15. [ ] Run the following command:
+12. [ ] Run the following one-line command:
 
 ```powershell
-Set-Location "C:\LabFiles\supporting content\Lab15"
+$u = "https://raw.githubusercontent.com/kramit/Windows-Server-2025-Course-Labs/refs/heads/master/supporting%20content/Lab15/Install-Lab15HyperV.ps1"; $p = Join-Path $env:TEMP "Install-Lab15HyperV.ps1"; Invoke-WebRequest -Uri $u -OutFile $p; Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; & $p
 ```
 
-16. [ ] Run the following command:
+13. [ ] Wait while the script configures constrained delegation, checks remote command access, checks the current Hyper-V status, installs Hyper-V on LON-SVR1 and LON-SVR2 if needed, and restarts servers that require it.
 
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
-```
-
-17. [ ] Run the following command:
-
-```powershell
-.\Install-Lab15HyperV.ps1
-```
-
-18. [ ] Wait while the script installs Hyper-V on LON-SVR1 and LON-SVR2.
-
-19. [ ] If the script restarts either server, wait for the script to report that the restart is complete.
+14. [ ] Verify that the final verification table shows `True` in the **HyperVInstalled** column for LON-SVR1 and LON-SVR2.
 
    ::: warning
    **Note**: The script installs Hyper-V and the management tools only. You will create virtual switches and configure live migration settings in later exercises.
    :::
 
-20. [ ] Verify that the final verification table shows `True` in the **HyperVInstalled** column for LON-SVR1 and LON-SVR2.
-
    ::: danger
-   **Stop**: Do not continue if the script reports that PowerShell remoting is unavailable, the installation failed, or Hyper-V could not be verified on either server. Resolve the reported issue, then rerun the script.
+   **Stop**: Do not continue if the script reports that PowerShell remoting is unavailable, remote command access failed, the installation failed, or Hyper-V could not be verified on either server. Resolve the reported issue, then rerun the command.
    :::
 
-### Task 2: Verify Hyper-V on LON-SVR1
+::: success
+**Results**: After completing this exercise, constrained delegation is configured and Hyper-V with its graphical management tools is installed on LON-SVR1 and LON-SVR2.
+:::
+
+## Exercise 2: Create Matching Private Virtual Switches
+
+::: secondary
+**Scenario**
+
+A migrated virtual machine needs a compatible virtual switch on the destination host. You will create an isolated private switch with the same name on both Hyper-V hosts.
+:::
+
+### Task 1: Create Lab15-Private on LON-SVR1
 
 1. [ ] In the lab platform, select **HOME**.
 
@@ -298,73 +106,29 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
 6. [ ] In Server Manager, select **Tools** > **Hyper-V Manager**.
 
-7. [ ] In the left pane, verify that **LON-SVR1** appears under **Hyper-V Manager**.
+7. [ ] In the left pane, select **LON-SVR1**.
 
-8. [ ] Select **LON-SVR1**.
+8. [ ] In the **Actions** pane, select **Virtual Switch Manager...**.
 
-9. [ ] Verify that the **Virtual Machines** pane opens without an error.
+9. [ ] In the **Virtual Switch Manager** window, select **New virtual network switch**.
 
-10. [ ] Close Hyper-V Manager.
+10. [ ] Select **Private**.
 
-### Task 3: Verify Hyper-V on LON-SVR2
+11. [ ] Select **Create Virtual Switch**.
 
-1. [ ] In the lab platform, select **HOME**.
+12. [ ] In the **Name** field, enter `Lab15-Private`.
 
-2. [ ] From the **Select VM** dropdown, select **LON-SVR2**.
+13. [ ] Verify that **Private network** is selected under **Connection type**.
 
-3. [ ] Verify that **Enhanced mode** is turned on.
+14. [ ] Select **OK**.
 
-4. [ ] Use the **Username** and **Password** values shown for LON-SVR2 on the **HOME** tab.
+15. [ ] If a warning appears, review it and select **Yes** to apply the change.
 
-5. [ ] Wait for the Windows Server desktop and Server Manager to appear.
+16. [ ] Reopen **Virtual Switch Manager...**.
 
-6. [ ] In Server Manager, select **Tools** > **Hyper-V Manager**.
+17. [ ] Verify that **Lab15-Private** appears in the left pane and uses the **Private network** connection type.
 
-7. [ ] In the left pane, verify that **LON-SVR2** appears under **Hyper-V Manager**.
-
-8. [ ] Select **LON-SVR2**.
-
-9. [ ] Verify that the **Virtual Machines** pane opens without an error.
-
-::: success
-**Results**: After completing this exercise, Hyper-V and its graphical management tools are installed on LON-SVR1 and LON-SVR2.
-:::
-
-## Exercise 3: Create Matching Private Virtual Switches
-
-::: secondary
-**Scenario**
-
-A migrated virtual machine needs a compatible virtual switch on the destination host. You will create an isolated private switch with the same name on both Hyper-V hosts.
-:::
-
-### Task 1: Create Lab15-Private on LON-SVR1
-
-1. [ ] On LON-SVR1, open **Hyper-V Manager** if it is not already open.
-
-2. [ ] In the left pane, select **LON-SVR1**.
-
-3. [ ] In the **Actions** pane, select **Virtual Switch Manager...**.
-
-4. [ ] In the **Virtual Switch Manager** window, select **New virtual network switch**.
-
-5. [ ] Select **Private**.
-
-6. [ ] Select **Create Virtual Switch**.
-
-7. [ ] In the **Name** field, enter `Lab15-Private`.
-
-8. [ ] Verify that **Private network** is selected under **Connection type**.
-
-9. [ ] Select **OK**.
-
-10. [ ] If a warning appears, review it and select **Yes** to apply the change.
-
-11. [ ] Reopen **Virtual Switch Manager...**.
-
-12. [ ] Verify that **Lab15-Private** appears in the left pane and uses the **Private network** connection type.
-
-13. [ ] Select **Cancel**.
+18. [ ] Select **Cancel**.
 
 ### Task 2: Create Lab15-Private on LON-SVR2
 
@@ -410,209 +174,12 @@ A migrated virtual machine needs a compatible virtual switch on the destination 
 **Results**: After completing this exercise, both Hyper-V hosts have a matching private virtual switch named Lab15-Private.
 :::
 
-## Exercise 4: Configure Kerberos Constrained Delegation
+## Exercise 3: Enable and Configure Live Migration
 
 ::: secondary
 **Scenario**
 
-Windows Server 2025 enables Credential Guard by default on domain-joined member servers. CredSSP-based Hyper-V live migration therefore cannot be relied upon. You will configure Kerberos constrained delegation so the Hyper-V hosts can delegate credentials only to the services required for virtual machine and storage migration.
-:::
-
-### Task 1: Connect to LON-DC1
-
-1. [ ] In the lab platform, select **HOME**.
-
-2. [ ] From the **Select VM** dropdown, select **LON-DC1**.
-
-3. [ ] In the **Tools** section, verify that **Enhanced mode** is turned on.
-
-4. [ ] Use the **Username** and **Password** values shown for LON-DC1 on the **HOME** tab.
-
-5. [ ] Verify that you are signing in with an account that is a member of **Domain Admins**.
-
-6. [ ] Wait for the Windows Server desktop to appear.
-
-### Task 2: Delegate LON-SVR1 to Services on LON-SVR2
-
-1. [ ] Open **Server Manager**.
-
-2. [ ] Select **Tools**.
-
-3. [ ] Select **Active Directory Users and Computers**.
-
-4. [ ] In the left pane, expand **contoso.com**.
-
-5. [ ] Select the **Computers** container.
-
-6. [ ] In the center pane, right-click **LON-SVR1**.
-
-7. [ ] Select **Properties**.
-
-8. [ ] Select the **Delegation** tab.
-
-9. [ ] Select **Trust this computer for delegation to specified services only**.
-
-10. [ ] Select **Use any authentication protocol**.
-
-11. [ ] Select **Add...**.
-
-12. [ ] In the **Add Services** window, select **Users or Computers...**.
-
-13. [ ] In the **Enter the object names to select** field, enter `LON-SVR2`.
-
-14. [ ] Select **Check Names**.
-
-15. [ ] Verify that the computer name is resolved.
-
-16. [ ] Select **OK**.
-
-17. [ ] In the **Add Services** list, select the `cifs` service.
-
-18. [ ] Select **OK**.
-
-19. [ ] On the **Delegation** tab, select **Add...** again.
-
-20. [ ] In the **Add Services** window, select **Users or Computers...**.
-
-21. [ ] Enter `LON-SVR2`.
-
-22. [ ] Select **Check Names**.
-
-23. [ ] Select **OK**.
-
-24. [ ] In the **Add Services** list, select **Microsoft Virtual System Migration Service**.
-
-25. [ ] Select **OK**.
-
-26. [ ] On the **Delegation** tab, verify that the following services for LON-SVR2 are listed:
-
-   - `cifs`
-   - `Microsoft Virtual System Migration Service`
-
-27. [ ] Select **Apply**.
-
-28. [ ] Select **OK**.
-
-   ::: warning
-   **Note**: The `cifs` service permits delegated access while moving virtual machine storage. **Microsoft Virtual System Migration Service** permits the virtual machine migration operation.
-   :::
-
-### Task 3: Delegate LON-SVR2 to Services on LON-SVR1
-
-1. [ ] In the **Computers** container, right-click **LON-SVR2**.
-
-2. [ ] Select **Properties**.
-
-3. [ ] Select the **Delegation** tab.
-
-4. [ ] Select **Trust this computer for delegation to specified services only**.
-
-5. [ ] Select **Use any authentication protocol**.
-
-6. [ ] Select **Add...**.
-
-7. [ ] In the **Add Services** window, select **Users or Computers...**.
-
-8. [ ] Enter `LON-SVR1`.
-
-9. [ ] Select **Check Names**.
-
-10. [ ] Verify that the computer name is resolved.
-
-11. [ ] Select **OK**.
-
-12. [ ] Select the `cifs` service.
-
-13. [ ] Select **OK**.
-
-14. [ ] On the **Delegation** tab, select **Add...** again.
-
-15. [ ] In the **Add Services** window, select **Users or Computers...**.
-
-16. [ ] Enter `LON-SVR1`.
-
-17. [ ] Select **Check Names**.
-
-18. [ ] Select **OK**.
-
-19. [ ] Select **Microsoft Virtual System Migration Service**.
-
-20. [ ] Select **OK**.
-
-21. [ ] Verify that both required services for LON-SVR1 are listed on the **Delegation** tab.
-
-22. [ ] Select **Apply**.
-
-23. [ ] Select **OK**.
-
-### Task 4: Validate the Delegation Configuration
-
-1. [ ] In Active Directory Users and Computers, right-click **LON-SVR1**.
-
-2. [ ] Select **Properties**.
-
-3. [ ] Select the **Delegation** tab.
-
-4. [ ] Verify that only the required `cifs` and **Microsoft Virtual System Migration Service** entries for LON-SVR2 are listed.
-
-5. [ ] Select **Cancel**.
-
-6. [ ] Right-click **LON-SVR2**.
-
-7. [ ] Select **Properties**.
-
-8. [ ] Select the **Delegation** tab.
-
-9. [ ] Verify that only the required entries for LON-SVR1 are listed.
-
-10. [ ] Select **Cancel**.
-
-11. [ ] Close Active Directory Users and Computers.
-
-   ::: warning
-   **Note**: Active Directory replication and Kerberos ticket renewal can take a short time. The next task signs out of both Hyper-V hosts so that new Kerberos tickets are issued.
-   :::
-
-### Task 5: Refresh the Sign-In Sessions on Both Hosts
-
-1. [ ] In the lab platform, select **HOME**.
-
-2. [ ] From the **Select VM** dropdown, select **LON-SVR1**.
-
-3. [ ] On LON-SVR1, select **Start**.
-
-4. [ ] Select the signed-in account name.
-
-5. [ ] Select **Sign out**.
-
-6. [ ] Return to the lab platform **HOME** tab.
-
-7. [ ] Use the displayed credentials to sign in to LON-SVR1 again.
-
-8. [ ] In the lab platform, select **HOME**.
-
-9. [ ] From the **Select VM** dropdown, select **LON-SVR2**.
-
-10. [ ] On LON-SVR2, select **Start**.
-
-11. [ ] Select the signed-in account name.
-
-12. [ ] Select **Sign out**.
-
-13. [ ] Return to the lab platform **HOME** tab.
-
-14. [ ] Use the displayed credentials to sign in to LON-SVR2 again.
-
-::: success
-**Results**: After completing this exercise, Kerberos constrained delegation permits the two Hyper-V hosts to migrate virtual machines and their storage in either direction.
-:::
-
-## Exercise 5: Enable and Configure Live Migration
-
-::: secondary
-**Scenario**
-
-The Active Directory permissions are now in place. You will enable live migration on both Hyper-V hosts and select Kerberos authentication with compression.
+The installation script configured the Active Directory constrained delegation permissions required for shared-nothing live migration. You will enable live migration on both Hyper-V hosts and select Kerberos authentication with compression.
 :::
 
 ### Task 1: Configure Live Migration on LON-SVR2
@@ -707,7 +274,7 @@ The Active Directory permissions are now in place. You will enable live migratio
 **Results**: After completing this exercise, both Hyper-V hosts accept Kerberos-authenticated live migrations using compression.
 :::
 
-## Exercise 6: Download the Evaluation VHDX and Create WS2025-LM1
+## Exercise 4: Download the Evaluation VHDX and Create WS2025-LM1
 
 ::: secondary
 **Scenario**
@@ -907,7 +474,7 @@ https://go.microsoft.com/fwlink/?linkid=2345826&clcid=0x809&culture=en-gb&countr
 **Results**: After completing this exercise, WS2025-LM1 is running Windows Server 2025 from local storage on LON-SVR1.
 :::
 
-## Exercise 7: Perform a Shared-Nothing Live Migration
+## Exercise 5: Perform a Shared-Nothing Live Migration
 
 ::: secondary
 **Scenario**
@@ -1052,7 +619,7 @@ Uptime after migration: _______________________________
 **Results**: After completing this exercise, WS2025-LM1 and its storage are running on LON-SVR2 without a guest operating system restart.
 :::
 
-## Exercise 8: Validate, Troubleshoot, and Review the Configuration
+## Exercise 6: Validate, Troubleshoot, and Review the Configuration
 
 ::: secondary
 **Scenario**
