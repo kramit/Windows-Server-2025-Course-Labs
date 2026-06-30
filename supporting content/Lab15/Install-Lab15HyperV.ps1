@@ -62,12 +62,31 @@ function Set-LabConstrainedDelegation {
             $targetSpnList.Add("Microsoft Virtual System Migration Service/$targetFqdn")
         }
 
-        $targetSpns = [string[]]@($targetSpnList.ToArray() | Sort-Object -Unique)
-        $existingSpns = [string[]]@($sourceComputer.'msDS-AllowedToDelegateTo')
-        $missingSpns = [string[]]@($targetSpns | Where-Object { $existingSpns -notcontains [string]$_ })
+        $allSpns = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
+        foreach ($existingSpn in @($sourceComputer.'msDS-AllowedToDelegateTo')) {
+            if ($existingSpn) {
+                $null = $allSpns.Add([string]$existingSpn)
+            }
+        }
+
+        $missingSpnList = [System.Collections.Generic.List[string]]::new()
+        foreach ($targetSpn in $targetSpnList) {
+            if (-not $allSpns.Contains($targetSpn)) {
+                $missingSpnList.Add($targetSpn)
+                $null = $allSpns.Add($targetSpn)
+            }
+        }
+
+        $targetSpnList = [System.Collections.Generic.List[string]]::new()
+        foreach ($spn in ($allSpns | Sort-Object)) {
+            $targetSpnList.Add([string]$spn)
+        }
+
+        $targetSpns = [string[]]$targetSpnList.ToArray()
+        $missingSpns = [string[]]$missingSpnList.ToArray()
 
         if ($missingSpns.Count -gt 0) {
-            Set-ADComputer -Identity $sourceComputer.DistinguishedName -Add @{ "msDS-AllowedToDelegateTo" = $missingSpns }
+            Set-ADObject -Identity $sourceComputer.DistinguishedName -Replace @{ "msDS-AllowedToDelegateTo" = $targetSpns }
         }
 
         if (($sourceComputer.userAccountControl -band $trustedToAuthForDelegation) -eq 0) {

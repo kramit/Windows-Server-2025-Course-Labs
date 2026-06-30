@@ -65,7 +65,7 @@ Both servers will act as Hyper-V hosts. You will run a prepared PowerShell scrip
 12. [ ] Run the following one-line command:
 
 ```powershell
-$u = "https://raw.githubusercontent.com/kramit/Windows-Server-2025-Course-Labs/refs/heads/master/supporting%20content/Lab15/Install-Lab15HyperV.ps1"; $p = Join-Path $env:TEMP "Install-Lab15HyperV.ps1"; Invoke-WebRequest -Uri $u -OutFile $p; Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; & $p
+$u = "https://raw.githubusercontent.com/kramit/Windows-Server-2025-Course-Labs/refs/heads/master/supporting%20content/Lab15/Install-Lab15HyperV.ps1?cacheBust=$(Get-Date -Format yyyyMMddHHmmss)"; $p = Join-Path $env:TEMP "Install-Lab15HyperV.ps1"; Invoke-WebRequest -Uri $u -OutFile $p; Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; & $p
 ```
 
 13. [ ] Wait while the script configures constrained delegation, checks remote command access, checks the current Hyper-V status, installs Hyper-V on LON-SVR1 and LON-SVR2 if needed, and restarts servers that require it.
